@@ -115,33 +115,33 @@ export default {
         year = Number(dateString.slice(0, 4));
         month = dateString.slice(4, 6);
         day = dateString.slice(6, 8);
-        if (dateString.length === 7) {
-          // 假設是三碼民國年
-          year = Number(dateString.slice(0, 3));
-          year += 1911;
-          month = dateString.slice(3, 5);
-          day = dateString.slice(5, 7);
+      }
+      if (dateString.length === 7) {
+        // 假設是三碼民國年
+        year = Number(dateString.slice(0, 3));
+        year += 1911;
+        month = dateString.slice(3, 5);
+        day = dateString.slice(5, 7);
+      }
+      if (dateString.length === 6) {
+        // 假設是2碼民國年
+        year = Number(dateString.slice(0, 2));
+        year += 1911;
+        month = dateString.slice(2, 4);
+        day = dateString.slice(4, 6);
+        month = String(month);
+        while (month.length < 2) {
+          month = `0${month}`;
         }
-        if (dateString.length === 6) {
-          // 假設是2碼民國年
-          year = Number(dateString.slice(0, 2));
-          year += 1911;
-          month = dateString.slice(2, 4);
-          day = dateString.slice(4, 6);
-          month = String(month);
-          while (month.length < 2) {
-            month = `0${month}`;
-          }
-          day = String(day);
-          while (day.length < 2) {
-            day = `0${day}`;
-          }
-          return {
-            year,
-            month,
-            day,
-          };
+        day = String(day);
+        while (day.length < 2) {
+          day = `0${day}`;
         }
+        return {
+          year,
+          month,
+          day,
+        };
       }
     },
     showErrorMessage(dateObject) {
@@ -156,8 +156,8 @@ export default {
         this.errorMessages = this.localErrorMessages[errorCode];
       } else {
         this.errorMessages = "";
-        return validateResult;
       }
+      return validateResult;
     },
 
     updateDatePickerModel(shownDate) {
@@ -223,53 +223,53 @@ export default {
       }
       return y + " " + m + "月";
     },
-  },
 
-  formatHeaderToRocYear(str) {
-    let y = parseInt(str);
-    if (y > 1911) {
-      y = y - 1911;
-      return "R " + y + "年 ";
-    } else {
-      return "E " + y + "年 ";
-    }
-  },
-  /**
-   *
-   */
-  checkEmptyDate(newValue) {
-    if (!this.required || !!newValue) return true;
-    const errorCode = 1; // default:"日期必填"
-    this.$emit("update:errorCode", errorCode);
-    return this.localErrorMessages[errorCode];
-  },
-
-  checkFormatonBlur(shownDate) {
-    if (shownDate) {
-      const dateObject = this.getIsoDateObject(shownDate);
-      const checkResult = this.showErrorMessage(dateObject);
-      if (dateObject && checkResult) {
-        const { year, month, day } = dateObject; // 顯示西元或民國
-        let formatYear = this.ROC
-          ? this.padZeroStart(year - 1911, 3)
-          : this.padZeroStar(year, 4);
-        let formatMonth = this.padZeroStart(month, 2);
-        let formatDay = this.padZeroStart(day, 2);
-        const formatShownDate = `${formatYear}/${formatMonth}/${formatDay}`;
-        this.shownDate = formatShownDate;
+    formatHeaderToRocYear(str) {
+      let y = parseInt(str);
+      if (y > 1911) {
+        y = y - 1911;
+        return "民國" + y + "年 ";
+      } else {
+        return "西元" + y + "年 ";
       }
-    }
-  },
-  /**
-   * 一個小工具
-   *  @param {}} value
-   *  @param {*} digits
-   */
-  padZeroStart(value, digits) {
-    value = String(value);
-    while (value.length < digits) {
-      value = `0${value}`;
-    }
-    return value;
+    },
+    /**
+     * 兩個內建的檢查機制
+     */
+    checkEmptyDate(newValue) {
+      if (!this.required || !!newValue) return true;
+      const errorCode = 1; // default:"日期必填"
+      this.$emit("update:errorCode", errorCode);
+      return this.localErrorMessages[errorCode];
+    },
+
+    checkFormatOnBlur(shownDate) {
+      if (shownDate) {
+        const dateObject = this.getIsoDateObject(shownDate);
+        const checkResult = this.showErrorMessage(dateObject);
+        if (dateObject && checkResult) {
+          const { year, month, day } = dateObject; // 顯示西元或民國
+          let formatYear = this.ROC
+            ? this.padZeroStart(year - 1911, 3)
+            : this.padZeroStar(year, 4);
+          let formatMonth = this.padZeroStart(month, 2);
+          let formatDay = this.padZeroStart(day, 2);
+          const formatShownDate = `${formatYear}/${formatMonth}/${formatDay}`;
+          this.shownDate = formatShownDate;
+        }
+      }
+    },
+    /**
+     * 一個小工具
+     *  @param {}} value
+     *  @param {*} digits
+     */
+    padZeroStart(value, digits) {
+      value = String(value);
+      while (value.length < digits) {
+        value = `0${value}`;
+      }
+      return value;
+    },
   },
 };
