@@ -276,15 +276,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep {
-  .inputDate_textField {
+  .inputDate__textField {
     input {
       text-align: center;
     }
-    .v-input_control {
+    .v-input__control {
       min-height: unset;
     }
   }
-  .inputDate_textField--colorChanged i input {
+  .inputDate__textField--colorChanged i input {
     color: red;
   }
   .lockClass {
@@ -294,10 +294,10 @@ export default {
   .v-text-field.hidden {
     padding: 0;
     margin: 0;
-    .v-input_control {
+    .v-input__control {
       min-height: unset;
     }
-    .v-input_slot {
+    .v-input__slot {
       display: none;
     }
   }

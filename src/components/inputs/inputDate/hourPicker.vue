@@ -53,11 +53,11 @@ export default {
       default: function () {
         return [];
       },
-      errorMessages: {
-        type: [Array, String],
-        default: function () {
-          return [];
-        },
+    },
+    errorMessages: {
+      type: [Array, String],
+      default: function () {
+        return [];
       },
     },
   },
@@ -178,8 +178,8 @@ export default {
     text-align: center;
   }
 
-  ::v-deep .v-input_slot {
-    padding: 8px !important;
+  ::v-deep .v-input__slot {
+    padding: 0 8px !important;
   }
 
   ::v-deep .v-text-field__details {
@@ -187,7 +187,7 @@ export default {
   }
 
   &.inputTextField--disabled {
-    ::v-deep .v-input_slot {
+    ::v-deep .v-input__slot {
       background-color: #e5e5e5;
     }
   }

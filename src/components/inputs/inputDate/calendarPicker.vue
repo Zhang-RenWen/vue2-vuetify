@@ -199,21 +199,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep {
-  .inputDate_textfield input {
-    text-align: center;
-  }
-
-  .v-input_control {
-    min-height: unset;
+  .inputDate__textfield {
+    input {
+      text-align: center;
+    }
+    .v-input__control {
+      min-height: unset;
+    }
   }
 }
-.inputDate_textField--colorChanged {
+.inputDate__textField--colorChanged {
   input {
     color: red;
   }
 }
-.V-input_slot {
-  padding: 8px !important;
+.V-input__slot {
+  padding: 0 8px !important;
 }
 .lockClass {
   background-color: #e5e5e5;
@@ -224,10 +225,10 @@ export default {
   padding: 0;
   margin: 0;
 
-  .v-input_control {
+  .v-input__control {
     min-height: unset;
   }
-  .v-input_slot {
+  .v-input__slot {
     display: none;
   }
 }

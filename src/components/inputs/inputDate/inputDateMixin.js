@@ -42,12 +42,11 @@ export default {
         const { year, month, day } = dateObject;
         return `${year}-${month} -${day}`;
       },
-    },
-
-    set(newValue) {
-      this.localValue = newValue;
-      this.isMenuVisible = false; // 關閉calendar 視同blur
-      this.$emit("blur");
+      set(newValue) {
+        this.localValue = newValue;
+        this.isMenuVisible = false; // 關閉calendar 視同blur
+        this.$emit("blur");
+      },
     },
   },
 
