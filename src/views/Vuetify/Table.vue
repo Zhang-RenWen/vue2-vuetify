@@ -1,8 +1,6 @@
 <template>
   <v-card>
-    <h3>
-      Table
-    </h3>
+    <h3>Table</h3>
     {{ selected }}
     <v-sheet outlined class="pa-4">
       <v-data-table dense :headers="[]" :items="[]" />
@@ -307,11 +305,11 @@ export default {
     getHeaders(headers) {
       const newHeaders = headers.reduce((r, header) => {
         const newHeader = header
-          .map(o => {
+          .map((o) => {
             const { text, value } = o
             return { text, value }
           })
-          .filter(o => {
+          .filter((o) => {
             return o.value !== ''
           })
 
@@ -323,10 +321,10 @@ export default {
     getItemsKeys(arr) {
       const newArr = arr.reduce((r, headers) => {
         const values = headers
-          .filter(o => {
+          .filter((o) => {
             return o.value !== ''
           })
-          .map(o => {
+          .map((o) => {
             return o
           })
         return r.concat(values)

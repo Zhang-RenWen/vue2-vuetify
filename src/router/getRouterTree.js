@@ -8,11 +8,11 @@ function createRouterTree() {
   require
     .context('@/views', true, /.+(vue)$/)
     .keys()
-    .forEach(folderRoute => {
+    .forEach((folderRoute) => {
       const pathParts = folderRoute
         .split('/')
-        .filter(x => x.length > 0)
-        .map(x => x.split('%20'))
+        .filter((x) => x.length > 0)
+        .map((x) => x.split('%20'))
         .splice(1)
       pathParts.map((item, i) => {
         function createRouteNode(item) {
@@ -64,7 +64,7 @@ function createRouterTree() {
     if (
       el.parentName === '' &&
       el.name !== '-Home' &&
-      !routes.some(item => {
+      !routes.some((item) => {
         return item.name === el.name
       })
     ) {
@@ -75,7 +75,7 @@ function createRouterTree() {
       findParentNode(el, routes)
     }
   }
-  raw.map(o => {
+  raw.map((o) => {
     findContainer(o)
   })
   return routes

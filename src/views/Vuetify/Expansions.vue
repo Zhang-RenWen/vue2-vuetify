@@ -1,9 +1,7 @@
 <template>
   <div v-hotkey="keyMap">
     <v-card>
-      <h3>
-        Expansions
-      </h3>
+      <h3>Expansions</h3>
       <v-sheet outlined class="pa-4">
         <v-btn @click="toggleAll">
           <v-icon>mdi-chevron-double-down</v-icon>
@@ -57,9 +55,9 @@ export default {
     },
 
     focusComponent(tab, togglePanel = false) {
-      const index = this.tabs.findIndex(o => o === tab)
+      const index = this.tabs.findIndex((o) => o === tab)
       if (index === -1) return
-      const idx = this.panel.findIndex(o => o === index)
+      const idx = this.panel.findIndex((o) => o === index)
       if (idx === -1) {
         this.panel.push(index)
       } else if (togglePanel) this.panel.splice(idx, 1)

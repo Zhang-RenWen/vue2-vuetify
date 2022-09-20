@@ -36,10 +36,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '@/components/charts/scss/chartsBase';
-</style>
-
 <style lang="scss" scoped>
 $asideWidth: 290px;
 $contentWidth-mobile: calc(100%);

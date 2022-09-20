@@ -8,9 +8,7 @@
               <input type="text" />
             </v-col>
             <v-col cols="4" sm="1">
-              <v-btn>
-                查詢
-              </v-btn>
+              <v-btn>查詢</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -19,9 +17,7 @@
     <v-card outlined class="mt-3">
       <v-card-text>
         <v-data-table :headers="headers" :items="tableData" :items-per-page="10" dense>
-          <template slot="no-data">
-            查無資料
-          </template>
+          <template slot="no-data">查無資料</template>
           <template v-slot:[`header.action`]="{ header }">
             <v-btn @click="openDialogAdd">{{ header.text }}</v-btn>
           </template>
