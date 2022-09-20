@@ -27,7 +27,7 @@ if (process.env.VUE_APP_ENV === "development") {
 
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: ["vuetify"], // vuetify setting
   runtimeCompiler: true,
   parallel: true,
   productionSourceMap: false,

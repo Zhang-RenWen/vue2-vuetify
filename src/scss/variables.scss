@@ -1,0 +1,97 @@
+// $btn-active-opacity: 1;
+// $btn-focus-opacity: 1;
+// $btn-hover-opacity: 1;
+
+// $btn-states: (
+//   'states': (
+//     'activated': $btn-active-opacity,
+//     'focus': $btn-focus-opacity,
+//     'hover': $btn-hover-opacity
+//   )
+// );
+
+// .v-btn:hover::before {
+//   background-color: #db00f8;
+// }
+
+// .v-btn:focus::before {
+//   background-color: #45fc20;
+// }
+
+// .v-btn:active::before {
+//   background-color: #0026fd;
+// }
+
+// :root {
+//   --v-anchor-base: #4caf50;
+//   --v-primary-base: #4caf50;
+//   --v-primary-lighten5: #dcffd6;
+//   --v-primary-lighten4: #beffba;
+//   --v-primary-lighten3: #a2ff9e;
+//   --v-primary-lighten2: #85e783;
+//   --v-primary-lighten1: #69cb69;
+//   --v-primary-darken1: #2d9437;
+//   --v-primary-darken2: #00791e;
+//   --v-primary-darken3: #006000;
+//   --v-primary-darken4: #004700;
+//   --v-secondary-base: #03a9f4;
+//   --v-secondary-lighten5: #d0ffff;
+//   --v-secondary-lighten4: #b0ffff;
+//   --v-secondary-lighten3: #90fdff;
+//   --v-secondary-lighten2: #6ee0ff;
+//   --v-secondary-lighten1: #48c4ff;
+//   --v-secondary-darken1: #008fd7;
+//   --v-secondary-darken2: #0075bb;
+//   --v-secondary-darken3: #005da0;
+//   --v-secondary-darken4: #004685;
+//   --v-accent-base: #9c27b0;
+//   --v-accent-lighten5: #ffb6ff;
+//   --v-accent-lighten4: #ff9aff;
+//   --v-accent-lighten3: #f47eff;
+//   --v-accent-lighten2: #d662e8;
+//   --v-accent-lighten1: #b946cc;
+//   --v-accent-darken1: #800095;
+//   --v-accent-darken2: #64007b;
+//   --v-accent-darken3: #490061;
+//   --v-accent-darken4: #300049;
+//   --v-error-base: #ff5252;
+//   --v-error-lighten5: #ffe4d5;
+//   --v-error-lighten4: #ffc6b9;
+//   --v-error-lighten3: #ffa99e;
+//   --v-error-lighten2: #ff8c84;
+//   --v-error-lighten1: #ff6f6a;
+//   --v-error-darken1: #df323b;
+//   --v-error-darken2: #bf0025;
+//   --v-error-darken3: #9f0010;
+//   --v-error-darken4: #800000;
+//   --v-info-base: #00cae3;
+//   --v-info-lighten5: #cfffff;
+//   --v-info-lighten4: #b0ffff;
+//   --v-info-lighten3: #8fffff;
+//   --v-info-lighten2: #6effff;
+//   --v-info-lighten1: #48e6ff;
+//   --v-info-darken1: #00aec7;
+//   --v-info-darken2: #0093ac;
+//   --v-info-darken3: #007991;
+//   --v-info-darken4: #006077;
+//   --v-success-base: #4caf50;
+//   --v-success-lighten5: #dcffd6;
+//   --v-success-lighten4: #beffba;
+//   --v-success-lighten3: #a2ff9e;
+//   --v-success-lighten2: #85e783;
+//   --v-success-lighten1: #69cb69;
+//   --v-success-darken1: #2d9437;
+//   --v-success-darken2: #00791e;
+//   --v-success-darken3: #006000;
+//   --v-success-darken4: #004700;
+//   --v-warning-base: #fb8c00;
+//   --v-warning-lighten5: #ffff9e;
+//   --v-warning-lighten4: #fffb82;
+//   --v-warning-lighten3: #ffdf67;
+//   --v-warning-lighten2: #ffc24b;
+//   --v-warning-lighten1: #ffa72d;
+//   --v-warning-darken1: #db7200;
+//   --v-warning-darken2: #bb5900;
+//   --v-warning-darken3: #9d4000;
+//   --v-warning-darken4: #802700;
+// }
