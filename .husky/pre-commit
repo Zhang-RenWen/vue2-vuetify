@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# run cSpell lint
+files=$(git diff --cached --name-only)
+exec npx cspell -- --no-summary $files
+
+# run eslint and stylelint
+npm run pre-commit
