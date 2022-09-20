@@ -2,42 +2,48 @@
   <v-btn
     class="white--text mx-1"
     v-bind="{ ...$attrs }"
-    v-on="$listeners"
     :color="color"
     :small="small"
     :disabled="getDisabled"
+    v-on="$listeners"
   >
-    <slot>{{ text }} </slot>
+    <slot>{{ text }}</slot>
   </v-btn>
 </template>
+
 <script>
 export default {
-  name: "BasicBtn",
+  name: 'BasicBtn',
   props: {
     text: {
       type: String,
-      default: "",
+      default: ''
     },
+
     color: {
       type: String,
-      default: "grey darken-2",
+      default: 'grey darken-2'
     },
+
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
+
     small: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
+
   data() {
-    return {};
+    return {}
   },
+
   computed: {
     getDisabled() {
-      return this.disabled || this.isApplicationReadOnly;
-    },
-  },
-};
+      return this.disabled || this.isApplicationReadOnly
+    }
+  }
+}
 </script>

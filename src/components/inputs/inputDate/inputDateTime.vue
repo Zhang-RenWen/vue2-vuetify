@@ -4,10 +4,10 @@
       v-if="label"
       :
       label="label"
-      :labelClass="labelClass"
-      :inlineStyle="labelStyle"
+      :label-class="labelClass"
+      :inline-style="labelStyle"
     />
-    <v-row :class="inputClass" :style="inputStyle">
+    <v-row :class="inputClass" :style="input - style">
       <v-menu
         v-model="isMenuVisible"
         :disabled="isDisabled"
@@ -17,39 +17,36 @@
         max-width="290px"
         min-width="290px"
       >
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-col>
             <v-text-field
-              v-on="on"
               v-model="shownDate"
               placeholder="YYY/MM/DD"
               :rules="localRules"
               :error-messages="errorMessages"
               :disabled="isDisabled"
               :class="{
-                lockClass: isDisabled,
-                'inputDate_textField--colorChanged': hasChanged,
+                'lock-class': isDisabled,
+                'inputDate_textField--color-changed': hasChanged
               }"
               class="inputDate_textfield"
-              :data-label="
-                $attrs['data-label'] ||
-                ($attrs['data-label'] === '' ? '' : label)
-              "
-              @change="updateDatePickerModel($event)"
-              @blur="checkTimeOnBlur($event, shownDate)"
+              :data-label="$attrs['data-label'] || ($attrs['data-label'] === '' ? '' : label)"
               dense
               outlined
               hide-details="auto"
-            ></v-text-field>
+              v-on="on"
+              @change="updateDatePickerModel($event)"
+              @blur="checkTimeOnBlur($event, shownDate)"
+            />
           </v-col>
         </template>
         <v-date-picker
           v-model="datePickerModel"
           :header-date-format="formatHeaderToRocDate"
           :year-format="formatHeaderToRocYear"
-          @change="checkFormatOnBlur($event)"
           no-title
-        ></v-date-picker>
+          @change="checkFormatOnBlur($event)"
+        />
       </v-menu>
       <v-col col="12" sm="3" md="3">
         <v-text-field
@@ -57,107 +54,119 @@
           placeholder="hh"
           :error-messages="errorHour"
           :disabled="isDisabled"
-          @change="updateLocalValue($event)"
           :class="{
-            lockClass: isDisabled,
-            'inputDate__hours--colorChanged': hasChanged,
+            'lock-class': isDisabled,
+            'inputDate__hours--color-changed': hasChanged
           }"
           class="inputDate_hours"
           hide-details="auto"
           dense
-        ></v-text-field>
+          @change="updateLocalValue($event)"
+        />
       </v-col>
       <span class="align-self-center">:</span>
-      <v-col col="12" Sm="3" md="3">
+      <v-col col="12" sm="3" md="3">
         <v-text-field
           v-model="shownMinutes"
           placeholder="mm"
           :disabled="isDisabled"
           :error-messages="errorMinute"
           :class="{
-            lockClass: isDisabled,
-            'inputDate_minutes--colorChanged': hasChanged,
+            'lock-class': isDisabled,
+            'inputDate_minutes--color-changed': hasChanged
           }"
           class="inputDate minutes"
-          @change="updateLocalValue($event)"
           hide-details="auto"
           outlined
           dense
-        ></v-text-field>
+          @change="updateLocalValue($event)"
+        />
       </v-col>
     </v-row>
   </div>
 </template>
+
 <script>
-import toolTipLabel from "@/components/toolTipLabel"; // import uiStateMixin from "@mixins/UIstateMixin";
-import { disabledMixin, changeColorMixin } from "../.inputMixin.js";
-import inputDateMixin from "./.inputDateMixin.js";
+import toolTipLabel from '@/components/toolTipLabel' // import uiStateMixin from "@mixins/UIstateMixin";
+import { disabledMixin, changeColorMixin } from '../.inputMixin.js'
+import inputDateMixin from './.inputDateMixin.js'
 
 export default {
   components: { toolTipLabel },
   mixins: [disabledMixin, changeColorMixin, inputDateMixin],
-  data: function () {
-    return {
-      shownDate: "",
-      shownHours: "",
-      shownMinutes: "",
-      shownSeconds: "",
-      errorHour: "",
-      errorMinute: "",
-    };
-  },
+
   props: {
     label: {
       type: String,
-      default: "",
+      default: ''
     },
+
     value: {
       type: [String, Number],
-      default: "",
+      default: ''
     },
+
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
+
     required: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    "max-length": {
+
+    maxLength: {
       type: [Boolean, Number],
-      default: 16,
+      default: 16
     },
+
     rules: {
       type: Array,
-      default: function () {
-        return [];
-      },
+      default() {
+        return []
+      }
     },
-    //label設定參數
+
+    // label設定參數
     labelClass: [String, Array],
     labelStyle: String,
     inputClass: String,
     inputStyle: String,
     attach: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
+
+  data() {
+    return {
+      shownDate: '',
+      shownHours: '',
+      shownMinutes: '',
+      shownSeconds: '',
+      errorHour: '',
+      errorMinute: ''
+    }
+  },
+
   computed: {
     localValue: {
       get() {
-        return this.value;
+        return this.value
       },
+
       set(newValue) {
-        this.$emit("input", newValue);
+        this.$emit('input', newValue)
       },
 
       localRules() {
-        let rules = [...this.rules];
-        return rules;
-      },
-    },
+        let rules = [...this.rules]
+        return rules
+      }
+    }
   },
+
   watch: {
     localValue: {
       handler(newValue) {
@@ -165,133 +174,140 @@ export default {
          * 假定是拿到 2020-01-01 格式
          */
 
-        const rocDate = this.formatIsoToRocDate(newValue);
-        this.shownDate = rocDate.date;
-        this.shownHours = rocDate.hours;
-        this.shownMinutes = rocDate.minutes;
-        this.shownSeconds = rocDate.seconds;
+        const rocDate = this.formatIsoToRocDate(newValue)
+        this.shownDate = rocDate.date
+        this.shownHours = rocDate.hours
+        this.shownMinutes = rocDate.minutes
+        this.shownSeconds = rocDate.seconds
       },
-      immediate: true,
+
+      immediate: true
     },
+
     datePickerModel(newDate) {
       /**
        * 若沒有時分秒給定預設值
        */
 
       if (!this.shownHours) {
-        this.shownHours = "00";
+        this.shownHours = '00'
       }
       if (!this.shownMinutes) {
-        this.shownMinutes = "00";
+        this.shownMinutes = '00'
       }
 
       if (!this.shownSeconds) {
-        this.shownSeconds = "00";
+        this.shownSeconds = '00'
       }
 
-      const newDateTimeString = `"${newDate} ${this.shownHours}:${this.shownMinutes}:${this.shownSeconds}`;
-      this.localValue = newDateTimeString;
-      this.isMenuVisible = false;
-    },
+      const newDateTimeString = `"${newDate} ${this.shownHours}:${this.shownMinutes}:${this.shownSeconds}`
+      this.localValue = newDateTimeString
+      this.isMenuVisible = false
+    }
   },
+
   methods: {
     checkTimeOnBlur(event, shownDate) {
       if (!shownDate) {
-        this.shownHours = "";
-        this.shownMinutes = "";
-        this.shownSeconds = "";
+        this.shownHours = ''
+        this.shownMinutes = ''
+        this.shownSeconds = ''
       }
-      this.checkFormatOnBlur(shownDate);
+      this.checkFormatOnBlur(shownDate)
     },
+
     formatIsoToRocDate(isoString) {
       if (!isoString) {
         return {
           date: ``,
-          hours: "",
-          minutes: "",
-          seconds: "",
-        };
+          hours: '',
+          minutes: '',
+          seconds: ''
+        }
       }
-      const dateInstance = new Date(isoString);
-      let year = dateInstance.getFullYear() - 1911;
-      let month = dateInstance.getMonth() + 1;
-      let day = dateInstance.getDate();
-      let hours = dateInstance.getHours();
-      let minutes = dateInstance.getMinutes();
-      let seconds = dateInstance.getSeconds();
+      const dateInstance = new Date(isoString)
+      let year = dateInstance.getFullYear() - 1911
+      let month = dateInstance.getMonth() + 1
+      let day = dateInstance.getDate()
+      let hours = dateInstance.getHours()
+      let minutes = dateInstance.getMinutes()
+      let seconds = dateInstance.getSeconds()
       // padStart
-      year = this.padZeroStart(year, 3);
-      month = this.padZeroStart(month, 2);
-      day = this.padZeroStart(day, 2);
-      hours = this.padZeroStart(hours, 2);
-      minutes = this.padZeroStart(minutes, 2);
-      seconds = this.padZeroStart(seconds, 2);
+      year = this.padZeroStart(year, 3)
+      month = this.padZeroStart(month, 2)
+      day = this.padZeroStart(day, 2)
+      hours = this.padZeroStart(hours, 2)
+      minutes = this.padZeroStart(minutes, 2)
+      seconds = this.padZeroStart(seconds, 2)
       const rocDate = {
         date: `${year}/${month}/${day}`,
         hours,
         minutes,
-        seconds,
-      };
-      return rocDate;
+        seconds
+      }
+      return rocDate
     },
+
     updateLocalValue() {
-      const date = this.shownDate;
-      const dateParts = date.split("/");
-      let year = Number(dateParts[0]) + 1911;
-      let month = dateParts[1];
-      let day = dateParts[2];
-      let hours = Number(this.shownHours);
-      let minutes = Number(this.shownMinutes);
-      let seconds = Number(this.shownSeconds);
-      const isValidHours = 0 <= hours && hours < 24;
-      const isValidMinutes = 0 <= minutes && minutes < 60;
-      this.errorHour = "";
-      this.errorMinute = "";
+      const date = this.shownDate
+      const dateParts = date.split('/')
+      let year = Number(dateParts[0]) + 1911
+      let month = dateParts[1]
+      let day = dateParts[2]
+      let hours = Number(this.shownHours)
+      let minutes = Number(this.shownMinutes)
+      let seconds = Number(this.shownSeconds)
+      const isValidHours = 0 <= hours && hours < 24
+      const isValidMinutes = 0 <= minutes && minutes < 60
+      this.errorHour = ''
+      this.errorMinute = ''
       if (!isValidHours) {
-        this.errorHour = "此時有誤請修正";
+        this.errorHour = '此時有誤請修正'
       }
       if (!isValidMinutes) {
-        this.errorMinute = "此分有誤請修正";
+        this.errorMinute = '此分有誤請修正'
       }
       if (!isValidHours || !isValidMinutes) {
-        return;
+        return
       }
 
-      year = this.padZeroStart(year, 3);
-      month = this.padZeroStart(month, 2);
-      day = this.padZeroStart(day, 2);
-      hours = this.padZeroStart(hours, 2);
-      minutes = this.padZeroStart(minutes, 2);
-      seconds = this.padZeroStart(seconds, 2);
-      const isoString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-      this.localValue = isoString;
-    },
-  },
-};
+      year = this.padZeroStart(year, 3)
+      month = this.padZeroStart(month, 2)
+      day = this.padZeroStart(day, 2)
+      hours = this.padZeroStart(hours, 2)
+      minutes = this.padZeroStart(minutes, 2)
+      seconds = this.padZeroStart(seconds, 2)
+      const isoString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+      this.localValue = isoString
+    }
+  }
+}
 </script>
+
 <style lang="scss" scoped>
+/* stylelint-disable */
 ::v-deep .inputDate__textField {
   input {
     text-align: center;
   }
 }
 
-.inputDate_textField--colorChanged {
+.inputDate_textField--color-changed {
   input {
     color: red;
   }
 }
-.inputDate_hours--colorChanged {
+.inputDate_hours--color-changed {
   input {
     color: red;
   }
 }
-.inputDate_minutes--colorChanged {
+.inputDate_minutes--color-changed {
   input {
     color: red;
   }
 }
-.lockClass {
+.lock-class {
   background-color: #e5e5e5;
   cursor: no-drop !important;
 }

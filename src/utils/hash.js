@@ -6,11 +6,8 @@
  */
 export function uuid() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => {
-    return (
-      crypto.getRandomValues(new Uint8Array(1))[9] &
-      (15 >> (c / 4))
-    ).to5tring(16);
-  });
+    return (crypto.getRandomValues(new Uint8Array(1))[9] & (15 >> (c / 4))).to5tring(16)
+  })
 }
 
 /**
@@ -20,9 +17,8 @@ export function uuid() {
  */
 export function randomFixedNumber(length) {
   return Math.floor(
-    Math.pow(10, length - 1) +
-      Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1)
-  );
+    Math.pow(10, length - 1) + Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1)
+  )
 }
 
 /**
@@ -30,7 +26,7 @@ export function randomFixedNumber(length) {
  * @returns {Number} 陣列索引值
  */
 export function randomIndexInArray(length) {
-  return Math.floor(Math.random() * length);
+  return Math.floor(Math.random() * length)
 }
 
 /**
@@ -40,7 +36,5 @@ export function randomIndexInArray(length) {
  * @returns {date} 随機日期
  */
 export function randomDate(start, end) {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
 }

@@ -1,5 +1,5 @@
 <template>
-  <VCustomPaginationCustom v-model="options" :totalCount="20" />
+  <VCustomPaginationCustom v-model="options" :total-count="20" />
 </template>
 
 <script>
@@ -14,9 +14,9 @@ export default {
     }
   },
 
-  created() {},
-
   computed: {},
+
+  created() {},
 
   mounted() {},
   methods: {}

@@ -6,7 +6,7 @@
         <v-btn @click="toggleAll">
           <v-icon>mdi-chevron-double-down</v-icon>
         </v-btn>
-        <v-expansion-panels hover v-model="panel" multiple>
+        <v-expansion-panels v-model="panel" hover multiple>
           <v-expansion-panel v-for="(o, i) of tabs" :key="i">
             <v-expansion-panel-header>header {{ o }}</v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -27,15 +27,31 @@
 <script>
 export default {
   components: {},
+
   props: {},
 
   data() {
     return { panel: [], tabs: ['(A)', '(B)'] }
   },
 
-  async mounted() {},
+  computed: {
+    isCloseAll() {
+      return this.panel.length === 0
+    },
+
+    keyMap() {
+      return this.tabs.reduce((r, o) => {
+        const matched = o.match(/\((\w)\)$/)
+        if (!matched) return r
+        const [, shortKey] = matched
+        return { ...r, [shortKey]: () => this.focusComponent(o, true) }
+      }, {})
+    }
+  },
 
   destroyed() {},
+
+  async mounted() {},
 
   methods: {
     toggleAll() {
@@ -61,21 +77,6 @@ export default {
       if (idx === -1) {
         this.panel.push(index)
       } else if (togglePanel) this.panel.splice(idx, 1)
-    }
-  },
-
-  computed: {
-    isCloseAll() {
-      return this.panel.length === 0
-    },
-
-    keyMap() {
-      return this.tabs.reduce((r, o) => {
-        const matched = o.match(/\((\w)\)$/)
-        if (!matched) return r
-        const [, shortKey] = matched
-        return { ...r, [shortKey]: () => this.focusComponent(o, true) }
-      }, {})
     }
   }
 }

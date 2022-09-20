@@ -2,24 +2,24 @@
   <v-form v-model="isValid">
     <v-col>
       <v-text-field
-        name="名稱"
         v-model="localValue.No"
+        name="名稱"
         :readonly="readonly === 'No'"
         :rules="[rule_noEmpty]"
       />
     </v-col>
     <v-col>
       <v-text-field
-        name="長度"
         v-model="localValue.w"
+        name="長度"
         :readonly="readonly === 'w'"
         :rules="[rule_noEmpty, rule_integerOnly]"
       />
     </v-col>
     <v-col>
       <v-text-field
-        name="寬度"
         v-model="localValue.h"
+        name="寬度"
         :readonly="readonly === 'h'"
         :rules="[rule_noEmpty]"
       />
@@ -50,6 +50,18 @@ export default {
     }
   },
 
+  computed: {
+    localValue: {
+      get() {
+        return this.value
+      },
+
+      set(newValue) {
+        this.$emit('input', newValue)
+      }
+    }
+  },
+
   watch: {
     isValid(newValue) {
       this.$emit('update:dialogIsValid', newValue)
@@ -65,18 +77,6 @@ export default {
 
     rule_integerOnly(v) {
       return /^[0-9]*$/.test(v) || '請輸入正整數'
-    }
-  },
-
-  computed: {
-    localValue: {
-      get() {
-        return this.value
-      },
-
-      set(newValue) {
-        this.$emit('input', newValue)
-      }
     }
   }
 }

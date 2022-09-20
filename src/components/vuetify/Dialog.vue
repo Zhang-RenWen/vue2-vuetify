@@ -1,16 +1,14 @@
 <template>
-  <v-dialog persistent max-width="1024px" v-model="localShowDialog">
+  <v-dialog v-model="localShowDialog" persistent max-width="1024px">
     <v-card>
-      <v-card-title>
-        新增資料
-      </v-card-title>
+      <v-card-title>新增資料</v-card-title>
       <v-divider />
       <v-card-text>
         <slot name="form" />
       </v-card-text>
       <v-card-actions>
         <v-btn @click="closeDialog">取消</v-btn>
-        <v-btn @click="addData" :disabled="!isValid">新增</v-btn>
+        <v-btn :disabled="!isValid" @click="addData">新增</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -35,6 +33,14 @@ export default {
     return {}
   },
 
+  computed: {
+    localShowDialog: {
+      get() {
+        return this.dialogIsOpened
+      }
+    }
+  },
+
   mounted() {
     console.log('vdialog')
   },
@@ -47,14 +53,6 @@ export default {
 
     addData() {
       this.$emit('addData')
-    }
-  },
-
-  computed: {
-    localShowDialog: {
-      get() {
-        return this.dialogIsOpened
-      }
     }
   }
 }

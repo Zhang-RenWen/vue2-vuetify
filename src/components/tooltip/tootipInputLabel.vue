@@ -1,6 +1,6 @@
 <template>
   <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-subheader
         :style="inlineStyle"
         :class="inlineClass"
@@ -12,25 +12,26 @@
     <span>{{ label }}</span>
   </v-tooltip>
 </template>
+
 <script>
 export default {
-  name: "tooTipsInputLabel",
-  props: ["label", "showAll", "inlineStyle", "limit", "inlineClass"],
+  name: 'TooTipsInputLabel',
+  props: ['label', 'showAll', 'inlineStyle', 'limit', 'inlineClass'],
   methods: {
     shortLabel(str) {
-      let label = "";
-      let strLengthLimit = this.limit || 6;
-      let strLength = str.length <= strLengthLimit;
+      let label = ''
+      let strLengthLimit = this.limit || 6
+      let strLength = str.length <= strLengthLimit
       if (strLength || this.showAll) {
-        label = str;
+        label = str
       } else {
-        label = str.substr(0, strLengthLimit) + "...";
+        label = str.substr(0, strLengthLimit) + '...'
       }
       return {
         label,
-        strLength,
-      };
-    },
-  },
-};
+        strLength
+      }
+    }
+  }
+}
 </script>

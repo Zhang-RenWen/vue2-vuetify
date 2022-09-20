@@ -1,10 +1,10 @@
 <template>
-  <div class="recursiveCell" :class="[open ? 'isOpended' : '']">
+  <div class="recursive-cell" :class="[open ? 'is-opened' : '']">
     <div class="label" @click="selectThis($event, node)">
       <div
         :class="[
-          node.children && node.children.length !== 0 ? 'isFolder' : 'isntFolder',
-          open ? 'labelIconWrap' : ''
+          node.children && node.children.length !== 0 ? 'is-folder' : 'not-folder',
+          open ? 'labelIcon-wrap' : ''
         ]"
       >
         <icon name="arrow-line" :w="16" :h="16" />
@@ -21,7 +21,7 @@
       </span>
     </div>
 
-    <div class="subForder">
+    <div class="sub-folder">
       <template v-for="(childNode, idx) of node.children">
         <treeMenu
           :key="idx"
@@ -109,34 +109,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$asideWidth: 100%;
-$slidebar: 20px;
+$aside-width: 100%;
 $background-color: #24282c;
 $elements-color: #ddd;
 $transition-speed: 300ms;
-$asidecellHeight: 60px;
-$iconHeight: 16px;
+$aside-cell-height: 60px;
+$icon-height: 16px;
 
 .label {
-  width: $asideWidth;
-  height: $asidecellHeight;
-  text-align: left;
-  background-color: $background-color;
-  color: $elements-color;
-  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  width: $aside-width;
+  height: $aside-cell-height;
+  text-align: left;
+  color: $elements-color;
+  background-color: $background-color;
 
   span {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
     user-select: none;
   }
 }
 
-.subForder {
+.sub-folder {
   width: 100%;
   min-height: 10px;
 
@@ -146,61 +142,54 @@ $iconHeight: 16px;
 }
 
 .label:hover {
-  background-color: #e6f7ff;
   color: #1890ff;
+  background-color: #e6f7ff;
   cursor: pointer;
 }
 
-.recursiveCell {
-  -webkit-transition: all $transition-speed ease;
-  -moz-transition: all $transition-speed ease;
-  transition: all $transition-speed ease;
-  max-height: $asidecellHeight;
+.recursive-cell {
   overflow: hidden;
+  max-height: $aside-cell-height;
+  transition: all $transition-speed ease;
 }
 
-.isFolder {
-  -webkit-transition: all $transition-speed ease;
-  -moz-transition: all $transition-speed ease;
-  transition: all $transition-speed ease;
+.is-folder {
   position: absolute;
-  top: calc(50% - #{$iconHeight/ 2px});
-  // left: 15px;
+  top: calc(50% - #{$icon-height / 2px});
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all $transition-speed ease;
   transform: rotate(-90deg);
 }
 
-.isntFolder {
+.not-folder {
   display: none;
 }
 
-.isOpended {
-  -webkit-transition: all $transition-speed ease;
-  -moz-transition: all $transition-speed ease;
-  transition: all $transition-speed ease;
+.is-opened {
   max-height: 700px;
+  transition: all $transition-speed ease;
 }
 
-.labelIconWrap {
-  -webkit-transition: all $transition-speed ease;
-  -moz-transition: all $transition-speed ease;
+.label-icon-wrap {
   transition: all $transition-speed ease;
   transform: rotate(0deg);
 }
 
 .icon {
-  width: $iconHeight;
-  height: $iconHeight;
+  width: $icon-height;
+  height: $icon-height;
 }
+
 @media screen and (max-width: 768px) {
-  .isFolder {
+  .is-folder {
     left: 15px;
   }
 }
+
 @media screen and (min-width: 768px) {
-  .isFolder {
+  .is-folder {
     right: 15px;
   }
 }

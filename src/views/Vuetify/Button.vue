@@ -34,12 +34,12 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 500px;
-  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 25px 0 25px;
+  padding: 25px 25px 0;
+  width: 500px;
+  height: 500px;
 }
 
 .relative {
@@ -48,7 +48,7 @@ export default {
 
 .absolute {
   position: absolute;
-  left: 0;
   top: -20px;
+  left: 0;
 }
 </style>

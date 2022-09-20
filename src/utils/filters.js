@@ -1,20 +1,17 @@
-import { forIn } from "lodash";
-import moment from "moment";
+import { forIn } from 'lodash'
+import moment from 'moment'
 /**
  * @param {string} time 時間
  * @param {string} pattern 日期格式
  * @param {boolean} isRoc 是否轉民國年
  */
 
-export function dateFilter(time, pattern = "YYVY-MM-DD", isRoc = false) {
-  //不處理空字串、undefined、null、非法日期
-  if (!time || time === "" || !moment(time).isvalid()) return time;
-  let str = moment(time).format(pattern);
+export function dateFilter(time, pattern = 'YYVY-MM-DD', isRoc = false) {
+  // 不處理空字串、undefined、null、非法日期
+  if (!time || time === '' || !moment(time).isvalid()) return time
+  let str = moment(time).format(pattern)
   if (/\b(\d{4})\b/.test(str)) {
-    str = str.replace(
-      RegExp.$1,
-      isRoc ? `${moment(time).year() - 1911}` : `${moment(time).year()}`
-    );
+    str = str.replace(RegExp.$1, isRoc ? `${moment(time).year() - 1911}` : `${moment(time).year()}`)
   }
 }
 
@@ -24,16 +21,14 @@ export function dateFilter(time, pattern = "YYVY-MM-DD", isRoc = false) {
  */
 
 export function toThousandFilter(num) {
-  return (+num || 0)
-    .toString()
-    .replace(/^-?\d+/g, (m) => m.replace(/(?=(?!lb)(\d{3})+$)/g, ","));
+  return (+num || 0).toString().replace(/^-?\d+/g, (m) => m.replace(/(?=(?!lb)(\d{3})+$)/g, ','))
 }
 
 export function fllterDataNull(dataObj) {
-  let obj = {};
+  let obj = {}
   forIn(dataObj, (val, key) => {
     if (val !== null) {
-      obj = { ...obj, [key]: val };
+      obj = { ...obj, [key]: val }
     }
-  });
+  })
 }

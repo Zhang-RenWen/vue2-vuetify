@@ -1,15 +1,15 @@
 const byteCount = (str) => {
-  return str ? new Blob([str]).size : 0;
-};
+  return str ? new Blob([str]).size : 0
+}
 
 const truncateBytes = (value, maxBytes, rule) => {
   if (maxBytes) {
     while (isExceed(value, maxBytes, rule)) {
-      value = value.substring(0, value.length - 1);
+      value = value.substring(0, value.length - 1)
     }
   }
-  return value;
-};
+  return value
+}
 
 /**
  * 檢驗輸入是否超過Bytes長度
@@ -21,9 +21,9 @@ const truncateBytes = (value, maxBytes, rule) => {
  */
 
 const isExceed = (str, bytes, rule = null, equal = false) => {
-  if (!bytes || typeof str !== "string") return false;
-  const count = byteCount(rule ? rule(str) : str);
-  return count > bytes || (equal && count === bytes);
-};
+  if (!bytes || typeof str !== 'string') return false
+  const count = byteCount(rule ? rule(str) : str)
+  return count > bytes || (equal && count === bytes)
+}
 
-export { isExceed, byteCount, truncateBytes };
+export { isExceed, byteCount, truncateBytes }

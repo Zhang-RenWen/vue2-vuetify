@@ -5,17 +5,17 @@
  */
 
 function ADtoRocDate(AdDate) {
-  let RocDate = AdDate;
+  let RocDate = AdDate
   if (AdDate) {
-    const dateObject = this.getIsoDateObject(AdDate);
+    const dateObject = this.getIsoDateObject(AdDate)
     if (dateObject) {
-      const { year, month, day } = dateObject;
-      let formatYear = this.padZeroStart(year - 1911, 3);
-      let formatMonth = this.padZeroStart(month, 2);
-      let formatDay = this.padZeroStart(day, 2);
-      const formatShownDate = `${formatYear}/${formatMonth}/${formatDay}`;
-      RocDate = formatShownDate;
-      return RocDate;
+      const { year, month, day } = dateObject
+      let formatYear = this.padZeroStart(year - 1911, 3)
+      let formatMonth = this.padZeroStart(month, 2)
+      let formatDay = this.padZeroStart(day, 2)
+      const formatShownDate = `${formatYear}/${formatMonth}/${formatDay}`
+      RocDate = formatShownDate
+      return RocDate
     }
   }
 }
@@ -27,57 +27,57 @@ function ADtoRocDate(AdDate) {
  */
 
 function getIsoDateObject(stringDate) {
-  if (!stringDate) return false;
+  if (!stringDate) return false
   let dateObject = {
-    year: "",
-    month: "",
-    day: "",
-  };
+    year: '',
+    month: '',
+    day: ''
+  }
 
   /**
    * 民國格式
    */
 
-  const rocRegex = /^\d{3}\/\d{2}\/\d{2}$/;
+  const rocRegex = /^\d{3}\/\d{2}\/\d{2}$/
   if (rocRegex.test(stringDate)) {
-    const dateParts = stringDate.split("/");
-    let year = Number(dateParts[0]);
-    const month = dateParts[1];
-    const day = dateParts[2];
+    const dateParts = stringDate.split('/')
+    let year = Number(dateParts[0])
+    const month = dateParts[1]
+    const day = dateParts[2]
     if (year < 1911) {
-      year += 1911;
+      year += 1911
     }
     dateObject = {
       year,
       month,
-      day,
-    };
+      day
+    }
   }
 
   /**
    * 西元格式
    */
 
-  const isoRegex = /^\d{4}-\d{2}-\d{2}$/;
+  const isoRegex = /^\d{4}-\d{2}-\d{2}$/
   if (isoRegex.test(stringDate)) {
-    const dateParts = stringDate.split("-");
-    let year = Number(dateParts[0]);
-    const month = dateParts[1];
-    const day = dateParts[2];
+    const dateParts = stringDate.split('-')
+    let year = Number(dateParts[0])
+    const month = dateParts[1]
+    const day = dateParts[2]
     dateObject = {
       year,
       month,
-      day,
-    };
+      day
+    }
   }
 
   /**
    *   連續數字格式
    */
-  const numberRegex = /^[0-9]{6,8}$/;
+  const numberRegex = /^[0-9]{6,8}$/
   if (numberRegex.test(stringDate)) {
-    dateObject = this.formatNumberToISO(stringDate);
-    return dateObject;
+    dateObject = this.formatNumberToISO(stringDate)
+    return dateObject
   }
 }
 
@@ -88,44 +88,44 @@ function getIsoDateObject(stringDate) {
  */
 
 function formatNumberToISO(dateString) {
-  let year = "";
-  let month = "";
-  let day = "";
+  let year = ''
+  let month = ''
+  let day = ''
   if (dateString.length === 8) {
-    //假設是西元日期
-    year = Number(dateString.slice(0, 4));
-    month = dateString.slice(4, 6);
-    day = dateString.slice(6, 8);
+    // 假設是西元日期
+    year = Number(dateString.slice(0, 4))
+    month = dateString.slice(4, 6)
+    day = dateString.slice(6, 8)
   }
   if (dateString.length === 7) {
-    //假設是3碼民國年
-    year = Number(dateString.slice(0, 3));
-    year += 1911;
-    month = dateString.slice(3, 5);
-    day = dateString.slice(5, 7);
+    // 假設是3碼民國年
+    year = Number(dateString.slice(0, 3))
+    year += 1911
+    month = dateString.slice(3, 5)
+    day = dateString.slice(5, 7)
   }
   if (dateString.length === 6) {
-    //假設是2碼民國年
-    year = Number(dateString.slice(0, 2));
-    year += 1911;
-    month = dateString.slice(2, 4);
-    day = dateString.slice(4, 6);
+    // 假設是2碼民國年
+    year = Number(dateString.slice(0, 2))
+    year += 1911
+    month = dateString.slice(2, 4)
+    day = dateString.slice(4, 6)
   }
 
-  month = String(month);
+  month = String(month)
   while (month.length < 2) {
-    month = `0${month}`;
+    month = `0${month}`
   }
 
-  day = String(day);
+  day = String(day)
   while (day.length < 2) {
-    day = `0${day}`;
+    day = `0${day}`
   }
   return {
     year,
     month,
-    day,
-  };
+    day
+  }
 }
 
 /**
@@ -136,11 +136,11 @@ function formatNumberToISO(dateString) {
  */
 
 function padZeroStart(value, digits) {
-  value = String(value);
+  value = String(value)
   while (value.length < digits) {
-    value = "0${value}";
+    value = '0${value}'
   }
-  return value;
+  return value
 }
 
 /**
@@ -150,18 +150,18 @@ function padZeroStart(value, digits) {
  */
 
 function rocToIS0(str) {
-  if (!str) return str;
-  const rocRegex = /^(\d{3})\/(\d{2})\/(\d{2})/;
+  if (!str) return str
+  const rocRegex = /^(\d{3})\/(\d{2})\/(\d{2})/
 
   if (rocRegex.test(str)) {
-    const [, year, mm, dd] = rocRegex.exec(str);
-    const dt = new Date(+year + 1911, +mm - 1, +dd, 0, 0, 0, 0);
+    const [, year, mm, dd] = rocRegex.exec(str)
+    const dt = new Date(+year + 1911, +mm - 1, +dd, 0, 0, 0, 0)
     return new Date(dt.getTime() - dt.getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 19)
-      .replace("T", " ");
+      .replace('T', ' ')
   }
-  return str;
+  return str
 }
 
 const formatDate = {
@@ -169,7 +169,7 @@ const formatDate = {
   getIsoDateObject,
   formatNumberToISO,
   padZeroStart,
-  rocToIS0,
-};
+  rocToIS0
+}
 
-export default formatDate;
+export default formatDate

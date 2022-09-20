@@ -1,6 +1,6 @@
 <template>
   <aside>
-    <div class="searchBox" />
+    <div class="search-box" />
     <div class="menu">
       <TreeMenu
         v-for="(children, index) of TreeMenuLise__FuzzySearch"
@@ -51,34 +51,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$asideWidth: 290px;
+$aside-width: 290px;
 $slidebar: 20px;
 $background-color-trademark: #001529;
-$background-color-searchBox: #373d41;
+$background-color-search-box: #373d41;
 $elements-color: #fff;
 
 aside {
   .trademark {
+    width: $aside-width;
     height: 60px;
     line-height: 60px;
-    width: $asideWidth;
-    background-color: $background-color-trademark;
-    color: $elements-color;
     font-size: 36px;
     font-weight: 600;
     text-align: center;
+    color: $elements-color;
+    background-color: $background-color-trademark;
   }
 
   .menu {
+    overflow-y: auto;
     height: calc(100vh - 120px);
     min-height: calc(100vh - 120px);
-    overflow-y: auto;
   }
 
-  .searchBox {
-    background-color: $background-color-searchBox;
-    width: $asideWidth;
+  .search-box {
+    width: $aside-width;
     height: 60px;
+    background-color: $background-color-search-box;
   }
 }
 </style>

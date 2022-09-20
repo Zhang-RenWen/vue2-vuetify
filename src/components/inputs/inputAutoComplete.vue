@@ -1,24 +1,19 @@
 <template>
   <v-row class="align-baseline no-gutters">
-    <v-col v-if="name" : cols="colsName" :class="{ 'pr-1 text-right': row }">
+    <v-col v-if="name" :cols="colsName" :class="{ 'pr-1 text-right': row }">
       |
       <slot :name="name">{{ name }}</slot>
     </v-col>
-    <v-col
-      :cols="row ? colsInput : cols"
-      class="d-flex"
-      :class="{ 'pl-2': row }"
-    >
+    <v-col :cols="row ? colsInput : cols" class="d-flex" :class="{ 'pl-2': row }">
       <v-autocomplete
-        v-model="localValue"
         v-bind="$attrs"
-        v-on="$listeners"
         ref="inputRef"
-        class="inputAutocomplete"
+        v-model="localValue"
+        class="input-autocomplete"
         :class="{
-          'inputAutocomplete--colorChanged': hasChanged,
-          'inputAutocomplete--disabled': isDisabled,
-          isChanged,
+          'input-autocomplete--color-changed': hasChanged,
+          'input-autocomplete--disabled': isDisabled,
+          isChanged
         }"
         :placeholder="placeholder"
         :rules="localRules"
@@ -28,111 +23,122 @@
         :item-value="itemValueKey"
         :disabled="isDisabled"
         :readonly="isDisabled"
+        hide-details="auto"
+        dense
+        outlined
+        validate-on-blur
+        v-on="$listeners"
         @click="$emit('click', $event)"
         @focus="onFocus"
         @blur="validate()"
         @update:error="$emit('update:error', $event)"
         @keyup.delete="onPressedDelete"
-        hide-details="auto"
-        dense
-        outlined
-        validate-on-blur
       >
-        <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
+        <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
           <slot :name="slot" v-bind="scope" />
         </template>
-        <slot v-for="slot in Object.keys($slots)" name="slot" :slot="slot" />
+        <slot v-for="slot of Object.keys($slots)" :slot="slot" name="slot" />
       </v-autocomplete>
     </v-col>
   </v-row>
 </template>
+
 <script>
-import {
-  disabledMixin,
-  changeColorMixin,
-  inputRefMixin,
-} from "./.inputMixin.js";
+import { disabledMixin, changeColorMixin, inputRefMixin } from './.inputMixin.js'
 export default {
   mixins: [disabledMixin, changeColorMixin, inputRefMixin],
-  data: function () {
-    return {};
-  },
+
   props: {
     value: {
       type: String,
-      default: "",
+      default: ''
     },
 
     name: {
       type: String,
-      default: "",
+      default: ''
     },
+
     items: {
       type: Array,
-      default: function () {
-        return [];
-      },
+      default() {
+        return []
+      }
     },
 
     itemTextKey: {
       type: String,
-      default: "text",
+      default: 'text'
     },
+
     itemValueKey: {
       type: String,
-      default: "value",
+      default: 'value'
     },
+
     required: {
       type: Boolean,
-      default: false,
+      default: false
     },
+
     label: {
       type: String,
-      default: "",
+      default: ''
     },
 
     rules: {
       type: Array,
-      default: function () {
-        return [];
-      },
-    },
-    hasDefault: {
-      type: Boolean,
-      default: false,
-    },
-    defaultItem: {
-      default: function () {
-        return { text: "", value: "" };
-      },
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    cols: {
-      type: Number,
-      default: 12,
+      default() {
+        return []
+      }
     },
 
-    "cols-name": {
-      type: Number,
-      default: 4,
+    hasDefault: {
+      type: Boolean,
+      default: false
     },
-    "cols-input": {
-      type: Number,
-      default: 8,
+
+    defaultItem: {
+      type: Object,
+      default() {
+        return { text: '', value: '' }
+      }
     },
+
+    placeholder: {
+      type: String,
+      default: ''
+    },
+
+    cols: {
+      type: Number,
+      default: 12
+    },
+
+    colsName: {
+      type: Number,
+      default: 4
+    },
+
+    colsInput: {
+      type: Number,
+      default: 8
+    }
   },
+
+  data() {
+    return {}
+  },
+
   computed: {
     localValue: {
       get() {
-        return !this.value ? "" : this.value;
+        return !this.value ? '' : this.value
       },
 
       set(newValue) {
-        this.$emit("input", newValue);
-      },
+        this.$emit('input', newValue)
+      }
     },
 
     localItems() {
@@ -140,70 +146,83 @@ export default {
         ? [
             {
               [this.itemValueKey]: this.defaultItem[this.itemValueKey],
-              [this.itemTextKey]: this.defaultItem[this.itemTextKey],
+              [this.itemTextKey]: this.defaultItem[this.itemTextKey]
             },
-            ...this.items,
+            ...this.items
           ]
-        : [...this.items];
+        : [...this.items]
     },
+
     localRules() {
-      const rules = this.rules;
+      const rules = this.rules
       if (this.required) {
-        rules.unshift(this.checkEmpty);
+        rules.unshift(this.checkEmpty)
       }
-      return rules;
-    },
+      return rules
+    }
   },
+
   methods: {
     validate(showMessage = false) {
-      return this.$refs.inputRef.validate(showMessage);
+      return this.$refs.inputRef.validate(showMessage)
     },
+
     reset() {
-      return this.$refs.inputRef.reset();
+      return this.$refs.inputRef.reset()
     },
+
     checkEmpty(value) {
-      const name = this.name ? this.name : "此欄位";
-      return !this.required || !!value || `${name}為必填請修正`;
+      const name = this.name ? this.name : '此欄位'
+      return !this.required || !!value || `${name}為必填請修正`
     },
+
     onPressedDelete(e) {
-      const val = e.target.value;
+      const val = e.target.value
       if (!val) {
-        const option = this.localItems.find(({ value }) => value === val);
+        const option = this.localItems.find(({ value }) => value === val)
         if (option) {
-          this.localValue = option.value;
-          this.$emit("change", option.value);
+          this.localValue = option.value
+          this.$emit('change', option.value)
         }
       }
     },
+
     onFocus(e) {
-      this.$emit("focus", e);
-    },
-  },
-};
+      this.$emit('focus', e)
+    }
+  }
+}
 </script>
+
 <style lang="scss" scoped>
-::v-deep .inputAutocomplete {
+/* stylelint-disable */
+::v-deep .input-autocomplete {
   white-space: pre-line;
+
   .v-select__selections {
     white-space: nowrap;
     display: inline-block;
+
     input {
       min-width: unset !important;
     }
   }
 }
-::v-deep .inputAutocomplete--colorChanged {
+::v-deep .input-autocomplete--color-changed {
   .v-select__selections {
     color: red;
   }
+
   input {
     color: red;
   }
 }
-::v-deep .inputAutocomplete--disabled {
+
+::v-deep .input-autocomplete--disabled {
   .v-input__slot {
     background-color: #e5e5e5;
   }
+
   input {
     color: black;
   }

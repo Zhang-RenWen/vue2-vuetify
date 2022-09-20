@@ -49,10 +49,6 @@ export default {
     return {}
   },
 
-  created() {
-    this.selectedItem = 10
-  },
-
   computed: {
     selectedItem: {
       get() {
@@ -79,6 +75,10 @@ export default {
     totalPageCount() {
       return Math.ceil(this.totalCount / this.selectedItem) || 0
     }
+  },
+
+  created() {
+    this.selectedItem = 10
   },
 
   mounted() {},

@@ -1,12 +1,12 @@
 <template>
-  <v-tooltip bottom v-if="showToolTips">
-    <template v-slot:activator="{ on, attrs }">
+  <v-tooltip v-if="showToolTips" bottom>
+    <template #activator="{ on, attrs }">
       <div
         v-bind="attrs"
-        v-on="on"
         :class="labelClass"
         :style="inlineStyle"
         class="app-input-label"
+        v-on="on"
       >
         {{ label }}
       </div>
@@ -20,44 +20,51 @@
 
 <script>
 export default {
-  name: "toolTipsLabel",
+  name: 'ToolTipsLabel',
   inheritAttrs: false,
   props: {
     label: {
       type: String,
-      default: "",
+      default: ''
     },
+
     showLetters: {
       type: Number,
-      default: 6,
+      default: 6
     },
+
     labelClass: {
       type: [String, Array, Object],
-      default: "",
+      default: ''
     },
+
     inlineStyle: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
+
   computed: {
     showToolTips() {
-      return this.label.length >= this.showLetters;
-    },
-  },
-};
+      return this.label.length >= this.showLetters
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .tooltip-label {
   width: 105px;
 }
+
 .tooltip-label-90 {
   width: 99px;
 }
+
 .tooltip-label-0 {
-  width: Opx;
+  width: 0;
 }
+
 .checkbox-label {
   min-width: 20px;
 }
