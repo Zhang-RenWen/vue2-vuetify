@@ -8,9 +8,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --fix",
+    "lint": "eslint --ext .ts,.js,.vue .",
     "lint:scss": "stylelint ./src/**/*.{vue,scss} --fix",
-    "pre-commit": "npm run lint "
+    "pre-commit": "npm run lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
