@@ -18,10 +18,10 @@
       <v-card-text>
         <v-data-table :headers="headers" :items="tableData" :items-per-page="10" dense>
           <template slot="no-data">查無資料</template>
-          <template v-slot:[`header.action`]="{ header }">
+          <template #[`header.action`]="{ header }">
             <v-btn @click="openDialogAdd">{{ header.text }}</v-btn>
           </template>
-          <template v-slot:item="{ item }">
+          <template #item="{ item }">
             <v-btn @click="openDialogEdit(item)">修改</v-btn>
             <v-btn @click="deleteItem(item)">刪除</v-btn>
           </template>
@@ -30,13 +30,13 @@
     </v-card>
 
     <Dialog
-      :dialogIsOpened.sync="dialogIsOpened"
-      :isValid="isValid"
+      :dialog-is-opened.sync="dialogIsOpened"
+      :is-valid="isValid"
       @modify="modify"
       @closeDialog="dialogData = {}"
     >
-      <template v-slot:form>
-        <FormGroup v-model="dialogData" :isValid="isValid" />
+      <template #form>
+        <FormGroup v-model="dialogData" :is-valid="isValid" />
       </template>
     </Dialog>
   </div>

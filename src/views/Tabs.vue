@@ -1,6 +1,6 @@
 <template>
   <v-sheet outlined>
-    <v-tabs show-arrows v-model="tab">
+    <v-tabs v-model="tab" show-arrows>
       <v-tabs-slider />
       <v-tab v-for="item of list" :key="item">Tab {{ item }}</v-tab>
     </v-tabs>

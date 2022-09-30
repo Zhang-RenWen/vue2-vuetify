@@ -29,13 +29,14 @@
         item-key="h1ValueKey"
         show-expand
       >
-        <template v-slot:expanded-item="{ headers, item }">
+        <template #expanded-item="{ headers, item }">
           <td class="pa-4 py-6" :colspan="headers.length">
             <span>{{ item }}</span>
           </td>
         </template>
       </v-data-table>
       <v-data-table
+        v-model="selected"
         dense
         :headers="[
           { text: 'col1', value: 'h1ValueKey' },
@@ -51,12 +52,11 @@
         show-select
         item-key="h1ValueKey"
         :single-select="singleSelect"
-        v-model="selected"
       >
-        <template v-slot:top>
+        <template #top>
           <v-switch v-model="singleSelect" label="Single select" class="pa-3" />
         </template>
-        <template v-slot:[`item.h1ValueKey`]="{ item }">
+        <template #[`item.h1ValueKey`]="{ item }">
           {{ '1234566' + item.h1ValueKey }}
         </template>
       </v-data-table>
@@ -96,13 +96,13 @@
                   v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'link'"
                   to="#"
                 >
-                  <icon :w="20" :h="20" name="icon_overview" />
+                  <Icon :w="20" :h="20" name="icon_overview" />
                   aaa
                 </router-link>
                 <label
                   v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'checkbox'"
                 >
-                  <input type="checkbox" v-model="selected" :value="item" />
+                  <input v-model="selected" type="checkbox" :value="item" />
                   aaa
                 </label>
               </td>
@@ -297,6 +297,8 @@ export default {
     }
   },
 
+  computed: {},
+
   async mounted() {},
 
   destroyed() {},
@@ -331,9 +333,7 @@ export default {
       }, [])
       return newArr
     }
-  },
-
-  computed: {}
+  }
 }
 </script>
 

@@ -7,7 +7,7 @@
           open ? 'labelIcon-wrap' : ''
         ]"
       >
-        <icon name="arrow-line" :w="16" :h="16" />
+        <Icon name="arrow-line" :w="16" :h="16" />
       </div>
       <span
         unselectable="on"

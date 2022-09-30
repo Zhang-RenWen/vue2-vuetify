@@ -8,7 +8,7 @@
       @click="diretionTo($event, 'aaaa')"
     >
       aa
-      <icon class="absolute" :w="16" :h="16" name="carbon_flow-connection" />
+      <Icon class="absolute" :w="16" :h="16" name="carbon_flow-connection" />
     </v-btn>
   </div>
 </template>

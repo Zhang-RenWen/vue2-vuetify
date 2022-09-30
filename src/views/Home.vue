@@ -1,14 +1,14 @@
 <template>
-  <div id="wrap">
-    <SideBar class="side-bar" :class="[sideMenuOpen ? '' : 'side-bar-closed']" />
-    <NavBar />
-    <section class="contents" :class="[sideMenuOpen ? '' : 'contents-closed']">
-      <v-app light v-if="$route.path.includes('Vuetify')">
+  <v-app light>
+    <div id="wrap">
+      <SideBar class="side-bar" :class="[sideMenuOpen ? '' : 'side-bar-closed']" />
+      <NavBar />
+
+      <section class="contents" :class="[sideMenuOpen ? '' : 'contents-closed']">
         <router-view />
-      </v-app>
-      <router-view v-else />
-    </section>
-  </div>
+      </section>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -71,10 +71,10 @@ $transition-speed: 300ms;
 
   .contents {
     overflow-y: auto;
-    padding-top: 60px;
+    padding: 100px 40px 40px;
     width: $content-width-mobile;
     height: 100vh;
-    background-color: #fff;
+    background-color: #d9d9d9;
     transition: all $transition-speed ease-in-out;
     transition: $transition-speed;
     transition: $transition-speed;
