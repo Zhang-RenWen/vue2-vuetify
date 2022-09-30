@@ -137,8 +137,8 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '1',
-                    seqno: 1,
-                    tableSeqno: 1,
+                    seq: 1,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 2,
                     text: '業務來源',
@@ -148,8 +148,8 @@ export default {
                   {
                     colspan: 2,
                     headerGroup: '1',
-                    seqno: 2,
-                    tableSeqno: 1,
+                    seq: 2,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '核保',
@@ -159,21 +159,21 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '1',
-                    seqno: 3,
-                    tableSeqno: 1,
+                    seq: 3,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 2,
                     text: '會辦',
                     value: 'ccc',
-                    uuid: '4ˋ'
+                    uuid: '4'
                   }
                 ],
                 [
                   {
                     colspan: 1,
                     headerGroup: '2',
-                    seqno: 1,
-                    tableSeqno: 1,
+                    seq: 1,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '已處理',
@@ -183,8 +183,8 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '2',
-                    seqno: 2,
-                    tableSeqno: 1,
+                    seq: 2,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '待處理回覆2',
@@ -232,8 +232,8 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '1',
-                    seqno: 1,
-                    tableSeqno: 1,
+                    seq: 1,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 2,
                     text: '業務來源',
@@ -243,8 +243,8 @@ export default {
                   {
                     colspan: 2,
                     headerGroup: '1',
-                    seqno: 2,
-                    tableSeqno: 1,
+                    seq: 2,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '核保',
@@ -254,21 +254,21 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '1',
-                    seqno: 3,
-                    tableSeqno: 1,
+                    seq: 3,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 2,
                     text: '會辦',
                     value: '',
-                    uuid: '4ˋ'
+                    uuid: '4'
                   }
                 ],
                 [
                   {
                     colspan: 1,
                     headerGroup: '2',
-                    seqno: 1,
-                    tableSeqno: 1,
+                    seq: 1,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '已處理',
@@ -278,8 +278,8 @@ export default {
                   {
                     colspan: 1,
                     headerGroup: '2',
-                    seqno: 2,
-                    tableSeqno: 1,
+                    seq: 2,
+                    tableSeq: 1,
                     prName: 'REB',
                     rowspan: 1,
                     text: '待處理回覆2',

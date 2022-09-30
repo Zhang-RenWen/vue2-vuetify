@@ -1,3 +1,4 @@
+/* cspell:disable */
 <template>
   <div v-hotkey="keyMap">
     <v-card>

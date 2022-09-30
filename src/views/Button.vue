@@ -5,7 +5,7 @@
       block
       color="primary"
       :ripple="false"
-      @click="diretionTo($event, 'aaaa')"
+      @click="directionTo($event, 'aaaa')"
     >
       aa
       <Icon class="absolute" :w="16" :h="16" name="carbon_flow-connection" />
@@ -24,7 +24,7 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    diretionTo(e) {
+    directionTo(e) {
       e.stopPropagation()
       e.preventDefault()
     }
