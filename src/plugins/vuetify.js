@@ -1,14 +1,19 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-// import { zhHant, en } from 'vuetify/es5/locale/zh-Hant'
+import { zhHant } from 'vuetify/es5/locale/zh-Hant'
 import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.use(Vuetify)
-const opts = {
+const options = {
   icons: {
     icon: 'fa'
   },
   theme: {
+    icons: {
+      iconfont: 'fa'
+    },
     themes: {
       light: {
         primary: '#d9534f',
@@ -26,8 +31,12 @@ const opts = {
         info: '#145488',
         input: '#0066ff'
       }
+    },
+    lang: {
+      locale: { zhHant },
+      current: 'zhHant'
     }
   }
 }
 
-export default new Vuetify(opts)
+export default new Vuetify(options)

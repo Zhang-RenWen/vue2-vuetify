@@ -3,7 +3,7 @@
     <div class="search-box" />
     <div class="menu">
       <TreeMenu
-        v-for="(children, index) of TreeMenuLise__FuzzySearch"
+        v-for="(children, index) of treeMenuFuzzySearch"
         :key="`${index}`"
         :node="children"
         :index="index"
@@ -24,14 +24,14 @@ export default {
 
   data() {
     return {
-      TreeMenuLise: [
+      treeMenu: [
         {
           name: '第一層',
           children: []
         }
       ],
 
-      TreeMenuLise__FuzzySearch: [
+      treeMenuFuzzySearch: [
         {
           name: '第一層',
           children: []
@@ -41,9 +41,9 @@ export default {
   },
 
   mounted() {
-    const meanuRoot = routes[0].children
-    this.TreeMenuLise = meanuRoot
-    this.TreeMenuLise__FuzzySearch = meanuRoot
+    const menuRoot = routes[0].children
+    this.treeMenu = menuRoot
+    this.treeMenuFuzzySearch = menuRoot
   },
 
   methods: {}
@@ -52,7 +52,6 @@ export default {
 
 <style lang="scss" scoped>
 $aside-width: 290px;
-$slidebar: 20px;
 $background-color-trademark: #001529;
 $background-color-search-box: #373d41;
 $elements-color: #fff;

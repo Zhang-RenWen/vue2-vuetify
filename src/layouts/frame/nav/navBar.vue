@@ -6,7 +6,7 @@
       <div />
     </div>
     <div class="trademark">
-      <span>UI Elements</span>
+      <span>Vuetify Demo</span>
     </div>
   </nav>
 </template>

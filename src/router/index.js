@@ -15,7 +15,7 @@ const routes = [
 ]
 const router = new VueRouter({
   mode: 'history',
-  base: '/ComponentWebVue2/',
+  base: '/vue2vuetify/',
   routes
 })
 
