@@ -158,6 +158,23 @@
         </v-row>
       </v-sheet>
     </v-card>
+
+    <v-card class="mb-10">
+      <v-card-title><h2>Disabled</h2></v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row>
+          <v-col>
+            disabled
+            <v-btn disabled><v-icon>fas fa-search</v-icon></v-btn>
+          </v-col>
+          <v-col>
+            disabled outlined
+            <v-btn disabled outlined><v-icon>fas fa-search</v-icon></v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 

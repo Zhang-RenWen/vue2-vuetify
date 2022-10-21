@@ -1,13 +1,12 @@
 <template>
-  <v-btn
-    class="white--text mx-1"
-    v-bind="{ ...$attrs }"
-    :color="color"
-    :small="small"
-    :disabled="getDisabled"
-    v-on="$listeners"
-  >
+  <v-btn class="white--text mx-1" v-bind="{ ...getConfigs, ...$attrs }" v-on="$listeners">
     <slot>{{ text }}</slot>
+
+    <template v-if="loading" #loader>
+      <slot>
+        <v-progress-circular indeterminate color="#fff" size="14" width="2" />
+      </slot>
+    </template>
   </v-btn>
 </template>
 
@@ -26,6 +25,11 @@ export default {
       default: 'grey darken-2'
     },
 
+    loading: {
+      type: Boolean,
+      default: false
+    },
+
     disabled: {
       type: Boolean,
       default: false
@@ -34,6 +38,11 @@ export default {
     small: {
       type: Boolean,
       default: true
+    },
+
+    forceActive: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -42,8 +51,21 @@ export default {
   },
 
   computed: {
+    getConfigs() {
+      return {
+        color: this.color,
+        small: this.small,
+        loading: this.loading,
+        disabled: this.getDisabled
+      }
+    },
+
     getDisabled() {
-      return this.disabled || this.isApplicationReadOnly
+      if (this.forceActive) {
+        return false
+      } else {
+        return this.disabled || this.loading || this.isApplicationReadOnly
+      }
     }
   }
 }
