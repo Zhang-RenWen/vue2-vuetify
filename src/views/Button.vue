@@ -43,14 +43,26 @@
       <v-divider />
       <v-card-text class="d-flex align-content-start flex-wrap">
         <div class="mb-1">Light</div>
-        <v-btn v-for="(color, key) of themes.light" :key="key" :color="key" block class="mb-1">
+        <v-btn
+          v-for="(color, key) of themes.light"
+          :key="`Light${key}`"
+          :color="key"
+          block
+          class="mb-1"
+        >
           {{ key }}
         </v-btn>
       </v-card-text>
 
       <v-card-text class="d-flex align-content-start flex-wrap">
         <div class="mb-1">Dark</div>
-        <v-btn v-for="(color, key) of themes.dark" :key="key" :color="key" block class="mb-1">
+        <v-btn
+          v-for="(color, key) of themes.dark"
+          :key="`Dark${key}`"
+          :color="key"
+          block
+          class="mb-1"
+        >
           {{ key }}
         </v-btn>
       </v-card-text>
@@ -175,6 +187,8 @@
         </v-row>
       </v-card-text>
     </v-card>
+
+    <GoTopButton />
   </v-container>
 </template>
 
@@ -189,7 +203,7 @@ export default {
       alignment: 1,
       formatting: [],
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-      letters: 'a b c d e f g h i j k l m n'.split('')
+      letters: 'a b c d e f g h i j k l m n'.split(' ')
     }
   },
 

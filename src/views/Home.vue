@@ -4,7 +4,11 @@
       <SideBar class="side-bar" :class="[sideMenuOpen ? '' : 'side-bar-closed']" />
       <NavBar />
 
-      <section class="contents" :class="[sideMenuOpen ? '' : 'contents-closed']">
+      <section
+        id="application-scroll"
+        class="contents"
+        :class="[sideMenuOpen ? '' : 'contents-closed']"
+      >
         <router-view />
       </section>
     </div>

@@ -9,7 +9,7 @@
     small
     @click.stop="toTop"
   >
-    <i class="fas fa-angle-up" />
+    <v-icon>fas fa-angle-up</v-icon>
   </v-btn>
 </template>
 
@@ -18,8 +18,7 @@ export default {
   name: 'GoTopBtn',
   data() {
     return {
-      fab: false,
-      target: null
+      fab: false
     }
   },
 
@@ -36,7 +35,7 @@ export default {
       appScroll.scrollTo({
         top: 0,
         left: 0,
-        behavior: ' smooth'
+        behavior: 'smooth'
       })
     }
   }
