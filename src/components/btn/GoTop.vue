@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    v-show="fab"
+    v-show="display"
     v-scroll:#application-scroll="onscroll"
     fab
     fixed
@@ -18,7 +18,7 @@ export default {
   name: 'GoTopBtn',
   data() {
     return {
-      fab: false
+      display: false
     }
   },
 
@@ -26,8 +26,8 @@ export default {
     onscroll(e) {
       if (typeof window == 'undefined') return
       const top = e.target.scrollTop || 0
-      this.fab = top > 50
-      this.$emit('showButton', this.fab)
+      this.display = top > 50
+      this.$emit('showButton', this.display)
     },
 
     toTop() {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 // import input from '@/components/inputs/input.vue'
 import icon from '@/components/icon/SvgIcon.vue'
 import goTop from '@/components/btn/GoTop.vue'
-
+import goTopByWindow from '@/components/btn/GoTopByWindow.vue'
 // import vueResizable from 'vue-resizable'
 // import vueHotkey from 'v-hotkey'
 // import DynamicForm from '@/components/vuetify/DynamicForm.vue'
@@ -13,6 +13,7 @@ import goTop from '@/components/btn/GoTop.vue'
 // Vue.use(vueHotkey)
 Vue.component('Icon', icon)
 Vue.component('GoTopButton', goTop)
+Vue.component('GoTopByWindow', goTopByWindow)
 // Vue.component('Input', input)
 // Vue.component('Dialog', Dialog)
 // Vue.component('DynamicForm', DynamicForm)

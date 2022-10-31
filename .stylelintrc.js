@@ -10,7 +10,7 @@ module.exports = {
     'property-no-unknown': null,
     'string-quotes': 'single',
     'no-empty-source': null,
-    'declaration-block-trailing-semicolon': 'never',
+    'declaration-block-trailing-semicolon': null,
     'order/properties-order': [
       'position',
       'top',

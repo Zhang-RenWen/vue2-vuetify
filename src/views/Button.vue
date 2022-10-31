@@ -111,7 +111,7 @@
       </v-card-text>
     </v-card>
 
-    <v-card>
+    <v-card class="mb-10">
       <v-card-title><h2>WYSIWYG</h2></v-card-title>
       <v-row class="pb-2 ma-0" justify="space-around">
         <v-btn-toggle v-model="formatting" multiple>
@@ -172,23 +172,24 @@
     </v-card>
 
     <v-card class="mb-10">
-      <v-card-title><h2>Disabled</h2></v-card-title>
+      <v-card-title><h2>GoTopButtons</h2></v-card-title>
       <v-divider />
       <v-card-text>
+        <div class="mb-3">Current GoTop Type is :{{ currentGoTopTypeIs }}</div>
         <v-row>
           <v-col>
-            disabled
-            <v-btn disabled><v-icon>fas fa-search</v-icon></v-btn>
+            <v-btn class="mr-3" @click="switchGoTopButtons('GoTop')">GoTop</v-btn>
+            <v-btn class="mr-3" @click="switchGoTopButtons('GoTopByWindow')">GoTopByWindow</v-btn>
+            <v-btn class="mr-3" @click="switchGoTopButtons('')"><v-icon>mdi-close</v-icon></v-btn>
           </v-col>
-          <v-col>
-            disabled outlined
-            <v-btn disabled outlined><v-icon>fas fa-search</v-icon></v-btn>
-          </v-col>
+
+          <GoTopButton v-if="currentGoTopTypeIs === 'GoTop'" />
+          <GoTopByWindow v-if="currentGoTopTypeIs === 'GoTopByWindow'" />
+
+          <v-col />
         </v-row>
       </v-card-text>
     </v-card>
-
-    <GoTopButton />
   </v-container>
 </template>
 
@@ -203,7 +204,9 @@ export default {
       alignment: 1,
       formatting: [],
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-      letters: 'a b c d e f g h i j k l m n'.split(' ')
+      letters: 'a b c d e f g h i j k l m n'.split(' '),
+      // GoTop
+      currentGoTopTypeIs: ''
     }
   },
 
@@ -212,13 +215,36 @@ export default {
     this.themes = this.$vuetify.theme.themes
   },
 
+  beforeDestroy() {
+    this.switchGoTopButtons('')
+  },
+
   methods: {
-    // directionTo(e) {
-    //   e.stopPropagation()
-    //   e.preventDefault()
-    // }
+    switchGoTopButtons(currentGoTopTypeIs) {
+      this.currentGoTopTypeIs = currentGoTopTypeIs
+      const app = document.querySelector('#app')
+
+      if (currentGoTopTypeIs === 'GoTopByWindow' || '') {
+        app.style.height = 'calc(100vh + 100px)'
+        this.$nextTick(() => {
+          window.scrollTo({
+            top: 100,
+            left: 0,
+            behavior: 'smooth'
+          })
+        })
+      } else {
+        app.style.height = null
+        this.$nextTick(() => {
+          const applicationScroll = document.querySelector('#application-scroll')
+          applicationScroll.scrollTo({
+            top: applicationScroll.scrollTop - 1,
+            left: 0,
+            behavior: 'smooth'
+          })
+        })
+      }
+    }
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
