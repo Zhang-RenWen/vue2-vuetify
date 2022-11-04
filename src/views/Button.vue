@@ -16,7 +16,7 @@
       </v-card-text>
     </v-card>
 
-    <v-card class="mb-10">
+    <v-card ref="Block" class="mb-10">
       <v-card-title><h2>Block</h2></v-card-title>
       <v-divider />
       <v-card-text>
@@ -33,6 +33,7 @@
             <div class="mb-2">With block (default)</div>
             <v-btn block class="mb-2"><v-icon>fas fa-search</v-icon></v-btn>
             <v-btn block><v-icon>fas fa-search</v-icon></v-btn>
+            <AnchorPointButton :item-list="[{ title: 1 }, { title: 2 }]" @onDial="onDial" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -190,6 +191,20 @@
         </v-row>
       </v-card-text>
     </v-card>
+
+    <v-card class="mb-10">
+      <v-card-title><h2>AnchorPointButton</h2></v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row>
+          <div v-sticky="{ top: dialBtnOffsetTop }">
+            <AnchorPointButton :item-list="[{ title: 1 }, { title: 2 }]" @onDial="onDial" />
+          </div>
+
+          <v-col />
+        </v-row>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -210,7 +225,13 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    dialBtnOffsetTop() {
+      console.log(this.$vuetify.application.top)
+      return this.$vuetify.application.top + 12
+    }
+  },
+
   mounted() {
     this.themes = this.$vuetify.theme.themes
   },
@@ -244,7 +265,9 @@ export default {
           })
         })
       }
-    }
+    },
+
+    async onDial() {}
   }
 }
 </script>
