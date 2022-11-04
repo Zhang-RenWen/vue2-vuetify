@@ -6,6 +6,7 @@
 
       <section
         id="application-scroll"
+        sticky-container
         class="contents"
         :class="[sideMenuOpen ? '' : 'contents-closed']"
       >

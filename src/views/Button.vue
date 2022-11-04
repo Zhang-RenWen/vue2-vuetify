@@ -1,6 +1,17 @@
 <template>
   <v-container>
     <v-card class="mb-10">
+      <v-card-title><h2>AnchorPointButton</h2></v-card-title>
+      <v-divider />
+      <v-card-text class="pa-2">
+        <AnchorPointButton
+          v-sticky="{ top: dialBtnOffsetTop, width: 25 }"
+          :item-list="anchorPointButtonList"
+          @onDial="onDial"
+        />
+      </v-card-text>
+    </v-card>
+    <v-card class="mb-10">
       <v-card-title><h2>Ripple</h2></v-card-title>
       <v-divider />
       <v-card-text>
@@ -33,7 +44,6 @@
             <div class="mb-2">With block (default)</div>
             <v-btn block class="mb-2"><v-icon>fas fa-search</v-icon></v-btn>
             <v-btn block><v-icon>fas fa-search</v-icon></v-btn>
-            <AnchorPointButton :item-list="[{ title: 1 }, { title: 2 }]" @onDial="onDial" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -191,20 +201,6 @@
         </v-row>
       </v-card-text>
     </v-card>
-
-    <v-card class="mb-10">
-      <v-card-title><h2>AnchorPointButton</h2></v-card-title>
-      <v-divider />
-      <v-card-text>
-        <v-row>
-          <div v-sticky="{ top: dialBtnOffsetTop }">
-            <AnchorPointButton :item-list="[{ title: 1 }, { title: 2 }]" @onDial="onDial" />
-          </div>
-
-          <v-col />
-        </v-row>
-      </v-card-text>
-    </v-card>
   </v-container>
 </template>
 
@@ -221,14 +217,14 @@ export default {
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
       letters: 'a b c d e f g h i j k l m n'.split(' '),
       // GoTop
-      currentGoTopTypeIs: ''
+      currentGoTopTypeIs: '',
+      anchorPointButtonList: []
     }
   },
 
   computed: {
     dialBtnOffsetTop() {
-      console.log(this.$vuetify.application.top)
-      return this.$vuetify.application.top + 12
+      return this.$vuetify.application.top + 60 + 12
     }
   },
 
@@ -267,7 +263,9 @@ export default {
       }
     },
 
-    async onDial() {}
+    async onDial(val) {
+      console.log(val)
+    }
   }
 }
 </script>

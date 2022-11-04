@@ -11,7 +11,13 @@
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
     </template>
-    <v-btn v-for="(item, index) of itemList" :key="index" small @click="onClickDial(item, index)">
+    <v-btn
+      v-for="(item, index) of itemList"
+      :key="index"
+      small
+      color="secondary"
+      @click="onClickDial(item, index)"
+    >
       {{ item.title }}
     </v-btn>
   </v-speed-dial>
@@ -70,7 +76,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* stylelint-disable */
 .anchor-point {
-  z-index: 3;
+  ::v-deep .v-speed-dial__list {
+    z-index: 3;
+    width: auto;
+  }
 }
 </style>
