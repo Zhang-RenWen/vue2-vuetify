@@ -6,20 +6,16 @@
       <v-card-text class="pa-2">
         <div style="height: 25px">
           <AnchorPointButton
-            v-sticky="{ top: dialBtnOffsetTop, width: 25 }"
+            v-sticky="{ top: dialBtnOffsetTop, width: 25, bottom: 0 }"
             :item-list="anchorPointButtonList"
             @onDial="onDial"
           />
         </div>
 
         <v-card-text id="sticky-wrap" sticky-container>
-          <v-card id="scroll-card" ref="scroll-card">
+          <v-card id="scroll-card">
             <div>
-              <AnchorPointButton
-                v-sticky="{ top: dialBtnOffsetTopDemo, width: 25 }"
-                :item-list="anchorPointButtonList"
-                @onDial="onDial"
-              />
+              <AnchorPointButton :item-list="anchorPointButtonList" @onDial="onDial" />
             </div>
           </v-card>
         </v-card-text>
@@ -239,14 +235,6 @@ export default {
   computed: {
     dialBtnOffsetTop() {
       return this.$vuetify.application.top + 60 + 12
-    },
-
-    dialBtnOffsetTopDemo() {
-      let top = 0
-
-      const scrollCard = this.$vuetify.application
-      console.log(scrollCard)
-      return top
     }
   },
 
