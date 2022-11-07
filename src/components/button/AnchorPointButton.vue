@@ -81,6 +81,7 @@ export default {
   ::v-deep .v-speed-dial__list {
     z-index: 3;
     width: auto;
+    align-items: flex-start;
   }
 }
 </style>
