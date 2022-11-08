@@ -6,7 +6,7 @@
       <v-card-text class="pa-2">
         <div style="height: 25px">
           <AnchorPointButton
-            v-sticky="{ top: dialBtnOffsetTop, width: 25, bottom: 0 }"
+            v-sticky="{ top: dialBtnOffsetTop, width: 25 }"
             :item-list="anchorPointButtonList"
             @onDial="onDial"
           />
@@ -15,7 +15,13 @@
         <v-card-text id="sticky-wrap" sticky-container>
           <v-card id="scroll-card">
             <div>
-              <AnchorPointButton :item-list="anchorPointButtonList" @onDial="onDial" />
+              {{ demoTop }}||||{{ demoBottom }}
+              <AnchorPointButton
+                v-if="renderComponent"
+                v-sticky="{ top: demoTop, width: 25 }"
+                :item-list="anchorPointButtonList"
+                @onDial="onDial"
+              />
             </div>
           </v-card>
         </v-card-text>
@@ -228,7 +234,11 @@ export default {
       letters: 'a b c d e f g h i j k l m n'.split(' '),
       // GoTop
       currentGoTopTypeIs: '',
-      anchorPointButtonList: [{ title: 'AnchorPointButton' }, { title: 'Ripple' }]
+      anchorPointButtonList: [{ title: 'AnchorPointButton' }, { title: 'Ripple' }],
+      // anchorPointButton
+      demoTop: 0,
+      demoBottom: 0,
+      renderComponent: true
     }
   },
 
@@ -240,6 +250,10 @@ export default {
 
   mounted() {
     this.themes = this.$vuetify.theme.themes
+    this.demoTop = document.querySelector('#scroll-card').getBoundingClientRect().top
+    this.demoBottom = document.querySelector('#scroll-card').getBoundingClientRect().bottom
+
+    this.forceRerender()
   },
 
   beforeDestroy() {
@@ -252,7 +266,7 @@ export default {
       const app = document.querySelector('#app')
 
       if (currentGoTopTypeIs === 'GoTopByWindow' || '') {
-        app.style.height = 'calc(100vh + 100px)'
+        app.style.height = 'calc(100vh + 1000px)'
         this.$nextTick(() => {
           window.scrollTo({
             top: 100,
@@ -275,6 +289,16 @@ export default {
 
     async onDial(val) {
       console.log(val)
+    },
+
+    async forceRerender() {
+      // Remove MyComponent from the DOM
+      this.renderComponent = false
+
+      // Wait for the change to get flushed to the DOM
+      await this.$nextTick()
+      // Add the component back in
+      this.renderComponent = true
     }
   }
 }
