@@ -164,7 +164,7 @@ class Sticky {
   updateElements() {
     const placeholderStyle = { paddingTop: 0 }
     const elStyle = {
-      position: 'static',
+      position: 'relative',
       top: 'auto',
       bottom: 'auto',
       left: 'auto',

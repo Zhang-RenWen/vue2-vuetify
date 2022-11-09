@@ -1,34 +1,30 @@
 <template>
   <v-container>
-    <v-card class="mb-10">
-      <v-card-title><h2>AnchorPointButton</h2></v-card-title>
+    <v-card id="AnchorPointButton" class="mb-10">
+      <v-card-title>
+        <h2>AnchorPointButton</h2>
+      </v-card-title>
       <v-divider />
       <v-card-text class="pa-2">
-        <div style="height: 25px">
-          <AnchorPointButton
-            v-sticky="{ top: dialBtnOffsetTop, width: 25 }"
-            :item-list="anchorPointButtonList"
-            @onDial="onDial"
-          />
-        </div>
+        <AnchorPointButton
+          v-sticky="{ top: dialBtnOffsetTop }"
+          :item-list="anchorPointButtonList"
+          @onDial="onDial"
+        />
 
         <v-card-text id="sticky-wrap" sticky-container>
-          <v-card id="scroll-card">
-            <div>
-              {{ demoTop }}||||{{ demoBottom }}
-              <AnchorPointButton
-                v-if="renderComponent"
-                v-sticky="{ top: demoTop, width: 25 }"
-                :item-list="anchorPointButtonList"
-                @onDial="onDial"
-              />
+          <v-card id="scroll-card" class="panel-wrapper">
+            <div class="sticky-wrapper">
+              <AnchorPointButton :item-list="anchorPointButtonList" @onDial="onDial" />
             </div>
           </v-card>
         </v-card-text>
       </v-card-text>
     </v-card>
-    <v-card class="mb-10">
-      <v-card-title><h2>Ripple</h2></v-card-title>
+    <v-card id="Ripple" class="mb-10">
+      <v-card-title>
+        <h2>Ripple</h2>
+      </v-card-title>
       <v-divider />
       <v-card-text>
         <v-row class="py-12" justify="space-around">
@@ -198,8 +194,10 @@
       </v-sheet>
     </v-card>
 
-    <v-card class="mb-10">
-      <v-card-title><h2>GoTopButtons</h2></v-card-title>
+    <v-card id="GoTopButtons" class="mb-10">
+      <v-card-title>
+        <h2>GoTopButtons</h2>
+      </v-card-title>
       <v-divider />
       <v-card-text>
         <div class="mb-3">Current GoTop Type is :{{ currentGoTopTypeIs }}</div>
@@ -234,11 +232,11 @@ export default {
       letters: 'a b c d e f g h i j k l m n'.split(' '),
       // GoTop
       currentGoTopTypeIs: '',
-      anchorPointButtonList: [{ title: 'AnchorPointButton' }, { title: 'Ripple' }],
-      // anchorPointButton
-      demoTop: 0,
-      demoBottom: 0,
-      renderComponent: true
+      anchorPointButtonList: [
+        { title: 'AnchorPointButton' },
+        { title: 'Ripple' },
+        { title: 'GoTopButtons' }
+      ]
     }
   },
 
@@ -248,12 +246,8 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     this.themes = this.$vuetify.theme.themes
-    this.demoTop = document.querySelector('#scroll-card').getBoundingClientRect().top
-    this.demoBottom = document.querySelector('#scroll-card').getBoundingClientRect().bottom
-
-    this.forceRerender()
   },
 
   beforeDestroy() {
@@ -288,17 +282,7 @@ export default {
     },
 
     async onDial(val) {
-      console.log(val)
-    },
-
-    async forceRerender() {
-      // Remove MyComponent from the DOM
-      this.renderComponent = false
-
-      // Wait for the change to get flushed to the DOM
-      await this.$nextTick()
-      // Add the component back in
-      this.renderComponent = true
+      location.hash = `#${val.title}`
     }
   }
 }
@@ -315,10 +299,18 @@ export default {
     width: 300px;
     height: 1000px;
     background-color: #e5e5e5;
-
-    > div {
-      height: 500px;
-    }
   }
+}
+
+.panel-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.sticky-wrapper {
+  position: sticky;
+  top: calc(100vh / 2 - 40rem / 2);
+  float: left;
+  width: 100%;
 }
 </style>

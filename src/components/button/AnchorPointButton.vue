@@ -18,7 +18,9 @@
       color="secondary"
       @click="onClickDial(item, index)"
     >
-      {{ item.title }}
+      <a :href="`#${item.title}`">
+        {{ item.title }}
+      </a>
     </v-btn>
   </v-speed-dial>
 </template>
@@ -82,6 +84,10 @@ export default {
     z-index: 3;
     width: auto;
     align-items: flex-start;
+  }
+  a {
+    text-decoration: none;
+    color: currentColor;
   }
 }
 </style>
