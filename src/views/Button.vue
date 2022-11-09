@@ -1,8 +1,11 @@
 <template>
   <v-container>
-    <v-card id="AnchorPointButton" class="mb-10">
+    <v-card class="mb-10">
       <v-card-title>
-        <h2>AnchorPointButton</h2>
+        <h2>
+          AnchorPointButton
+          <span id="AnchorPointButton" />
+        </h2>
       </v-card-title>
       <v-divider />
       <v-card-text class="pa-2">
@@ -21,9 +24,12 @@
         </v-card-text>
       </v-card-text>
     </v-card>
-    <v-card id="Ripple" class="mb-10">
+    <v-card class="mb-10">
       <v-card-title>
-        <h2>Ripple</h2>
+        <h2>
+          Ripple
+          <span id="Ripple" />
+        </h2>
       </v-card-title>
       <v-divider />
       <v-card-text>
@@ -194,9 +200,12 @@
       </v-sheet>
     </v-card>
 
-    <v-card id="GoTopButtons" class="mb-10">
+    <v-card class="mb-10">
       <v-card-title>
-        <h2>GoTopButtons</h2>
+        <h2>
+          GoTopButtons
+          <span id="GoTopButtons" />
+        </h2>
       </v-card-title>
       <v-divider />
       <v-card-text>
@@ -281,8 +290,8 @@ export default {
       }
     },
 
-    async onDial(val) {
-      location.hash = `#${val.title}`
+    onDial(val) {
+      console.log(val)
     }
   }
 }

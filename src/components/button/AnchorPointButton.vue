@@ -18,7 +18,7 @@
       color="secondary"
       @click="onClickDial(item, index)"
     >
-      <a :href="`#${item.title}`">
+      <a>
         {{ item.title }}
       </a>
     </v-btn>
@@ -54,6 +54,12 @@ export default {
       default: 'mdi-format-list-bulleted-square'
     },
 
+    scrollBehavior: {
+      type: String,
+      require: true,
+      default: 'smooth'
+    },
+
     inlineStyle: { type: [Array, String], default: '' }
   },
 
@@ -70,7 +76,50 @@ export default {
   },
 
   methods: {
-    onClickDial(item) {
+    getTopDistance(elem) {
+      // Get current location's distance from the top of the page
+      // let position = window.pageYOffset
+
+      // Get an element's distance from the top of the page
+      let location = 0
+      if (elem.offsetParent) {
+        do {
+          location += elem.offsetTop
+          elem = elem.offsetParent
+        } while (elem)
+      }
+
+      return location >= 0 ? location : 0
+    },
+
+    async onClickDial(item) {
+      const id = `#${item.title}`
+      const element = document.querySelector(id)
+      const elementOffsetY = this.getTopDistance(element)
+      const paddingTop = 60
+      const toTop = elementOffsetY - paddingTop >= 0 ? elementOffsetY - paddingTop : elementOffsetY
+      const applicationScroll = document.querySelector('#application-scroll')
+      const behavior = this.scrollBehavior
+
+      if (behavior !== '') {
+        applicationScroll.scrollTo({
+          top: toTop,
+          left: 0,
+          behavior
+        })
+      }
+      element.style.position = 'absolute'
+      element.style.top = '-100px'
+      setTimeout(
+        () => {
+          if (location.hash === id) {
+            return true
+          }
+          location.hash = id
+        },
+        behavior !== '' ? 300 : 0
+      )
+
       this.$emit('onDial', item)
     }
   }
