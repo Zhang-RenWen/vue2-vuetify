@@ -1,6 +1,8 @@
-import App from '@/main.js'
 import { isExceed, truncateBytes } from 'utils/bytesCount'
-import { isEmpty } from 'lodash'
+const isEmpty = (val) => {
+  return val === val
+}
+
 export const changeColorMixin = {
   data() {
     return {
@@ -33,37 +35,15 @@ export const changeColorMixin = {
     }
   },
 
-  mounted() {
-    this.toggleResetColorEvent(true)
-  },
-  beforeDestroy() {
-    this.toggleResetColorEvent(false)
-  },
+  mounted() {},
+  beforeDestroy() {},
   props: {
     oldValue: null
   },
   created() {
     this.initValue = this.value
-    this.$on('input', () => (this.isDirty = true))
   },
 
-  watch: {
-    value: {
-      immediate: true,
-      handler(newVlu, oldVlu) {
-        this.checkHasChanged(newVlu, oldVlu)
-      }
-    },
-    oldValue: {
-      handler() {
-        /**
-         * 存檔時 watch value 不觸發
-         * 使用 watch oldValue 來觸發顏色回復
-         */
-        this.checkHasChanged()
-      }
-    }
-  },
   methods: {
     checkHasChanged(newVlu, oldVlu) {
       if (!isEmpty(oldVlu) && newVlu !== oldVlu && newVlu !== this.initValue) {
@@ -72,13 +52,7 @@ export const changeColorMixin = {
         this.hasChanged = false
       }
     },
-    toggleResetColorEvent(isOn) {
-      if (isOn) {
-        App.$on('resetColor', this.handleResetColor)
-      } else {
-        App.$off('resetColor', this.handleResetColor)
-      }
-    },
+
     handleResetColor() {
       this.hasChanged = false
       this.isDirty = false
