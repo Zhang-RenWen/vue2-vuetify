@@ -45,20 +45,12 @@ import {
   changeColorMixin,
   inputRefMixin,
   formatterMixin,
-  limitInputMixin,
-  preventKeyInMixin
+  limitInputMixin
 } from './inputMixin.js'
 import tooltipLabel from '@/components/tooltipLabel'
 export default {
   components: { tooltipLabel },
-  mixins: [
-    disabledMixin,
-    changeColorMixin,
-    inputRefMixin,
-    formatterMixin,
-    limitInputMixin,
-    preventKeyInMixin
-  ],
+  mixins: [disabledMixin, changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin],
 
   props: {
     name: {
@@ -232,8 +224,12 @@ export default {
     },
 
     checkIsSymbol(character) {
-      const regex = /^[-~$%^&*()_+|~+'{}[\]:";'<>?,./]/
-      return regex.test(character)
+      // 半形字元檢核
+      const regex = /^[\u0021-\u002F\u003A-\u0040\u005B\u0060\u007B-\u007E\s\u3001-\u303F]/
+      // 全形字元檢核
+      const regexFullWidth =
+        /^\u3000|[\uFE01-\uFF0F]|[\uFF1A-\uFF20]|[\uFF3B-\uFF40]|[\uFF5B-\uFFEE]/
+      return regex.test(character) || regexFullWidth.test(character)
     },
 
     checkTypes(value) {
