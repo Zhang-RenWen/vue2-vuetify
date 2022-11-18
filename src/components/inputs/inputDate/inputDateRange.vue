@@ -78,6 +78,8 @@ export default {
     minutePicker
   },
 
+  inheritAttrs: false,
+
   props: {
     value: {
       type: Object,
@@ -138,10 +140,10 @@ export default {
       default: true
     },
 
-    ROC: {
-      type: Boolean,
-      default: false
-    },
+    // ROC: {
+    //   type: Boolean,
+    //   default: false
+    // },
 
     hasRules: {
       type: Boolean,
@@ -228,23 +230,23 @@ export default {
       }
     },
 
-    endHourProps() {
-      const defaultRule = this.hasRules ? [this.endDateEdge] : []
-      return {
-        disabled: this.disabled,
-        required: this.required,
-        rules: [...this.endDateRules, ...defaultRule]
-      }
-    },
+    // endHourProps() {
+    //   const defaultRule = this.hasRules ? [this.endDateEdge] : []
+    //   return {
+    //     disabled: this.disabled,
+    //     required: this.required,
+    //     rules: [...this.endDateRules, ...defaultRule]
+    //   }
+    // },
 
-    endMinuteProps() {
-      const defaultRule = this.hasRules ? [this.endDateEdge] : []
-      return {
-        disabled: this.disabled,
-        required: this.required,
-        rules: [...this.endDateRules, ...defaultRule]
-      }
-    },
+    // endMinuteProps() {
+    //   const defaultRule = this.hasRules ? [this.endDateEdge] : []
+    //   return {
+    //     disabled: this.disabled,
+    //     required: this.required,
+    //     rules: [...this.endDateRules, ...defaultRule]
+    //   }
+    // },
 
     max() {
       if (this.validate(this.value.endDate) && this.hasEdge) {
@@ -336,15 +338,15 @@ export default {
       return true
     },
 
-    reset() {
-      this.$refs.startDatePicker.reset()
-      this.$refs.endDatePicker.reset()
-    },
+    // reset() {
+    //   this.$refs.startDatePicker.reset()
+    //   this.$refs.endDatePicker.reset()
+    // },
 
-    resetValidation() {
-      this.$refs.startDatePicker.resetValidation()
-      this.$refs.endDatePicker.resetValidation()
-    },
+    // resetValidation() {
+    //   this.$refs.startDatePicker.resetValidation()
+    //   this.$refs.endDatePicker.resetValidation()
+    // },
 
     startDateTimeCombine(changePicker) {
       let value = {

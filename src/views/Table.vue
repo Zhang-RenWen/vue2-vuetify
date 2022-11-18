@@ -3,9 +3,10 @@
     <h3>Table</h3>
     {{ selected }}
     <v-sheet outlined class="pa-4">
-      <v-data-table dense :headers="[]" :items="[]" />
+      <v-data-table class="data-table" dense :headers="[]" :items="[]" />
       <v-data-table
         dense
+        class="data-table"
         :headers="[
           { text: 'col1', value: 'h1ValueKey' },
           { text: 'col2', value: 'h2ValueKey' },
@@ -15,6 +16,7 @@
       />
       <v-data-table
         dense
+        class="data-table"
         :headers="[
           { text: 'col1', value: 'h1ValueKey' },
           { text: 'col2', value: 'h2ValueKey' },
@@ -37,6 +39,7 @@
       </v-data-table>
       <v-data-table
         v-model="selected"
+        class="data-table"
         dense
         :headers="[
           { text: 'col1', value: 'h1ValueKey' },
@@ -63,6 +66,7 @@
 
       <div v-for="table of data.content.tables" :key="table.tablesColName">
         <v-data-table
+          class="data-table"
           :headers="getHeaders(table.headers)"
           :items="table.items"
           hide-default-header
@@ -338,10 +342,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.border {
-  th {
+/* stylelint-disable */
+
+.data-table {
+  margin-bottom: 30px;
+  // border: 1px solid black;
+
+  .v-data-table__wrapper > table th {
     border: 1px solid black;
-    border-bottom: 1px solid black;
+  }
+
+  td {
+    border: 1px solid black;
   }
 }
 </style>

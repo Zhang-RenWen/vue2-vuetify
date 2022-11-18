@@ -32,37 +32,37 @@ export default {
     },
 
     value: { type: String, default: '' },
-    types: {
-      type: Array,
-      default() {
-        return ['TaiwanOnly'] // ['includingForeign', 'TaiwanOnly']
-      }
-    },
+    // types: {
+    //   type: Array,
+    //   default() {
+    //     return ['TaiwanOnly'] // ['includingForeign', 'TaiwanOnly']
+    //   }
+    // },
 
-    errorCode: {
-      type: Number,
-      default: 0 // success
-    },
+    // errorCode: {
+    //   type: Number,
+    //   default: 0 // success
+    // },
 
     rules: {
       type: Array,
       default() {
         return []
       }
-    },
-
-    required: {
-      type: Boolean,
-      default: false
     }
+
+    // required: {
+    //   type: Boolean,
+    //   default: false
+    // }
   },
 
   data() {
     return {
-      errorMessages: {
-        0: '身分證字號錯誤',
-        1: '此欄位僅可輸入半形 英文/正數(包含0)'
-      }
+      // errorMessages: {
+      //   0: '身分證字號錯誤',
+      //   1: '此欄位僅可輸入半形 英文/正數(包含0)'
+      // }
     }
   },
 
@@ -89,10 +89,10 @@ export default {
       return rules
     },
 
-    localCustomMessages() {
-      const mergedMessages = Object.assign(this.errorDefaultMessages.errorCustomMessage)
-      return mergedMessages
-    },
+    // localCustomMessages() {
+    //   const mergedMessages = Object.assign(this.errorDefaultMessages.errorCustomMessage)
+    //   return mergedMessages
+    // },
 
     listeners() {
       const { ...listeners } = this.$listeners

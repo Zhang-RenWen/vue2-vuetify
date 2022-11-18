@@ -201,6 +201,30 @@
     </v-card>
 
     <v-card class="mb-10">
+      <v-card-title><h2>Badge Button</h2></v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-checkbox v-model="badge_value" label="Show Badge Content" />
+
+            <v-text-field v-model="badge_content" label="Badge Content" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-badge bordered color="error" overlap :content="badge_content" :value="badge_value">
+              <v-btn>
+                全部刪除
+                <v-icon>fas fa-trashcan</v-icon>
+              </v-btn>
+            </v-badge>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+
+    <v-card class="mb-10">
       <v-card-title>
         <h2>
           GoTopButtons
@@ -239,6 +263,9 @@ export default {
       formatting: [],
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
       letters: 'a b c d e f g h i j k l m n'.split(' '),
+      // badge
+      badge_value: true,
+      badge_content: 1,
       // GoTop
       currentGoTopTypeIs: '',
       anchorPointButtonList: [

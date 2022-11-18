@@ -32,6 +32,7 @@ import moment from 'moment'
 
 export default {
   mixins: [changeColorMixin, disabledMixin, inputRefMixin],
+  inheritAttrs: false,
 
   props: {
     value: {
@@ -124,9 +125,9 @@ export default {
       return dateReg.test(str)
     },
 
-    validHour(str) {
-      return /^[0-2][0-3]$/.test(str)
-    },
+    // validHour(str) {
+    //   return /^[0-2][0-3]$/.test(str)
+    // },
 
     validate() {
       const input = this.$refs.inputRef

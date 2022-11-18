@@ -50,7 +50,9 @@ import {
 import tooltipLabel from '@/components/tooltipLabel'
 export default {
   components: { tooltipLabel },
+
   mixins: [disabledMixin, changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin],
+  inheritAttrs: false,
 
   props: {
     name: {

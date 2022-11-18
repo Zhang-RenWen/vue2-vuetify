@@ -31,6 +31,7 @@
         @click="$emit('click', $event)"
         @focus="onFocus"
         @blur="validate()"
+        @reset="reset"
         @update:error="$emit('update:error', $event)"
         @keyup.delete="onPressedDelete"
       >
@@ -44,10 +45,10 @@
 </template>
 
 <script>
-import { disabledMixin, changeColorMixin, inputRefMixin } from './.inputMixin.js'
+import { disabledMixin, changeColorMixin, inputRefMixin } from './inputMixin.js'
 export default {
   mixins: [disabledMixin, changeColorMixin, inputRefMixin],
-
+  inheritAttrs: false,
   props: {
     value: {
       type: String,
@@ -113,6 +114,11 @@ export default {
     cols: {
       type: Number,
       default: 12
+    },
+
+    row: {
+      type: Boolean,
+      default: true
     },
 
     colsName: {

@@ -67,6 +67,7 @@ import inputDateMixin from './.inputDateMixin.js'
 import moment from 'moment'
 export default {
   mixins: [disabledMixin, inputDateMixin, changeColorMixin, inputRefMixin],
+  inheritAttrs: false,
 
   props: {
     value: {
@@ -133,10 +134,10 @@ export default {
 
       set(newValue) {
         // TODO :輸入例如: 99/01/01 ·
-        let formated = null
+        let formatted = null
 
         try {
-          formated =
+          formatted =
             newValue && /\d{3,4}-\d{2}-\d{2}/.test(newValue)
               ? moment(newValue).format('YYYY-MM-DD HH:mm:ss')
               : ''
@@ -144,8 +145,8 @@ export default {
           // invalid date string
         } finally {
           // trigger validation
-          this.$emit('input', formated)
-          this.$emit('change', formated)
+          this.$emit('input', formatted)
+          this.$emit('change', formatted)
           this.$emit('setChangePicker')
         }
       }
@@ -212,11 +213,11 @@ export default {
       }
     },
 
-    resetValidation() {
-      this.localError = false
-      this.errorMessages = null
-      if (this.$refs.inputRef) this.$refs.inputRef.resetValidation()
-    },
+    // resetValidation() {
+    //   this.localError = false
+    //   this.errorMessages = null
+    //   if (this.$refs.inputRef) this.$refs.inputRef.resetValidation()
+    // },
 
     emitBlurEvent(event) {
       const componentArea = this.$refs.datepicker

@@ -93,7 +93,9 @@ import inputDateMixin from './.inputDateMixin.js'
 
 export default {
   components: { toolTipLabel },
+
   mixins: [disabledMixin, changeColorMixin, inputDateMixin],
+  inheritAttrs: false,
 
   props: {
     label: {
@@ -106,20 +108,20 @@ export default {
       default: ''
     },
 
-    disabled: {
-      type: Boolean,
-      default: false
-    },
+    // disabled: {
+    //   type: Boolean,
+    //   default: false
+    // },
 
-    required: {
-      type: Boolean,
-      default: false
-    },
+    // required: {
+    //   type: Boolean,
+    //   default: false
+    // },
 
-    maxLength: {
-      type: [Boolean, Number],
-      default: 16
-    },
+    // maxLength: {
+    //   type: [Boolean, Number],
+    //   default: 16
+    // },
 
     rules: {
       type: Array,
@@ -129,10 +131,26 @@ export default {
     },
 
     // label設定參數
-    labelClass: [String, Array],
-    labelStyle: String,
-    inputClass: String,
-    inputStyle: String,
+    labelClass: {
+      type: [String, Array],
+      default: ''
+    },
+
+    labelStyle: {
+      type: String,
+      default: ''
+    },
+
+    inputClass: {
+      type: String,
+      default: ''
+    },
+
+    // inputStyle: {
+    //   type: String,
+    //   default: ''
+    // },
+
     attach: {
       type: Boolean,
       default: true

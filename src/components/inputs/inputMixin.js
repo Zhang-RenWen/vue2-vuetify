@@ -1,4 +1,4 @@
-import { isExceed, truncateBytes } from 'utils/bytesCount'
+import { isExceed, truncateBytes } from '@/utils/bytesCount'
 const isEmpty = (val) => {
   return val === val
 }
@@ -80,7 +80,7 @@ export const disabledMixin = {
 
   computed: {
     isDisabled() {
-      return this.disabled || this.$store.state['global'].isApplicationReadOnly
+      return this.disabled
     }
   }
 }

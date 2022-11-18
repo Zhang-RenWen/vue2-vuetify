@@ -1,5 +1,5 @@
 import Vue from 'vue'
-// import input from '@/components/inputs/input.vue'
+import inputAutoComplete from '@/components/inputs/InputAutoComplete.vue'
 import icon from '@/components/icon/SvgIcon.vue'
 import goTop from '@/components/button/GoTop.vue'
 import goTopByWindow from '@/components/button/GoTopByWindow.vue'
@@ -16,8 +16,7 @@ Vue.component('Icon', icon)
 Vue.component('GoTopButton', goTop)
 Vue.component('GoTopByWindow', goTopByWindow)
 Vue.component('AnchorPointButton', anchorPointButton)
-
-// Vue.component('Input', input)
+Vue.component('InputAutoComplete', inputAutoComplete)
 // Vue.component('Dialog', Dialog)
 // Vue.component('DynamicForm', DynamicForm)
 // Vue.component('FormGroup', FormGroup)

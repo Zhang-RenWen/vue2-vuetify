@@ -64,7 +64,7 @@ export default {
       if (this.forceActive) {
         return false
       } else {
-        return this.disabled || this.loading || this.isApplicationReadOnly
+        return this.disabled || this.loading
       }
     }
   }

@@ -82,6 +82,7 @@ import { isRequired } from '@/utils/validators'
 export default {
   components: { toolTipLabel },
   mixins: [disabledMixin, inputDateMixin, changeColorMixin, inputRefMixin],
+  inheritAttrs: false,
 
   props: {
     label: {
@@ -104,10 +105,10 @@ export default {
       default: false
     },
 
-    maxLength: {
-      type: [Boolean, Number],
-      default: 16
-    },
+    // maxLength: {
+    //   type: [Boolean, Number],
+    //   default: 16
+    // },
 
     rules: {
       type: Array,
@@ -116,21 +117,21 @@ export default {
       }
     },
 
-    error: {
-      type: Boolean,
-      default: false
-    },
+    // error: {
+    //   type: Boolean,
+    //   default: false
+    // },
 
-    ROC: {
-      type: Boolean,
-      default: false
-    },
+    // ROC: {
+    //   type: Boolean,
+    //   default: false
+    // },
 
     // 限制日期 today 或 YYYY-MM-DD
-    max: {
-      type: String,
-      default: ''
-    },
+    // max: {
+    //   type: String,
+    //   default: ''
+    // },
 
     // label設定 參數
     labelClass: { type: [String, Array], default: '' },
@@ -173,9 +174,9 @@ export default {
 
       set(newValue) {
         // format 後端格式
-        let formated = null
+        let formatted = null
         try {
-          formated =
+          formatted =
             newValue && /\0{3,4}-\0{2}-\d{2}/.test(newValue)
               ? new Date(newValue).toIsoString().substr(0, 19).replace('T', ' ')
               : ''
@@ -183,8 +184,8 @@ export default {
           // invalid date string
         } finally {
           // trigger validation
-          this.$emit('input', formated || newValue)
-          this.$emit('change', formated || newValue)
+          this.$emit('input', formatted || newValue)
+          this.$emit('change', formatted || newValue)
         }
       }
     },
@@ -279,12 +280,12 @@ export default {
       }
     },
 
-    resetValidation() {
-      this.localError = false
-      this.errorMessages = null
-      this.localError = false
-      if (this.$refs.inputRef) this.$refs.inputRef.resetValidation()
-    },
+    // resetValidation() {
+    //   this.localError = false
+    //   this.errorMessages = null
+    //   this.localError = false
+    //   if (this.$refs.inputRef) this.$refs.inputRef.resetValidation()
+    // },
 
     emitBlurEvent(event) {
       const componentArea = this.$refs.datePicker
