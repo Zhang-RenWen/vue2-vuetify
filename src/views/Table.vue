@@ -341,18 +341,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 /* stylelint-disable */
-
 .data-table {
   margin-bottom: 30px;
-  // border: 1px solid black;
-
-  .v-data-table__wrapper > table th {
-    border: 1px solid black;
-  }
-
-  td {
+  .v-data-table__wrapper > table th,
+  .v-data-table__wrapper > table td {
     border: 1px solid black;
   }
 }
