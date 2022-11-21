@@ -3,31 +3,23 @@
     <h3>Table</h3>
     {{ selected }}
     <v-sheet outlined class="pa-4">
-      <v-data-table class="data-table" dense :headers="[]" :items="[]" />
       <v-data-table
-        dense
         class="data-table"
-        :headers="[
-          { text: 'col1', value: 'h1ValueKey' },
-          { text: 'col2', value: 'h2ValueKey' },
-          { text: 'col3', value: 'h3ValueKey' }
-        ]"
-        :items="[]"
+        dense
+        :headers="data_empty.headers"
+        :items="data_empty.empty"
       />
       <v-data-table
         dense
         class="data-table"
-        :headers="[
-          { text: 'col1', value: 'h1ValueKey' },
-          { text: 'col2', value: 'h2ValueKey' },
-          { text: 'col3', value: 'h3ValueKey' },
-          { text: 'col4', value: 'h4ValueKey' }
-        ]"
-        :items="[
-          { h1ValueKey: '1', h2ValueKey: 'col1-2', h3ValueKey: 'col1-3', h4ValueKey: 'col1-4' },
-          { h1ValueKey: '2', h2ValueKey: 'col2-2', h3ValueKey: 'col2-3', h4ValueKey: 'col2-4' },
-          { h1ValueKey: '3', h2ValueKey: 'col3-2', h3ValueKey: 'col3-3', h4ValueKey: 'col3-4' }
-        ]"
+        :headers="data_normal.headers"
+        :items="data_normal.items"
+      />
+      <v-data-table
+        dense
+        class="data-table"
+        :headers="data_expanded.headers"
+        :items="data_expanded.items"
         item-key="h1ValueKey"
         show-expand
       >
@@ -41,17 +33,8 @@
         v-model="selected"
         class="data-table"
         dense
-        :headers="[
-          { text: 'col1', value: 'h1ValueKey' },
-          { text: 'col2', value: 'h2ValueKey' },
-          { text: 'col3', value: 'h3ValueKey' },
-          { text: 'col4', value: 'h4ValueKey' }
-        ]"
-        :items="[
-          { h1ValueKey: '1', h2ValueKey: 'col1-2', h3ValueKey: 'col1-3', h4ValueKey: 'col1-4' },
-          { h1ValueKey: '2', h2ValueKey: 'col2-2', h3ValueKey: 'col2-3', h4ValueKey: 'col2-4' },
-          { h1ValueKey: '3', h2ValueKey: 'col3-2', h3ValueKey: 'col3-3', h4ValueKey: 'col3-4' }
-        ]"
+        :headers="data_select.headers"
+        :items="data_select.items"
         show-select
         item-key="h1ValueKey"
         :single-select="singleSelect"
@@ -64,61 +47,61 @@
         </template>
       </v-data-table>
 
-      <div v-for="table of data.content.tables" :key="table.tablesColName">
-        <v-data-table
-          class="data-table"
-          :headers="getHeaders(table.headers)"
-          :items="table.items"
-          hide-default-header
-          hide-default-footer
-        >
-          <!-- 客製化 header 無法使用 Vuetify 提供的選項功能 -->
-          <template #header>
-            <thead>
-              <tr v-for="(header, index) of table.headers" :key="index">
-                <th
-                  v-for="(headerCol, colIndex) of header"
-                  :key="colIndex"
-                  :rowspan="headerCol.rowspan"
-                  :colspan="headerCol.colspan"
-                >
-                  {{ headerCol.text }}
-                </th>
-              </tr>
-            </thead>
-          </template>
-          <template #item="{ item }">
-            <tr>
-              <td v-for="o of getItemsKeys(table.headers)" :key="o.value">
-                <div v-if="typeof item[o.value] === 'string'">{{ item[o.value] }}</div>
-                <v-btn
-                  v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'button'"
-                >
-                  {{ item[o.value].text }}
-                </v-btn>
-                <router-link
-                  v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'link'"
-                  to="#"
-                >
-                  <Icon :w="20" :h="20" name="icon_overview" />
-                  aaa
-                </router-link>
-                <label
-                  v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'checkbox'"
-                >
-                  <input v-model="selected" type="checkbox" :value="item" />
-                  aaa
-                </label>
-              </td>
+      <v-data-table
+        class="data-table"
+        :headers="getHeaders(data_RER.headers)"
+        :items="data_RER.items"
+        hide-default-header
+        hide-default-footer
+      >
+        <!-- 客製化 header 無法使用 Vuetify 提供的選項功能 -->
+        <template #header>
+          <thead>
+            <tr v-for="(header, index) of data_RER.headers" :key="index">
+              <th
+                v-for="(headerCol, colIndex) of header"
+                :key="colIndex"
+                :rowspan="headerCol.rowspan"
+                :colspan="headerCol.colspan"
+              >
+                {{ headerCol.text }}
+              </th>
             </tr>
-          </template>
-        </v-data-table>
-      </div>
+          </thead>
+        </template>
+        <template #item="{ item }">
+          <tr>
+            <td v-for="o of getItemsKeys(data_RER.headers)" :key="o.value">
+              <div v-if="typeof item[o.value] === 'string'">{{ item[o.value] }}</div>
+              <v-btn
+                v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'button'"
+              >
+                {{ item[o.value].text }}
+              </v-btn>
+              <router-link
+                v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'link'"
+                to="#"
+              >
+                <Icon :w="20" :h="20" name="icon_overview" />
+                aaa
+              </router-link>
+              <label
+                v-else-if="typeof item[o.value] === 'object' && item[o.value].type === 'checkbox'"
+              >
+                <input v-model="selected" type="checkbox" :value="item" />
+                aaa
+              </label>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
     </v-sheet>
   </v-card>
 </template>
 
 <script>
+import { data_empty, data_normal, data_expanded, data_select, data_RER } from './table/tableData'
+
 export default {
   components: {},
   props: {},
@@ -127,177 +110,11 @@ export default {
     return {
       singleSelect: null,
       selected: [],
-      data: {
-        status: '200',
-        content: {
-          title: '管領性報表',
-          tablesColNames: ['REB', 'RER'],
-          breadcrumb: ['管工', '管表'],
-          tables: [
-            {
-              tablesColName: 'REB',
-              headers: [
-                [
-                  {
-                    colspan: 1,
-                    headerGroup: '1',
-                    seq: 1,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 2,
-                    text: '業務來源',
-                    value: 'aaa',
-                    uuid: '1'
-                  },
-                  {
-                    colspan: 2,
-                    headerGroup: '1',
-                    seq: 2,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '核保',
-                    value: '',
-                    uuid: '2'
-                  },
-                  {
-                    colspan: 1,
-                    headerGroup: '1',
-                    seq: 3,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 2,
-                    text: '會辦',
-                    value: 'ccc',
-                    uuid: '4'
-                  }
-                ],
-                [
-                  {
-                    colspan: 1,
-                    headerGroup: '2',
-                    seq: 1,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '已處理',
-                    value: 'ddd',
-                    uuid: '5'
-                  },
-                  {
-                    colspan: 1,
-                    headerGroup: '2',
-                    seq: 2,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '待處理回覆2',
-                    value: 'eee',
-                    uuid: '6'
-                  }
-                ]
-              ],
-
-              items: [
-                {
-                  aaa: { type: 'button', text: 'aaa' },
-                  bbb: 'bbb',
-                  ccc: 'ccc',
-                  ddd: 'ddd',
-                  eee: 'eee'
-                },
-                {
-                  aaa: { type: 'link', text: '###' },
-                  bbb: 'bbb',
-                  ccc: 'ccc',
-                  ddd: 'ddd',
-                  eee: 'eee'
-                },
-                {
-                  aaa: { type: 'checkbox', text: 'aaa' },
-                  bbb: 'bbb',
-                  ccc: 'ccc',
-                  ddd: 'ddd',
-                  eee: 'eee'
-                },
-                {
-                  aaa: 'aaa',
-                  bbb: 'bbb',
-                  ccc: 'ccc',
-                  ddd: 'ddd',
-                  eee: { type: 'checkbox', text: '123' }
-                }
-              ]
-            },
-            {
-              tablesColName: 'RER',
-              headers: [
-                [
-                  {
-                    colspan: 1,
-                    headerGroup: '1',
-                    seq: 1,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 2,
-                    text: '業務來源',
-                    value: 'busS',
-                    uuid: '1'
-                  },
-                  {
-                    colspan: 2,
-                    headerGroup: '1',
-                    seq: 2,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '核保',
-                    value: '',
-                    uuid: '2'
-                  },
-                  {
-                    colspan: 1,
-                    headerGroup: '1',
-                    seq: 3,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 2,
-                    text: '會辦',
-                    value: '',
-                    uuid: '4'
-                  }
-                ],
-                [
-                  {
-                    colspan: 1,
-                    headerGroup: '2',
-                    seq: 1,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '已處理',
-                    value: 'underWriting',
-                    uuid: '5'
-                  },
-                  {
-                    colspan: 1,
-                    headerGroup: '2',
-                    seq: 2,
-                    tableSeq: 1,
-                    prName: 'REB',
-                    rowspan: 1,
-                    text: '待處理回覆2',
-                    value: 'underWriting',
-                    uuid: '6'
-                  }
-                ]
-              ],
-
-              items: []
-            }
-          ]
-        }
-      }
+      data_empty,
+      data_normal,
+      data_expanded,
+      data_select,
+      data_RER
     }
   },
 
