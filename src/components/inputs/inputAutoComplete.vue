@@ -1,7 +1,6 @@
 <template>
   <v-row class="align-baseline no-gutters">
     <v-col v-if="name" :cols="colsName" :class="{ 'pr-1 text-right': row }">
-      |
       <slot :name="name">{{ name }}</slot>
     </v-col>
     <v-col :cols="row ? colsInput : cols" class="d-flex" :class="{ 'pl-2': row }">
@@ -12,8 +11,7 @@
         class="input-autocomplete"
         :class="{
           'input-autocomplete--color-changed': hasChanged,
-          'input-autocomplete--disabled': isDisabled,
-          isChanged
+          'input-autocomplete--disabled': disabled
         }"
         :placeholder="placeholder"
         :rules="localRules"
@@ -21,8 +19,8 @@
         :items="localItems"
         :item-text="itemTextKey"
         :item-value="itemValueKey"
-        :disabled="isDisabled"
-        :readonly="isDisabled"
+        :disabled="disabled"
+        :readonly="readonly"
         hide-details="auto"
         dense
         outlined
@@ -45,65 +43,19 @@
 </template>
 
 <script>
-import { disabledMixin, changeColorMixin, inputRefMixin } from './inputMixin.js'
+import { changeColorMixin, inputRefMixin } from './inputMixin.js'
 export default {
-  mixins: [disabledMixin, changeColorMixin, inputRefMixin],
+  mixins: [changeColorMixin, inputRefMixin],
   inheritAttrs: false,
   props: {
-    value: {
-      type: String,
-      default: ''
-    },
-
     name: {
       type: String,
       default: ''
     },
 
-    items: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-
-    itemTextKey: {
-      type: String,
-      default: 'text'
-    },
-
-    itemValueKey: {
-      type: String,
-      default: 'value'
-    },
-
-    required: {
-      type: Boolean,
-      default: false
-    },
-
     label: {
       type: String,
       default: ''
-    },
-
-    rules: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-
-    hasDefault: {
-      type: Boolean,
-      default: false
-    },
-
-    defaultItem: {
-      type: Object,
-      default() {
-        return { text: '', value: '' }
-      }
     },
 
     placeholder: {
@@ -129,6 +81,57 @@ export default {
     colsInput: {
       type: Number,
       default: 8
+    },
+
+    items: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+
+    itemTextKey: {
+      type: String,
+      default: 'text'
+    },
+
+    itemValueKey: {
+      type: String,
+      default: 'value'
+    },
+
+    hasDefault: {
+      type: Boolean,
+      default: false
+    },
+
+    defaultItem: {
+      type: Object,
+      default() {
+        return { text: '', value: '' }
+      }
+    },
+
+    required: {
+      type: Boolean,
+      default: false
+    },
+
+    rules: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -137,16 +140,6 @@ export default {
   },
 
   computed: {
-    localValue: {
-      get() {
-        return !this.value ? '' : this.value
-      },
-
-      set(newValue) {
-        this.$emit('input', newValue)
-      }
-    },
-
     localItems() {
       return this.hasDefault
         ? [

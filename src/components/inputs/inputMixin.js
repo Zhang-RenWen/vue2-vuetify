@@ -1,7 +1,4 @@
 import { isExceed, truncateBytes } from '@/utils/bytesCount'
-const isEmpty = (val) => {
-  return val === val
-}
 
 export const changeColorMixin = {
   data() {
@@ -9,78 +6,51 @@ export const changeColorMixin = {
       /**
        *  value changed
        */
-      hasChanged: false,
-      /**
-       *  modified state (trigger by UI interaction)
-       */
-
-      isDirty: false,
-      /**
-       *  initiate value
-       */
-      initValue: null
-      // uuid: this.getUUIDv4()
+      hasChanged: false
     }
   },
   computed: {
-    isChanged() {
-      return (
-        this.initValue !== this.value &&
-        // 排除空白與 null 比對
-        !(
-          (this.value === '' && this.initValue === null) ||
-          (this.value === null && this.initValue === '')
-        )
-      )
+    localValue: {
+      get() {
+        this.checkHasChanged()
+        return this.value
+      },
+      set() {
+        this.checkHasChanged()
+      }
     }
   },
 
   mounted() {},
   beforeDestroy() {},
   props: {
-    oldValue: null
+    oldValue: {
+      type: String,
+      default: ''
+    },
+
+    value: {
+      type: String,
+      default: ''
+    }
   },
   created() {
     this.initValue = this.value
   },
 
   methods: {
-    checkHasChanged(newVlu, oldVlu) {
-      if (!isEmpty(oldVlu) && newVlu !== oldVlu && newVlu !== this.initValue) {
+    checkHasChanged() {
+      const emptyTheSameGroups = ['', null, 'null', undefined]
+      // 記得型別檢查
+      if (
+        ![undefined].includes(this.oldValue) &&
+        this.value !== this.oldValue &&
+        !(emptyTheSameGroups.includes(this.oldValue) && emptyTheSameGroups.includes(this.value))
+      ) {
         this.hasChanged = true
       } else {
         this.hasChanged = false
       }
-    },
-
-    handleResetColor() {
-      this.hasChanged = false
-      this.isDirty = false
-      this.initValue = this.value
-    }
-  }
-}
-
-export const checkErrorMixin = {
-  data() {
-    return {
-      scnId: ''
-    }
-  }
-}
-
-export const disabledMixin = {
-  // 控制顯示 mixins: [uiStateMixin]
-  props: {
-    disabled: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  computed: {
-    isDisabled() {
-      return this.disabled
     }
   }
 }
@@ -137,22 +107,9 @@ export const formatterMixin = {
     formatter: {}
   },
 
-  async mounted() {
-    await this.$nextTick()
-    if (!this.$refs.inputRef) return
-    const $input = this.$refs.inputRef.$refs.input
-    $input.addEventListener('input', this.onNativeInput)
-    $input.addEventListener('blur', this.onNativeBlur)
-    $input.addEventListener('change', this.onNativeChange)
-  },
+  async mounted() {},
 
-  beforeDestroy() {
-    const $input = this.$refs.inputRef.$refs.input
-    if (!$input) return
-    $input.removeEventListener('input', this.onNativeInput)
-    $input.removeEventListener('blur', this.onNativeBlur)
-    $input.removeEventListener('change', this.onNativeChange)
-  },
+  beforeDestroy() {},
 
   methods: {
     toString(v) {
@@ -170,42 +127,8 @@ export const formatterMixin = {
       return v
     },
 
-    updateValue(v, force = false) {
-      if (this.isLazyFormatter && !force) return
-      if (v === this.value) return
-    },
     formateValue(v, event) {
       return this.formatter ? this.formatter(this.toString(), event) : v
-    },
-    onNativeInput(event) {
-      const {
-        isComposing,
-        defaultPrevented,
-        target: { value }
-      } = event
-      if (isComposing) return
-      const formatted = this.formateValue(value, event)
-      if (formatted === false || this.isLazyFormatter || defaultPrevented) {
-        event.stopPropagation()
-        return
-      }
-
-      this.updateValue(formatted)
-    },
-    onNativeBlur(event) {
-      // console.log("Input TextField onNativeBlur", event);
-      const { value } = event.target
-      const formatted = this.formateValue(value, event)
-      if (formatted === false) return
-      this.updateValue(this.modifyValue(formatted), true)
-    },
-    onNativeChange(event) {
-      const { value } = event.target
-      const formatted = this.formateValue(value, event)
-      if (formatted === false || event.defaultPrevented) {
-        event.stopPropagation
-        return
-      }
     }
   }
 }
@@ -220,16 +143,6 @@ export const limitInputMixin = {
     return {
       inputRef: null,
       maxBytes: 0 // 讓外部元件以變更maxBytes的方式使用這個mixin
-    }
-  },
-
-  watch: {
-    // 配合data.maxBytes將computed變更為immediate watcher
-    bytesCount: {
-      handler(newValue) {
-        this.maxBytes = newValue
-      },
-      immediate: true
     }
   },
 
