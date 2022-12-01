@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import toolTipLabel from '@/components/toolTipLabel' // import uiStateMixin from "@mixins/UIstateMixin";
+import toolTipLabel from '@/components/tooltip/tooltipLabel' // import uiStateMixin from "@mixins/UIstateMixin";
 import { disabledMixin, changeColorMixin } from '../.inputMixin.js'
 import inputDateMixin from './.inputDateMixin.js'
 

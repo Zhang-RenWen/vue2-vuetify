@@ -36,16 +36,35 @@
     <v-card class="mb-10">
       <v-card-title>
         <h2>
-          InputAutoComplete
+          TextInput
           <span id="" />
         </h2>
       </v-card-title>
       <v-divider />
       <v-card-text>
         <v-row>
-          <v-col />
-          <InputAutoComplete />
-          <v-col />
+          <v-col>
+            <v-checkbox v-model="textInput_disabled" label="textInput_disabled" dense />
+            <v-checkbox v-model="textInput_readonly" label="textInput_readonly" dense />
+            <v-checkbox
+              v-model="textInput_isCapital"
+              :disabled="textInput_disabled"
+              :readonly="textInput_readonly"
+              label="textInput_isCapital"
+              dense
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <TextInput
+              v-model="textInput"
+              :disabled="textInput_disabled"
+              :readonly="textInput_readonly"
+              :is-capital="textInput_isCapital"
+            />
+          </v-col>
+          <v-col>value:{{ textInput }}</v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -68,7 +87,11 @@ export default {
 
       itemTextKey: 'label',
       required: true,
-      hasDefault: false
+      hasDefault: false,
+      textInput: '',
+      textInput_disabled: false,
+      textInput_readonly: false,
+      textInput_isCapital: false
     }
   },
 

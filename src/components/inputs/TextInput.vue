@@ -12,13 +12,13 @@
       v-model.trim="localValue"
       :placeholder="placeholder"
       :rules="localRules"
-      :readonly="isDisabled"
-      :disabled="isDisabled"
+      :readonly="readonly"
+      :disabled="disabled"
       class="inputTextField"
       :class="{
         'inputTextField--colorChanged': hasChanged,
-        'inputTextField--disabled': isDisabled,
-        isChanged
+        'inputTextField--disabled': disabled,
+        hasChanged
       }"
       :label="label"
       :error.sync="localError"
@@ -29,10 +29,13 @@
       flat
       hide-details="auto"
       vue
+      dense
       validate-on-blur
       v-bind="$attrs"
       v-on="listeners"
-      @keypress.prevent="$emit('keypress', $event)"
+      @focus="onFocus"
+      @blur="validate()"
+      @reset="reset"
       @paste.prevent="onPaste"
       @keyup.prevent="toUpperCase"
     />
@@ -40,18 +43,12 @@
 </template>
 
 <script>
-import {
-  disabledMixin,
-  changeColorMixin,
-  inputRefMixin,
-  formatterMixin,
-  limitInputMixin
-} from './inputMixin.js'
-import tooltipLabel from '@/components/tooltipLabel'
+import { changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin } from './inputMixin.js'
+import tooltipLabel from '@/components/tooltip/tooltipLabel'
 export default {
   components: { tooltipLabel },
 
-  mixins: [disabledMixin, changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin],
+  mixins: [changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin],
   inheritAttrs: false,
 
   props: {
@@ -65,6 +62,11 @@ export default {
       default: ''
     },
 
+    placeholder: {
+      type: String,
+      default: ''
+    },
+
     value: { type: [String, Number], default: '' },
     maxLength: {
       type: Number,
@@ -74,6 +76,16 @@ export default {
     rules: {
       type: Array,
       default: () => []
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+
+    readonly: {
+      type: Boolean,
+      default: false
     },
 
     errorMessages: {
@@ -115,7 +127,9 @@ export default {
     return {
       errorDefaultMessages: {
         3: '此欄位僅可輸入半形英文數字'
-      }
+      },
+
+      localError: ''
     }
   },
 
@@ -170,25 +184,12 @@ export default {
   },
 
   methods: {
-    // 外部調用
-    btnMethod() {
-      this.$emit('btnMethod')
+    validate(showMessage = false) {
+      return this.$refs.inputRef.validate(showMessage)
     },
 
-    // 外部調用
-    focus() {
-      this.$refs.inputRef.focus()
-    },
-
-    // 外部調用
-    validate(state = true) {
-      const input = this.$refs.inputRef
-      return input.validate(state)
-    },
-
-    // 外部調用
-    resetValidation() {
-      this.$refs.inputRef.resetValidation()
+    reset() {
+      return this.$refs.inputRef.reset()
     },
 
     checkEmpty(value) {
@@ -466,36 +467,13 @@ export default {
         el.value = formatValue
         this.$emit('input', formatValue)
       }
+    },
+
+    onFocus(e) {
+      this.$emit('focus', e)
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-/* stylelint-disable */
-::v-deep .inputTextField {
-  white-space: pre-line;
-  .v-input__control {
-    min-height: unset;
-  }
-}
-
-::v-deep .inputTextField--colorChanged {
-  input {
-    color: red;
-  }
-}
-::v-deep .inputTextField--disabled {
-  fieldset {
-    background-color: #fff;
-  }
-  input {
-    color: black;
-    cursor: no-drop;
-  }
-}
-
-::v-deep .input-text-field__suffix {
-  color: black;
-}
-</style>
+<style lang="scss" scoped></style>
