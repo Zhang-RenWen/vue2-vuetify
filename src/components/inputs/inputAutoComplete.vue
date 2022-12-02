@@ -219,11 +219,9 @@ export default {
 
 ::v-deep .input-autocomplete--disabled {
   .v-input__slot {
-    background-color: #e5e5e5;
   }
 
   input {
-    color: black;
   }
 }
 </style>

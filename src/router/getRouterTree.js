@@ -54,10 +54,16 @@ function createRouterTree() {
   function findContainer(el) {
     function findParentNode(el, routes) {
       for (let i = 0; i < routes.length; i++) {
-        if (el.parentName === routes[i].name) {
-          routes[i].children.push(el)
+        const parentEl = routes[i]
+        if (
+          el.parentName === parentEl.name &&
+          !parentEl.children.some((o) => {
+            return o.name === el.name
+          })
+        ) {
+          parentEl.children.push(el)
         } else {
-          findParentNode(el, routes[i].children)
+          findParentNode(el, parentEl.children)
         }
       }
     }

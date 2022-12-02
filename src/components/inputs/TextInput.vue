@@ -16,9 +16,8 @@
       :disabled="disabled"
       class="inputTextField"
       :class="{
-        'inputTextField--colorChanged': hasChanged,
-        'inputTextField--disabled': disabled,
-        hasChanged
+        'input-textField--colorChanged': hasChanged,
+        'input-textField--disabled': disabled
       }"
       :label="label"
       :error.sync="localError"
@@ -67,7 +66,6 @@ export default {
       default: ''
     },
 
-    value: { type: [String, Number], default: '' },
     maxLength: {
       type: Number,
       default: null
@@ -108,18 +106,6 @@ export default {
     required: {
       type: Boolean,
       default: false
-    },
-
-    // 是否難字
-    isWebFont: {
-      type: Boolean,
-      default: false
-    },
-    // 是否大小寫
-
-    isCapital: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -134,18 +120,6 @@ export default {
   },
 
   computed: {
-    localValue: {
-      get() {
-        return this.value
-      },
-
-      set(newValue) {
-        if (newValue) {
-          this.$emit('input', newValue)
-        }
-      }
-    },
-
     localRules() {
       if (this.disabled) {
         return []
@@ -461,7 +435,7 @@ export default {
     },
 
     toUpperCase() {
-      if (this.isCapital) {
+      if (this.uppercase) {
         const el = this.$refs.inputRef.$el.querySelector('input')
         const formatValue = el.value.trim().replace(' ', '').toUpperCase()
         el.value = formatValue
@@ -476,4 +450,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* stylelint-disable */
+
+::v-deep .input-textField--colorChanged input,
+.input-textField--colorChanged textarea {
+  color: red;
+}
+
+::v-deep .input-textField--disabled {
+  .v-input__slot {
+  }
+
+  input {
+  }
+}
+</style>

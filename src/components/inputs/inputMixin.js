@@ -15,8 +15,9 @@ export const changeColorMixin = {
         this.checkHasChanged()
         return this.value
       },
-      set() {
+      set(newValue) {
         this.checkHasChanged()
+        this.$emit('input', newValue)
       }
     }
   },
@@ -88,12 +89,12 @@ export const inputRefMixin = {
 
 export const formatterMixin = {
   props: {
-    /**  trim on change/blur */
+    /** trim on change/blur */
     trim: {
       type: Boolean,
       default: false
     },
-    /**   uppercase on change/blur */
+    /** uppercase on change/blur */
     uppercase: {
       type: Boolean,
       default: false
@@ -103,7 +104,7 @@ export const formatterMixin = {
       type: Boolean,
       default: false
     },
-    /**    customize Formatter */
+    /** customize Formatter */
     formatter: {}
   },
 
@@ -194,3 +195,5 @@ export const limitInputMixin = {
     }
   }
 }
+
+export const rules = {}

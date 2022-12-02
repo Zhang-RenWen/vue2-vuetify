@@ -47,10 +47,10 @@
             <v-checkbox v-model="textInput_disabled" label="textInput_disabled" dense />
             <v-checkbox v-model="textInput_readonly" label="textInput_readonly" dense />
             <v-checkbox
-              v-model="textInput_isCapital"
+              v-model="textInput_uppercase"
               :disabled="textInput_disabled"
               :readonly="textInput_readonly"
-              label="textInput_isCapital"
+              label="textInput_uppercase"
               dense
             />
           </v-col>
@@ -61,7 +61,8 @@
               v-model="textInput"
               :disabled="textInput_disabled"
               :readonly="textInput_readonly"
-              :is-capital="textInput_isCapital"
+              :uppercase="textInput_uppercase"
+              old-value="A"
             />
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
@@ -91,7 +92,7 @@ export default {
       textInput: '',
       textInput_disabled: false,
       textInput_readonly: false,
-      textInput_isCapital: false
+      textInput_uppercase: false
     }
   },
 
