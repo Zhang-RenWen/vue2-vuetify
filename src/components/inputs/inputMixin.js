@@ -128,6 +128,15 @@ export const formatterMixin = {
       return v
     },
 
+    toUpperCase() {
+      if (this.uppercase) {
+        const el = this.$refs.inputRef.$el.querySelector('input')
+        const formatValue = el.value.trim().replace(' ', '').toUpperCase()
+        el.value = formatValue
+        this.$emit('input', formatValue)
+      }
+    },
+
     formateValue(v, event) {
       return this.formatter ? this.formatter(this.toString(), event) : v
     }
@@ -196,4 +205,61 @@ export const limitInputMixin = {
   }
 }
 
-export const rules = {}
+export const rulesMixin = {
+  props: {
+    required: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    checkEmpty(value) {
+      const name = this.name ? this.name : '此欄位'
+      return !this.required || !!value || `${name}為必填不可空白`
+    },
+
+    checkLength(value) {
+      if (typeof value === 'boolean' || (!value && value !== 0)) return true
+      return String(value).length <= this.maxLength || '此欄位值超過可輸入之長度'
+    },
+
+    checkMinLength(value) {
+      if (typeof value === 'boolean' || (!value && value !== 0)) return true
+      return String(value).length >= this.minLength || `此欄位請輸入至少${this.minLength}個字`
+    },
+
+    checkIsChinese(character) {
+      return (
+        (!this.checkIsEnglish(character) &&
+          !this.checkIsNumber(character) &&
+          !this.checkIsSymbol(character)) ||
+        '請輸入中文字'
+      )
+    },
+
+    checkIsEnglish(character) {
+      // 半形檢核
+      const regex = /^[a-zA-Z \-',.]$/
+      const isNormal = regex.test(character)
+      // 全形
+      const charCode = character.charCodeAt(0)
+      const isFullWidthUpperCase = 65313 <= charCode && charCode <= 65338
+      const isFullWidthLowerCase = 65345 <= charCode && charCode <= 65370
+      return isNormal || isFullWidthUpperCase || isFullWidthLowerCase || '請輸入英文'
+    },
+
+    checkIsNumber(character) {
+      const regex = /^[0-9]+$/
+      return regex.test(character) || '請輸入正整數'
+    },
+
+    checkIsSymbol(character) {
+      // 半形字元檢核
+      const regex = /^[\u0021-\u002F\u003A-\u0040\u005B\u0060\u007B-\u007E\s\u3001-\u303F]/
+      // 全形字元檢核
+      const regexFullWidth =
+        /^\u3000|[\uFE01-\uFF0F]|[\uFF1A-\uFF20]|[\uFF3B-\uFF40]|[\uFF5B-\uFFEE]/
+      return regex.test(character) || regexFullWidth.test(character) || '請輸入符號'
+    }
+  }
+}

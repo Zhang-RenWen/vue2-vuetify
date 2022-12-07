@@ -44,25 +44,98 @@
       <v-card-text>
         <v-row>
           <v-col>
-            <v-checkbox v-model="textInput_disabled" label="textInput_disabled" dense />
-            <v-checkbox v-model="textInput_readonly" label="textInput_readonly" dense />
-            <v-checkbox
-              v-model="textInput_uppercase"
-              :disabled="textInput_disabled"
-              :readonly="textInput_readonly"
-              label="textInput_uppercase"
-              dense
-            />
+            <v-row>
+              <v-col>
+                <v-checkbox v-model="textInput_disabled" label="disabled" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_readonly" label="readonly" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="textInput_uppercase"
+                  :disabled="textInput_disabled"
+                  :readonly="textInput_readonly"
+                  label="uppercase"
+                  dense
+                />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_required" label="required" dense />
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
+        <v-divider class="my-2" />
+        <v-row>
+          <v-col>
+            {{ checkFunctions }}
+            <v-row>
+              <v-col>
+                <v-checkbox
+                  v-model="checkFunctions"
+                  label="checkIsChinese"
+                  value="checkIsChinese"
+                  dense
+                />
+              </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="checkFunctions"
+                  label="checkIsEnglish"
+                  value="checkIsEnglish"
+                  dense
+                />
+              </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="checkFunctions"
+                  label="checkIsNumber"
+                  value="checkIsNumber"
+                  dense
+                />
+              </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="checkFunctions"
+                  label="checkIsSymbol"
+                  value="checkIsSymbol"
+                  dense
+                />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-divider class="my-2" />
+        <v-row>
+          <v-col>
+            <v-row>
+              <v-col>
+                <TextInput v-model="textInput_maxlength" label="maxlength" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_minlength" label="minlength" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_errorMessages" label="error messages" />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-divider class="my-6" />
         <v-row>
           <v-col>
             <TextInput
               v-model="textInput"
+              label="result"
               :disabled="textInput_disabled"
               :readonly="textInput_readonly"
               :uppercase="textInput_uppercase"
-              old-value="A"
+              :required="textInput_required"
+              :max-length="textInput_maxlength"
+              :min-length="textInput_minlength"
+              :error-messages="textInput_errorMessages"
+              :check-functions="checkFunctions"
             />
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
@@ -92,7 +165,12 @@ export default {
       textInput: '',
       textInput_disabled: false,
       textInput_readonly: false,
-      textInput_uppercase: false
+      textInput_uppercase: false,
+      textInput_maxlength: null,
+      textInput_minlength: null,
+      textInput_errorMessages: '',
+      textInput_required: false,
+      checkFunctions: []
     }
   },
 
