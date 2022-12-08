@@ -69,39 +69,9 @@
         <v-divider class="my-2" />
         <v-row>
           <v-col>
-            {{ checkFunctions }}
             <v-row>
-              <v-col>
-                <v-checkbox
-                  v-model="checkFunctions"
-                  label="checkIsChinese"
-                  value="checkIsChinese"
-                  dense
-                />
-              </v-col>
-              <v-col>
-                <v-checkbox
-                  v-model="checkFunctions"
-                  label="checkIsEnglish"
-                  value="checkIsEnglish"
-                  dense
-                />
-              </v-col>
-              <v-col>
-                <v-checkbox
-                  v-model="checkFunctions"
-                  label="checkIsNumber"
-                  value="checkIsNumber"
-                  dense
-                />
-              </v-col>
-              <v-col>
-                <v-checkbox
-                  v-model="checkFunctions"
-                  label="checkIsSymbol"
-                  value="checkIsSymbol"
-                  dense
-                />
+              <v-col v-for="(ruleName, index) of rulesMixin" :key="index">
+                <v-checkbox v-model="checkMethods" :label="ruleName" :value="ruleName" dense />
               </v-col>
             </v-row>
           </v-col>
@@ -135,7 +105,7 @@
               :max-length="textInput_maxlength"
               :min-length="textInput_minlength"
               :error-messages="textInput_errorMessages"
-              :check-functions="checkFunctions"
+              :rules="checkMethods"
             />
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
@@ -146,6 +116,7 @@
 </template>
 
 <script>
+import { rulesMixin } from '@/components/inputs/inputMixin.js'
 export default {
   components: {},
   props: {},
@@ -170,7 +141,8 @@ export default {
       textInput_minlength: null,
       textInput_errorMessages: '',
       textInput_required: false,
-      checkFunctions: []
+      rulesMixin: Object.keys(rulesMixin.methods),
+      checkMethods: []
     }
   },
 

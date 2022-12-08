@@ -1,4 +1,3 @@
-import { isAllObjPropsEmpty } from '@/utils/tableUtil.js'
 import Vue from 'vue'
 /**
  * base64字串轉Excel並下載
@@ -10,8 +9,10 @@ import Vue from 'vue'
  */
 
 export function formatDownload(resData) {
-  const { data } = resData
-  if (!isAllObjPropsEmpty(resData) && data.file) {
+  const { data, status } = resData ?? {}
+  const { file, fileName, msg } = data ?? {}
+
+  if (status === 200 && file) {
     // 格式轉換
     let baseData = window.atob(data.file)
     let n = baseData.length
@@ -21,31 +22,35 @@ export function formatDownload(resData) {
     }
 
     let blob = new Blob([u8arr], { type: 'application/json' })
-
     // 下載
     let url = window.URL.createObjectURL(blob)
     let downLoadLink = document.createElement('a')
     document.body.appendChild(downLoadLink)
     downLoadLink.style = 'display: none'
     downLoadLink.href = url
-    downLoadLink.download = data.fileName || '匯出資料.x1sx'
+    downLoadLink.download = fileName || '匯出資料.x1sx'
     downLoadLink.click()
     downLoadLink.remove()
 
     // 清除
     window.URL.revokeObjectURL(url)
-    const { msg } = data
     Vue.prototype.$notifier.showMessage({
       message: msg || '匯出成功:檔案下載中',
       color: 'success'
     })
     return true
-  } else {
-    console.log('%c Excel轉換下載失敗·請確認API資料', 'background: red; color: white')
   }
 
-  Vue.prototype.$notifier.showMessage({
-    message: '匯出失敗'
-  })
+  // 錯誤
+  if (status === 504) {
+    Vue.prototype.$notifier.showMessage({
+      message: '逾時'
+    })
+  } else {
+    Vue.prototype.$notifier.showMessage({
+      message: '匯出失敗'
+    })
+  }
+
   return false
 }

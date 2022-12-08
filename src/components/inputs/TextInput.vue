@@ -20,7 +20,6 @@
         'input-textField--disabled': disabled
       }"
       :label="label"
-      :error.sync="localError"
       :counter="[0, '0', '', undefined, null].includes(maxLength) ? false : true"
       :maxlength="[0, '0', undefined, null].includes(maxLength) ? null : maxLength"
       :minlength="[0, '0', '', undefined, null].includes(minLength) ? null : minLength"
@@ -93,12 +92,6 @@ export default {
       default: () => []
     },
 
-    checkFunctions: {
-      // reference to rulesMixin.methods
-      type: Array,
-      default: () => []
-    },
-
     disabled: {
       type: Boolean,
       default: false
@@ -116,40 +109,36 @@ export default {
   },
 
   data() {
-    return {
-      localError: ''
-    }
+    return {}
   },
 
   computed: {
     localRules() {
       const rules = this.rules
+      const newRules = []
+      const allCheckMethods = Object.keys(rulesMixin.methods)
       if (this.disabled) {
-        return []
+        return newRules
       }
       if (this.required) {
-        rules.unshift(this.checkEmpty)
+        newRules.unshift(this.checkEmpty)
       }
       if (this.maxLength) {
-        rules.unshift(this.checkLength)
+        newRules.unshift(this.checkLength)
       }
       if (this.minLength) {
-        rules.unshift(this.checkMinLength)
+        newRules.unshift(this.checkMinLength)
       }
+      rules.forEach((rule) => {
+        if (allCheckMethods.includes(rule)) {
+          // name
+          newRules.unshift(this[rule])
+        } else {
+          newRules.unshift(rule)
+        }
+      })
 
-      if (this.checkFunctions.length > 0) {
-        this.checkFunctions.forEach((methodName) => {
-          if (
-            ['checkIsChinese', 'checkIsEnglish', 'checkIsNumber', 'checkIsSymbol'].includes(
-              methodName
-            )
-          ) {
-            rules.unshift(this[methodName])
-          }
-        })
-      }
-
-      return rules
+      return newRules
     },
 
     listeners() {
