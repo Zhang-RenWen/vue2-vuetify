@@ -52,13 +52,10 @@
                 <v-checkbox v-model="textInput_readonly" label="readonly" dense />
               </v-col>
               <v-col>
-                <v-checkbox
-                  v-model="textInput_uppercase"
-                  :disabled="textInput_disabled"
-                  :readonly="textInput_readonly"
-                  label="uppercase"
-                  dense
-                />
+                <v-checkbox v-model="textInput_trim" label="trim" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_uppercase" label="uppercase" dense />
               </v-col>
               <v-col>
                 <v-checkbox v-model="textInput_required" label="required" dense />
@@ -101,6 +98,7 @@
               :disabled="textInput_disabled"
               :readonly="textInput_readonly"
               :uppercase="textInput_uppercase"
+              :trim="textInput_trim"
               :required="textInput_required"
               :max-length="textInput_maxlength"
               :min-length="textInput_minlength"
@@ -137,6 +135,7 @@ export default {
       textInput_disabled: false,
       textInput_readonly: false,
       textInput_uppercase: false,
+      textInput_trim: false,
       textInput_maxlength: null,
       textInput_minlength: null,
       textInput_errorMessages: '',

@@ -257,16 +257,14 @@ export const formatterMixin = {
     toString(v) {
       return typeof v === 'string' ? v : ''
     },
-    modifyValue(v) {
-      v = this.toString()
-      if (this.trim) {
-        v = v.trim()
-      }
 
-      if (this.uppercase) {
-        v = v.toUpperCase()
+    toTrim() {
+      if (this.trim) {
+        const el = this.$refs.inputRef.$el.querySelector('input')
+        const formatValue = this.toString(el.value).trim().replace(' ', '')
+        el.value = formatValue
+        this.$emit('input', formatValue)
       }
-      return v
     },
 
     toUpperCase() {
@@ -278,8 +276,9 @@ export const formatterMixin = {
       }
     },
 
-    formatValue(v, event) {
-      return this.formatter ? this.formatter(this.toString(), event) : v
+    formatValue() {
+      this.toTrim()
+      this.toUpperCase()
     }
   }
 }
@@ -287,7 +286,8 @@ export const formatterMixin = {
 export const limitInputMixin = {
   props: {
     bytesCount: {
-      type: Number
+      type: Number,
+      required: false
     }
   },
   data() {

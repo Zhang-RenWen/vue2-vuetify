@@ -37,7 +37,7 @@
       @blur="validate()"
       @reset="reset"
       @paste.prevent="onPaste"
-      @keyup.prevent="toUpperCase"
+      @keyup.prevent="formatValue"
     />
   </div>
 </template>
