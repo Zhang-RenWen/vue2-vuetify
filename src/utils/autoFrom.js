@@ -1,10 +1,6 @@
 /**
  * 動態頁面object單頁資料轉換
  * @param {String} pushData 帯入所有資料
- *
- *
- *
- *
  */
 
 export function submitObjectData(pushData) {
@@ -14,21 +10,25 @@ export function submitObjectData(pushData) {
     let dataValue = pushData[key]
     if (Array.isArray(dataValue)) {
       dataValue = dataValue.join()
-      newObjData[key] = dataValue
     }
+    newObjData[key] = dataValue
   })
   // console.log("new0bjData", new0bjData);
   return newObjData
 }
 
-export function submitArrayData(pushData, viewShow = true) {
+export function submitArrayData(pushData, multipleTextList = [], viewShow = true) {
   let newData = []
   if (viewShow) {
     pushData.forEach((obj, i) => {
       newData[i] = {}
       Object.keys(obj).forEach((key) => {
         if (Array.isArray(pushData[i][key])) {
-          newData[i][key] = pushData[i][key].join()
+          if (multipleTextList.indexOf(key) >= 0) {
+            newData[i][key] = JSON.stringify(pushData[i][key])
+          } else {
+            newData[i][key] = pushData[i][key].join()
+          }
         } else {
           newData[i][key] = pushData[i][key]
         }

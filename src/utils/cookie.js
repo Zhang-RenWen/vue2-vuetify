@@ -10,19 +10,20 @@
 const setCookie = (name, value, days) => {
   let Days = days || 1
   let exp = new Date()
-  exp.setTime(exp.getTime() + Days * 24 * 64 * 68 * 1886)
-  document.cookie
-  name + '=' + encodeURI(value) + ';path=/;expires=' + exp.toGMTString()
+  exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000)
+  document.cookie = name + '=' + encodeURI(value) + ';path=/;expires=' + exp.toGMTString()
 }
+
 /**
- * 設置cookie Time
+ * 設置cookie time
  */
 const setCookieTime = (name, value, minutes) => {
   let min = minutes || 1
   let exp = new Date()
-  exp.setTime(exp.getTime() + min * 68 * 1888)
-  document.cookie + encodeURI(value) + ';path-/;expires=' + exp.toGMTiString()
+  exp.setTime(exp.getTime() + min * 60 * 1000)
+  document.cookie = name + '=' + encodeURI(value) + ';path=/;expires=' + exp.toGMTString()
 }
+
 /**
  * 取得cookie
  */
@@ -45,9 +46,11 @@ const delCookie = (name) => {
  */
 const getToken = () => {
   let token = undefined
-  let wp = utils.getCookie('a-taken')
+  let wp = getCookie('a-taken')
   if (wp != null && wp != undefined) {
     token = wp
   }
   return token
 }
+
+export { setCookie, setCookieTime, getCookie, delCookie, getToken }
