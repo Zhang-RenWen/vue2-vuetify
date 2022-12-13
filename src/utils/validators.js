@@ -82,10 +82,92 @@ export function checkTaxNumber(value, args) {
 }
 
 /**
+ * 只有英文數字
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function EnDigit(value, args) {
+  const { msg = '限輸入英文數字' } = { ...args }
+  return /[A-Za-z0-9]*$/g.test(value) || msg
+}
+
+/**
+ * 驗證資料長度
+ * @param {*} value
+ * @param {object} args - {length:資料長度,欄位名稱, msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkTextLength(value, args) {
+  const { length = null, label = '', msg = `${label}應為${length}碼，請修正` } = { ...args }
+
+  if (value || !length) return true
+  return String(value).length === +length || msg
+}
+
+/**
+ * 檢查數字範圍
+ * @param {*} value
+ * @param {object} args - {min:最小值, max:最大值 ,msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function numberRange(value, args) {
+  const { min = 0, max = 0, msg = `輸入範圍${min}~${max}` } = { ...args }
+  const maxNumber = Math.max(min, max)
+  const minNumber = Math.min(min, max)
+  return (value >= minNumber && value <= maxNumber) || msg
+}
+
+/**
+ * 台灣身分證驗證
+ * @param {*} value
+ * @param {object} args - { msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkTaiwanId(value, args) {
+  const ID = value.toUpperCase()
+  const { msg = '身份證驗證錯誤' } = { ...args }
+  const isTaiwanId =
+    /[A-Z][1-2]\d{8}$/g.test(ID) &&
+    (function (item) {
+      const abc = 'ABCDEFGHJKLMNPQRSTUVXYWZIO'
+      const m = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1]
+      const s = (abc.indexOf(item.substring(0, 1)) + 10).toString() + item.substring(0, 10)
+      let sum = 0
+      for (let i = 0; i < s.length; i++) {
+        sum += s[i] * m[i]
+      }
+      return sum % 10 === 0
+    })(ID)
+
+  return isTaiwanId || msg
+}
+
+/**
+ * 檢查台灣居留證號碼 舊式統一證號
+ * @param id 居留證號碼
+ */
+export function checkForeignerId(id) {
+  const ID = id.toUpperCase()
+  if (!/[A-Z]{2}\d{8}$/g.test(ID)) return false
+  const abc = 'ABCDEFGHJKLMNPQRSTUVXYWZIO'
+  const m = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1]
+  const s =
+    (abc.indexOf(ID.substring(0, 1)) + 10).toString() +
+    (abc.indexOf(ID.substring(1, 2)) % 10).toString() +
+    ID.substring(2)
+
+  let sum = 0
+  for (let i = 0; i < s.length; i++) {
+    sum += s[i] * m[i]
+  }
+  return sum % 10 === 0
+}
+
+/**
  * 檢查台灣居留證號碼 新式統一證號
  * @param id 居留證號碼
  */
-
 export function checkNewForeignerId(id) {
   const ID = id.toUpperCase()
   if (!/[A-Z][8,9]\d{8}$/g.test(ID)) {
@@ -186,4 +268,61 @@ export function checkNewForeignerId(id) {
     sum += parseInt(ID.substring(i, i + 1)) * m[i + 1]
   }
   return (parseInt(ID.substring(9, 10)) + sum) % 10 === 0
+}
+
+export function checkForeignerOtherId(otherId, id = '') {
+  if (![null, '', undefined].includes(id)) {
+    // 身分證 為舊式統一證號 其他ID不可輸入
+    if (checkForeignerId(id) && ![null, ''].includes(otherId)) {
+      return {
+        valid: false,
+        type: 'Msg02',
+        msg: '身分證ID非新式外來人口統一證號,其他ID不可輸入'
+      }
+    }
+    // 身分證 為新式統一證號 其他ID不可輸入 新式統一證號
+    if (checkNewForeignerId(id) && ![null, ''].includes(otherId) && checkNewForeignerId(otherId)) {
+      return {
+        valid: false,
+        type: 'Msg01',
+        msg: '(角色)ID欄位應輸入為新式統一證號、其他ID欄位英數入為舊式統一證號'
+      }
+    }
+    return { valid: true }
+  } else {
+    return { valid: true }
+  }
+}
+
+/**
+ * 檢查身分證字號與統一證號格式
+ */
+export function verifyTaiwanAndForeignerId(id) {
+  if (checkTaiwanId(id) === true || checkForeignerId(id) || checkNewForeignerId(id)) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 用身分證字號回傳性別
+ * M 男
+ * F 女
+ * U 不明
+ */
+export function idCheckGender(id) {
+  if ([null, '', undefined].includes(id)) return ''
+  const oneWord = id.charAt(0)
+  const checkWord = id.charAt(1)
+  let gender = ''
+  if (id.length === 10) {
+    // 第一碼為英文
+    if (/^[A-Za-z]*$/g.test(oneWord)) {
+      if (['A', 'C'].includes(checkWord)) gender = 'M'
+      if (['B', 'D'].includes(checkWord)) gender = 'F'
+      if (['1', '8'].includes(checkWord)) gender = 'M'
+      if (['2', '9'].includes(checkWord)) gender = 'F'
+    }
+  }
+  return gender
 }
