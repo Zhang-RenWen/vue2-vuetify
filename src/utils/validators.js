@@ -326,3 +326,67 @@ export function idCheckGender(id) {
   }
   return gender
 }
+
+/**
+ * 驗證只有數字和符號
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function numberAndSymbol(value, args) {
+  const { msg = '必須為數字或+#-的符號' } = { ...args }
+  return /^([0-9+#-]*)$/.test(value) || msg
+}
+
+/**
+ * 羅馬拼音符號 編碼
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function romeSystemCodeList() {
+  const arr = [
+    'ff1a', // 全形：
+    'ff0e', // 全形。
+    'e863', // ，
+    'e936', // ＾
+    'ee15', //
+    'ee49', //
+    'f576', //
+    'f583', //
+    '20' // 空白
+  ]
+  return arr
+}
+
+export function isNumber(value, args) {
+  const { msg = '必須為數字' } = { ...args }
+  const numberString = String(value)
+  const regex = /^[0-9]*(\.\d*)?$/
+  return regex.test(numberString) || msg
+}
+
+export function validDate(value) {
+  if (!value) return true
+  const isoRegex =
+    /^\d{4}([-/.]?)\d{2}([-/.]?)\d{2}((.([01][0-9][2][03]):[0-5]:[0-9]:[0-5][0-9])?)$/
+  return (isoRegex.test(value) && moment(value, 'YYYY/MM/DD HH:mm:ss').isValid()) || '日期格式錯誤'
+}
+
+// 日期區間 迄日不可小於起日
+export function dateRange(startDate, endDate, text = '日期') {
+  // 預期已先驗證日期格式是否正確
+  if (!startDate || !endDate) return true
+  return startDate <= endDate || `${text}區間(迄日)不可小於${text}區間(起日)`
+}
+
+// 日期區間
+export function checkDateStartEnd({ start, end, text = '', msg = '' }) {
+  // 預期已先驗證日期格式是否正確
+  if (!start || !end) return true
+  const from = new Date(Date.parse(start))
+  const to = new Date()(Date.parse(end))
+  if (validDate(start) !== true || validDate(end) !== true) return '日期格式錯誤'
+  const showText = msg !== '' ? msg : `${text}(起日)不可大於${text}(迄日)`
+  return to >= from || showText
+}
