@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isArray, isEmpty, inRange } from 'lodash'
+import { inRange } from 'lodash'
 
 /**
  * 必填
@@ -389,4 +389,150 @@ export function checkDateStartEnd({ start, end, text = '', msg = '' }) {
   if (validDate(start) !== true || validDate(end) !== true) return '日期格式錯誤'
   const showText = msg !== '' ? msg : `${text}(起日)不可大於${text}(迄日)`
   return to >= from || showText
+}
+
+/**
+ *
+ * @param {*} startDate
+ * @param {*} endDate
+ * @param {*} text
+ * @returns
+ */
+export function checkDateRange(value, args) {
+  const {
+    dateRange = { startDate: '', endDate: '' },
+    checkDateTimeFlag = 'minutes',
+    msg = '不在日期區間內'
+  } = { ...args }
+  if (
+    !moment(dateRange.startDate).isValid() ||
+    !moment(dateRange.endDate).isValid() ||
+    !moment(value).isValid()
+  )
+    return true
+  return moment(value).isBetween(dateRange.startDate, dateRange.endDate, checkDateTimeFlag) || msg
+}
+
+/**
+ * 針對日期區間的起日檢核不能大於迄日
+ * @param {*} value
+ * @param {object} args - {dateRange:{startDate:起始日期,endDate:結束日期},msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkStartDateRange(args) {
+  const { dateRange = { startDate: '', endDate: '' }, msg = '日期不可大於迄日' } = { ...args }
+  if (
+    validDate(dateRange.startDate) !== true ||
+    validDate(dateRange.endDate) !== true ||
+    !moment(dateRange.startDate).isValid() ||
+    !moment(dateRange.endDate).isValid()
+  ) {
+    return true
+  }
+  return moment(dateRange.startDate).isSameOrBefore(dateRange.endDate) || `${msg}`
+}
+
+/**
+ * 針對日期區間的起日檢核不可小於起日
+ * @param {*} value
+ * @param {object} args - {dateRange:{startDate:起始日期,endDate:結束日期},msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkEndDateRange(args) {
+  const { startDate = '', endDate = '', msg = '日期不可小於起日' } = { ...args }
+  // 兩個沒值不驗證
+  if (!startDate && !endDate) {
+    return true
+  }
+  // 其一有格式錯誤不驗證
+  if (validDate(startDate) !== true || validDate(endDate) !== true) {
+    return true
+  }
+  return (!!startDate && !!endDate) || `${msg}`
+}
+
+/**
+ * 起迄日需同時存在
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkExistStartEndDate(args) {
+  const { dateRange = { startDate: '', endDate: '' }, msg = '日期不可小於起日' } = { ...args }
+  if (
+    validDate(dateRange.startDate) !== true ||
+    validDate(dateRange.endDate) !== true ||
+    !moment(dateRange.startDate).isValid() ||
+    !moment(dateRange.endDate).isValid()
+  ) {
+    return true
+  }
+  return moment(dateRange.endDate).isSameOrAfter(dateRange.startDate) || `${msg}`
+}
+
+/**
+ * 同時檢查整數位和小數位
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function checkIntAndDecimal(value, args) {
+  const { int = 0, decimal = 0, msg = `限制整數位${int}位及小數點${decimal}位` } = { ...args }
+  const str = '^(\\d{0,' + int + '})(\\.\\d{0,' + decimal + '})?$'
+  const regex = new RegExp(str)
+  return regex.test(value) || msg
+}
+
+/**
+ * 檢查是否為整數
+ * @param {*} value
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function isInteger(value, args) {
+  const { msg = '須為整數' } = { ...args }
+  return (
+    (!isNaN(value) && !isFinite(parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)))) ||
+    msg
+  )
+}
+
+export function checkLength({ value, length, text = '' }) {
+  if (!value || !length) {
+    return true
+  }
+  return String(value).length == +length || `${text}應為${length}碼`
+}
+
+export function integerZeroToNinetyNine(val) {
+  return /^([1-9]?\d?|null)$/.test(val) || '輸入範圍0~99'
+}
+
+/**
+ * 檢查數字範圍
+ * @param {Number} value
+ * @param {Number} start
+ * @param {Number} end
+ * @param {object} args - {msg: 自訂錯誤訊息}
+ * @returns
+ */
+export function integerRange(value, start = 0, end = 0, args) {
+  if (!value) {
+    return true
+  }
+  const { msg = `輸入範圍${start}~${end - 1}` } = { ...args }
+  return inRange(value, start, end) || msg
+}
+
+export function floatOneHundredRule(value, allowNegative = false, args) {
+  const { msg = `請輸入範圍${!allowNegative ? '-10' : ''}0.00~100.00` } = { ...args }
+  return /^-?(((\d{1,2})([.]((\d{1,2})?))?|100(\.(0{1,2})?)?))$/.test(value) || !value || msg
+}
+
+// 動態檢驗整數、小數點
+export function integerAndDecimal(value, integer, decimal, args) {
+  const { msg = `限制整數${integer}位及小數點${decimal}位` } = { ...args }
+  const str = '^(\\d{0,' + integer + '})(\\.\\d{0,' + decimal + '})?$)'
+  const regex = new RegExp(str)
+  return regex.test(value) || msg
 }
