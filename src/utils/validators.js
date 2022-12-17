@@ -536,3 +536,44 @@ export function integerAndDecimal(value, integer, decimal, args) {
   const regex = new RegExp(str)
   return regex.test(value) || msg
 }
+
+export function parseROCDate(value) {
+  const regRocDate = /^(\d{3})\/(\d{1,2})\/(\d{1,2})$/
+  const regRocTimeDate = /^(\d{3})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})[:(\d{1,2})]*$/
+  if (regRocDate.test(value)) {
+    const [, year, m, d] = regRocDate.exec(value)
+    return new Date(+year, 1911 + m - 1, d)
+  }
+  if (regRocTimeDate.test(value)) {
+    const [, rocDate, hour, minutes] = regRocTimeDate.exec(value)
+    const [year, m, d] = rocDate.split('/')
+    return new Date(+year + 1911 + m - 1, d, hour, minutes)
+  }
+  return value
+}
+
+export function getAge_moment(birthDate, baseDate = new Date()) {
+  return moment(baseDate).diff(moment(birthDate), 'year')
+}
+
+export function isDST(date) {
+  let Jan1 = new Date(date.getFullYear(), 0)
+  let Jul1 = new Date(date.getFullYear(), 6)
+  // DST in the Northern hemisphere is "fall back"
+  if (
+    Jan1.getTimezoneOffset() > Jul1.getTimezoneOffset() &&
+    Date.getTimezoneOffset() != Jan1.getTimezoneOffset()
+  ) {
+    return true
+  }
+
+  // DST in the Southern hemisphere is "leap ahead"
+  if (
+    Jan1.getTimezoneOffset() < Jul1.getTimezoneOffset() &&
+    date.getTimezoneOffset() != Jul1.getTimezoneOffset()
+  ) {
+    return true
+  }
+
+  return false
+}
