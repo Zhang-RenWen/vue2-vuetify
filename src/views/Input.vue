@@ -63,16 +63,7 @@
             </v-row>
           </v-col>
         </v-row>
-        <v-divider class="my-2" />
-        <v-row>
-          <v-col>
-            <v-row>
-              <v-col v-for="(ruleName, index) of rulesMixin" :key="index">
-                <v-checkbox v-model="checkMethods" :label="ruleName" :value="ruleName" dense />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
+
         <v-divider class="my-2" />
         <v-row>
           <v-col>
@@ -114,7 +105,6 @@
 </template>
 
 <script>
-import { rulesMixin } from '@/components/inputs/inputMixin.js'
 export default {
   components: {},
   props: {},
@@ -140,7 +130,6 @@ export default {
       textInput_minlength: null,
       textInput_errorMessages: '',
       textInput_required: false,
-      rulesMixin: Object.keys(rulesMixin.methods),
       checkMethods: []
     }
   },

@@ -24,12 +24,12 @@ export const changeColorMixin = {
   beforeDestroy() {},
   props: {
     oldValue: {
-      type: String,
+      type: [String, Number, null],
       default: 'A'
     },
 
     value: {
-      type: String,
+      type: [String, Number, null],
       default: ''
     }
   },
@@ -175,13 +175,15 @@ export const rulesMixin = {
       return !this.required || !!value || `${name}為必填不可空白`
     },
     checkMinLength(value) {
-      if ([0, '0', null, undefined, false].includes(value)) return true
+      if (['', 0, '0', null, undefined, false].includes(value)) return true
+      if (['', 0, '0', null, undefined, false].includes(this.minLength)) return true
+
       return String(value).length >= this.minLength || `此欄位請輸入至少${this.minLength}個字`
     },
 
     checkMaxLength(value) {
-      if ([0, '0', null, undefined, false].includes(value)) return true
-      console.log(String(value).length, this.maxLength)
+      if (['', 0, '0', null, undefined, false].includes(value)) return true
+      if (['', 0, '0', null, undefined, false].includes(this.maxLength)) return true
       return String(value).length <= this.maxLength || '此欄位值超過可輸入之長度'
     }
   }
