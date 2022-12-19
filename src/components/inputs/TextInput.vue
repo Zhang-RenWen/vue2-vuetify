@@ -34,27 +34,20 @@
       v-bind="$attrs"
       v-on="listeners"
       @focus="onFocus"
-      @blur="validate()"
+      @blur="validate"
       @reset="reset"
-      @paste.prevent="onPaste"
       @keyup.prevent="formatValue"
     />
   </div>
 </template>
 
 <script>
-import {
-  changeColorMixin,
-  inputRefMixin,
-  formatterMixin,
-  limitInputMixin,
-  rulesMixin
-} from './inputMixin.js'
+import { changeColorMixin, inputRefMixin, formatterMixin, rulesMixin } from './inputMixin.js'
 import tooltipLabel from '@/components/tooltip/tooltipLabel'
 export default {
   components: { tooltipLabel },
 
-  mixins: [changeColorMixin, inputRefMixin, formatterMixin, limitInputMixin, rulesMixin],
+  mixins: [changeColorMixin, inputRefMixin, formatterMixin, rulesMixin],
   inheritAttrs: false,
 
   props: {
@@ -124,7 +117,7 @@ export default {
         newRules.unshift(this.checkEmpty)
       }
       if (this.maxLength) {
-        newRules.unshift(this.checkLength)
+        newRules.unshift(this.checkMaxLength)
       }
       if (this.minLength) {
         newRules.unshift(this.checkMinLength)
@@ -153,19 +146,7 @@ export default {
 
   mounted() {},
 
-  methods: {
-    validate(showMessage = false) {
-      return this.$refs.inputRef.validate(showMessage)
-    },
-
-    reset() {
-      return this.$refs.inputRef.reset()
-    },
-
-    onFocus(e) {
-      this.$emit('focus', e)
-    }
-  }
+  methods: {}
 }
 </script>
 

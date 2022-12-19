@@ -1,6 +1,5 @@
 import moment from 'moment'
-import { inRange } from 'lodash'
-
+import { inRange, isString } from 'lodash'
 /**
  * 必填
  * @param {*} value
@@ -142,6 +141,17 @@ export function checkTaiwanId(value, args) {
 
   return isTaiwanId || msg
 }
+// const checkTaiwanId=(value)=> {
+//   const abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+//   const m = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1]
+//   const s =
+//     (abc.indexOf(value.substring(0, 1).toUpperCase()) + 10).toString() + value.substring(1, 10)
+//   let sum = 0
+//   for (let i = 0; i < s.length; i++) {
+//     sum += s[i] * m[i]
+//   }
+//   return sum % 10 === 0 || '身分證字號有誤'
+// }
 
 /**
  * 檢查台灣居留證號碼 舊式統一證號
@@ -338,27 +348,6 @@ export function numberAndSymbol(value, args) {
   return /^([0-9+#-]*)$/.test(value) || msg
 }
 
-/**
- * 羅馬拼音符號 編碼
- * @param {*} value
- * @param {object} args - {msg: 自訂錯誤訊息}
- * @returns
- */
-export function romeSystemCodeList() {
-  const arr = [
-    'ff1a', // 全形：
-    'ff0e', // 全形。
-    'e863', // ，
-    'e936', // ＾
-    'ee15', //
-    'ee49', //
-    'f576', //
-    'f583', //
-    '20' // 空白
-  ]
-  return arr
-}
-
 export function isNumber(value, args) {
   const { msg = '必須為數字' } = { ...args }
   const numberString = String(value)
@@ -497,13 +486,6 @@ export function isInteger(value, args) {
   )
 }
 
-export function checkLength({ value, length, text = '' }) {
-  if (!value || !length) {
-    return true
-  }
-  return String(value).length == +length || `${text}應為${length}碼`
-}
-
 export function integerZeroToNinetyNine(val) {
   return /^([1-9]?\d?|null)$/.test(val) || '輸入範圍0~99'
 }
@@ -537,25 +519,6 @@ export function integerAndDecimal(value, integer, decimal, args) {
   return regex.test(value) || msg
 }
 
-export function parseROCDate(value) {
-  const regRocDate = /^(\d{3})\/(\d{1,2})\/(\d{1,2})$/
-  const regRocTimeDate = /^(\d{3})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})[:(\d{1,2})]*$/
-  if (regRocDate.test(value)) {
-    const [, year, m, d] = regRocDate.exec(value)
-    return new Date(+year, 1911 + m - 1, d)
-  }
-  if (regRocTimeDate.test(value)) {
-    const [, rocDate, hour, minutes] = regRocTimeDate.exec(value)
-    const [year, m, d] = rocDate.split('/')
-    return new Date(+year + 1911 + m - 1, d, hour, minutes)
-  }
-  return value
-}
-
-export function getAge_moment(birthDate, baseDate = new Date()) {
-  return moment(baseDate).diff(moment(birthDate), 'year')
-}
-
 export function isDST(date) {
   let Jan1 = new Date(date.getFullYear(), 0)
   let Jul1 = new Date(date.getFullYear(), 6)
@@ -576,4 +539,192 @@ export function isDST(date) {
   }
 
   return false
+}
+
+/**
+ * 檢驗輸入是否超過Bytes長度
+ * @param {string} str
+ * @param {number} bytes
+ * @returns {boolean}
+ */
+
+const isExceed = (str, bytes) => {
+  if (!bytes || typeof str !== 'string') return false
+  const count = str ? new Blob([str]).size : 0
+  return count > bytes
+}
+export { isExceed }
+
+/**
+ *  是否為空值
+ */
+
+const isNull = (str) => {
+  return str == null || str == '' || str == undefined || typeof str == 'undefined'
+}
+
+/**
+ *  是否為正數
+ * @param {Number} num 原來的數值
+ */
+const numberOverZero = (num) => {
+  return Number(num) >= 0
+}
+
+/**
+ *  是否超過小數點第二位
+ * @param {Number} num 原來的數值
+ */
+
+const tisOverTowDecimals = (num) => {
+  let reg = new RegExp(/^[+-]?\d+(?:\.\d{2:1})?$/)
+  return !reg.test(num)
+}
+
+export { isNull, numberOverZero, tisOverTowDecimals }
+
+/**
+ *  是否是字串
+ * @param {*} value
+ */
+
+export { isString }
+
+const checkEnglish = (value) => {
+  // 半形檢核
+  const regex = /^[a-zA-Z \-',.]$/
+  const isNormal = regex.test(value)
+  // 全形
+  const charCode = value.charCodeAt(0)
+  const isFullWidthUpperCase = 65313 <= charCode && charCode <= 65338
+  const isFullWidthLowerCase = 65345 <= charCode && charCode <= 65370
+  return isNormal || isFullWidthUpperCase || isFullWidthLowerCase || '請輸入英文'
+}
+
+const checkInteger = (value) => {
+  const regex = /^[0-9]+$/
+  return regex.test(value) || '請輸入正整數'
+}
+
+const checkSymbol = (value) => {
+  // 半形字元檢核
+  const regex = /^[\u0021-\u002F\u003A-\u0040\u005B\u0060\u007B-\u007E\s\u3001-\u303F]/
+  // 全形字元檢核
+  const regexFullWidth = /^\u3000|[\uFE01-\uFF0F]|[\uFF1A-\uFF20]|[\uFF3B-\uFF40]|[\uFF5B-\uFFEE]/
+  return regex.test(value) || regexFullWidth.test(value) || '請輸入符號'
+}
+
+const checkEnglishInteger = (value) => {
+  // 只可輸入半形英文數字
+  const regex = /^[a-zA-Z0-9]+$/.test(value)
+  return regex || '只能輸入半形英文正整數'
+}
+
+const checkEmail = (value) => {
+  const regex = /^[^\s]+@[^\s]+\.[^\s]{2,3}$/
+  if (!value) {
+    return true
+  } else {
+    return regex.test(value) || '電子郵件格式有誤'
+  }
+}
+
+/**
+ *  驗證是否有全型文字
+ */
+
+const isFillWidth = (str) => {
+  let testReg = /[^\x20-\xff]/g
+  if (testReg.test(str)) {
+    return true
+  } else {
+    return false
+  }
+}
+/**
+ *  驗證是否有半型文字
+ */
+const isHalfWidth = (str) => {
+  let testReg = /[\uff00-\uffff]/g
+  if (testReg.test(str)) {
+    return true
+  } else {
+    return false
+  }
+}
+
+/**
+ *  驗證是否有注音
+ */
+const noChinesePingIn = (str) => {
+  for (let i = 0; i < str.length; i++) {
+    let code = str.charCodeAt(1)
+    if (12549 <= code && code <= 12585) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
+/**
+ *  驗證是否有中文字
+ */
+const noChineseWords = (str) => {
+  let testReg = /[\u4e00-\u9fa5]/g
+  if (!testReg.test(str)) {
+    return true
+  } else {
+    return false
+  }
+}
+/**
+ *  驗證只有數字8~16碼
+ */
+const isNumberEightToSixteen = (str) => {
+  let testReg = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{8,16}$/
+  if (!testReg.test(str)) {
+    return true
+  } else {
+    return false
+  }
+}
+/**
+ *  是否超過小數點第六位
+ * @param {Number} num 原來的數值
+ */
+const isOverSixDecimals = (num) => {
+  let reg = new RegExp(/^\d+(?:\.\d{1,6})?$/)
+  return !reg.test(num)
+}
+
+/**
+ *  數字長度限制
+ * @param {Number} num 原來的數值
+ */
+const numberLengthLimit = (num, index) => {
+  return String(num).length > index
+}
+
+/**
+ *  是否為符合密碼規則
+ */
+const isPasswordRule = (str) => {
+  return /^[\w!@#$%^&*.]{6,12}/.test(str)
+}
+
+export {
+  checkEnglish,
+  checkInteger,
+  checkSymbol,
+  checkEnglishInteger,
+  checkEmail,
+  isFillWidth,
+  isHalfWidth,
+  noChinesePingIn,
+  noChineseWords,
+  isNumberEightToSixteen,
+  isOverSixDecimals,
+  numberLengthLimit,
+  isPasswordRule
 }
