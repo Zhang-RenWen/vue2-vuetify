@@ -73,4 +73,29 @@ const numberFormat = (number, decimals, dec_point, thousands_sep, roundTag) => {
   return s.join(dec)
 }
 
-export { ToCDB, ToDec, numberFormat }
+const rocDate = (date) => {
+  if (!date) return false
+  const dateInstance = new Date(date)
+  if (dateInstance.getFullYear() - 1911 < 0) return false
+  const reg = new RegExp(
+    '^' + ['(\\d{4})', '(\\d{1,2})', '(\\d{1,2})'].join('-') + ' (\\d{1,2}):(\\d{1,2}):(\\d{1,2})$'
+  )
+
+  if (reg.test(date)) {
+    const [, yyyy, mm, dd, hh, MM, ss] = reg.exec(date)
+    let ROCyear, m, d
+    ROCyear = dateInstance.getFullYear() - 1911
+    m = dateInstance.getMonth() + 1
+    d = dateInstance.getDate()
+
+    if (ROCyear < 100) ROCyear = '0' + ROCyear
+    if (m < 10) m = '0' + m
+    if (d < 10) d = '0' + d
+
+    const ROCDate = `${ROCyear}/${m}/${d}`
+    console.log(yyyy, mm, dd, hh, MM, ss)
+    return ROCDate
+  }
+}
+
+export { ToCDB, ToDec, numberFormat, rocDate }
