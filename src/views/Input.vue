@@ -60,6 +60,9 @@
               <v-col>
                 <v-checkbox v-model="textInput_required" label="required" dense />
               </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_progress" label="progress" dense />
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -77,6 +80,15 @@
               <v-col>
                 <TextInput v-model="textInput_errorMessages" label="error messages" />
               </v-col>
+              <v-col>
+                <TextInput v-model="textInput_input_type" label="input type" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_prefix" label="prefix" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_suffix" label="suffix" />
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -85,6 +97,7 @@
           <v-col>
             <TextInput
               v-model="textInput"
+              :type="textInput_input_type"
               label="result"
               :disabled="textInput_disabled"
               :readonly="textInput_readonly"
@@ -93,11 +106,46 @@
               :required="textInput_required"
               :max-length="textInput_maxlength"
               :min-length="textInput_minlength"
+              :prefix="textInput_prefix"
+              :suffix="textInput_suffix"
               :error-messages="textInput_errorMessages"
               :rules="checkMethods"
-            />
+              :loading="textInput_progress"
+            >
+              <template #progress>
+                <v-progress-linear
+                  v-if="textInput_progress"
+                  :value="textInput_progress"
+                  absolute
+                  height="7"
+                />
+              </template>
+            </TextInput>
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+
+    <v-card>
+      <v-card-title>v-slider</v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row>
+          <v-col cols="4">
+            <v-subheader>test</v-subheader>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-slider
+              :rules="[]"
+              color="orange"
+              label="Age"
+              hint="Be honest"
+              min="1"
+              max="100"
+              thumb-label
+            />
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -130,6 +178,10 @@ export default {
       textInput_minlength: null,
       textInput_errorMessages: '',
       textInput_required: false,
+      textInput_input_type: 'text',
+      textInput_prefix: '',
+      textInput_suffix: '',
+      textInput_progress: false,
       checkMethods: []
     }
   },

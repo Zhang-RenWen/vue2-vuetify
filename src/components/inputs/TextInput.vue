@@ -10,6 +10,7 @@
     <v-text-field
       ref="inputRef"
       v-model.trim="localValue"
+      :type="type"
       :placeholder="placeholder"
       :rules="localRules"
       :readonly="readonly"
@@ -54,6 +55,11 @@ export default {
     name: {
       type: String,
       default: ''
+    },
+
+    type: {
+      type: String,
+      default: 'text' // text password number date time
     },
 
     label: {
