@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import { changeColorMixin, inputRefMixin } from './inputMixin.js'
+import { valueChangedSetColor, inputRefEvent } from './inputMixin.js'
 export default {
-  mixins: [changeColorMixin, inputRefMixin],
+  mixins: [valueChangedSetColor, inputRefEvent],
   inheritAttrs: false,
   props: {
     name: {

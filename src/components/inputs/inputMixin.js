@@ -1,4 +1,4 @@
-export const changeColorMixin = {
+export const valueChangedSetColor = {
   data() {
     return {
       /**
@@ -59,7 +59,7 @@ export const changeColorMixin = {
  * input 驗證重置
  */
 
-export const inputRefMixin = {
+export const inputRefEvent = {
   methods: {
     onFocus(e) {
       this.$emit('focus', e)
@@ -88,7 +88,7 @@ export const inputRefMixin = {
   }
 }
 
-export const formatterMixin = {
+export const formatters = {
   props: {
     /** trim on change/blur */
     trim: {
@@ -153,7 +153,7 @@ export const formatterMixin = {
   }
 }
 
-export const rulesMixin = {
+export const rulesSetting = {
   props: {
     required: {
       type: Boolean,
@@ -167,6 +167,16 @@ export const rulesMixin = {
     minLength: {
       type: [Number, String, null],
       default: null // null closed
+    },
+
+    rules: {
+      type: Array,
+      default: () => []
+    },
+
+    errorMessages: {
+      type: [Array, String],
+      default: () => []
     }
   },
   methods: {

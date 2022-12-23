@@ -64,10 +64,40 @@
                 <v-checkbox v-model="textInput_progress" label="progress" dense />
               </v-col>
             </v-row>
+            <v-row>
+              <v-col>
+                <v-checkbox v-model="textInput_input_clearable" label="clearable" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_prepend_icon" label="prepend icon" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="textInput_prepend_inner_icon"
+                  label="prepend inner_icon"
+                  dense
+                />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_append_icon" label="append icon" dense />
+              </v-col>
+              <v-col>
+                <v-checkbox v-model="textInput_append_outer_icon" label="append outer_icon" dense />
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
 
         <v-divider class="my-2" />
+
+        <v-row>
+          <v-col>
+            <v-checkbox v-model="textInput_has_slot" label="has slot" dense />
+          </v-col>
+        </v-row>
+
+        <v-divider class="my-2" />
+
         <v-row>
           <v-col>
             <v-row>
@@ -111,6 +141,17 @@
               :error-messages="textInput_errorMessages"
               :rules="checkMethods"
               :loading="textInput_progress"
+              :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
+              :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
+              :append-icon="textInput_append_icon ? textInput_input_icon : ''"
+              :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
+              :clear-icon="textInput_input_clear_icon"
+              :clearable="textInput_input_clearable"
+              @click:append="clickIcon('append')"
+              @click:append-outer="clickIcon('append-outer')"
+              @click:prepend="clickIcon('prepend')"
+              @click:prepend-inner="clickIcon('prepend-inner')"
+              @click:clear="clickIcon('clear')"
             >
               <template #progress>
                 <v-progress-linear
@@ -119,6 +160,38 @@
                   absolute
                   height="7"
                 />
+              </template>
+              <template v-if="textInput_has_slot" #prepend>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #prepend-inner>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #append>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #append-outer>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
               </template>
             </TextInput>
           </v-col>
@@ -178,10 +251,18 @@ export default {
       textInput_minlength: null,
       textInput_errorMessages: '',
       textInput_required: false,
-      textInput_input_type: 'text',
+      textInput_input_type: 'text', // text(default) /password /number /date /time
       textInput_prefix: '',
       textInput_suffix: '',
       textInput_progress: false,
+      textInput_prepend_icon: false,
+      textInput_prepend_inner_icon: false,
+      textInput_append_icon: false,
+      textInput_append_outer_icon: false,
+      textInput_input_icon: 'mdi-map-marker',
+      textInput_input_clearable: false,
+      textInput_input_clear_icon: 'mdi-close-circle',
+      textInput_has_slot: false,
       checkMethods: []
     }
   },
@@ -197,6 +278,10 @@ export default {
   methods: {
     change(e) {
       console.log(e)
+    },
+
+    clickIcon(iconName) {
+      console.log(`click ${iconName}`)
     }
   }
 }

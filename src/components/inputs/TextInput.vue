@@ -38,17 +38,30 @@
       @blur="validate"
       @reset="reset"
       @keyup.prevent="formatValue"
-    />
+    >
+      <template #prepend>
+        <slot name="prepend" />
+      </template>
+      <template #prepend-inner>
+        <slot name="prepend-inner" />
+      </template>
+      <template #append>
+        <slot name="append" />
+      </template>
+      <template #append-outer>
+        <slot name="append-outer" />
+      </template>
+    </v-text-field>
   </div>
 </template>
 
 <script>
-import { changeColorMixin, inputRefMixin, formatterMixin, rulesMixin } from './inputMixin.js'
+import { valueChangedSetColor, inputRefEvent, formatters, rulesSetting } from './inputMixin.js'
 import tooltipLabel from '@/components/tooltip/tooltipLabel'
 export default {
   components: { tooltipLabel },
 
-  mixins: [changeColorMixin, inputRefMixin, formatterMixin, rulesMixin],
+  mixins: [valueChangedSetColor, inputRefEvent, formatters, rulesSetting],
   inheritAttrs: false,
 
   props: {
@@ -76,21 +89,6 @@ export default {
       default: ''
     },
 
-    maxLength: {
-      type: [Number, String, null],
-      default: 0 // null closed
-    },
-
-    minLength: {
-      type: [Number, String, null],
-      default: 0 // null closed
-    },
-
-    rules: {
-      type: Array,
-      default: () => []
-    },
-
     disabled: {
       type: Boolean,
       default: false
@@ -99,11 +97,6 @@ export default {
     readonly: {
       type: Boolean,
       default: false
-    },
-
-    errorMessages: {
-      type: [Array, String],
-      default: () => []
     }
   },
 
@@ -115,7 +108,7 @@ export default {
     localRules() {
       const rules = this.rules
       const newRules = []
-      const allCheckMethods = Object.keys(rulesMixin.methods)
+      const allCheckMethods = Object.keys(rulesSetting.methods)
       if (this.disabled) {
         return newRules
       }
@@ -128,6 +121,23 @@ export default {
       if (this.minLength) {
         newRules.unshift(this.checkMinLength)
       }
+
+      if (this.type === 'number') {
+        console.log('add rule')
+      }
+
+      if (this.type === 'password') {
+        console.log('add rule')
+      }
+
+      if (this.type === 'date') {
+        console.log('add rule')
+      }
+
+      if (this.type === 'time') {
+        console.log('add rule')
+      }
+
       rules.forEach((rule) => {
         if (allCheckMethods.includes(rule)) {
           // name
@@ -170,5 +180,19 @@ export default {
 
   input {
   }
+}
+</style>
+
+<style lang="scss">
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 </style>
