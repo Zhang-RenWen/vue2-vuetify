@@ -63,6 +63,13 @@
               <v-col>
                 <v-checkbox v-model="textInput_progress" label="progress" dense />
               </v-col>
+              <v-col>
+                <v-checkbox
+                  v-model="textInput_input_disable_changed_color"
+                  label="disable changed color"
+                  dense
+                />
+              </v-col>
             </v-row>
             <v-row>
               <v-col>
@@ -147,6 +154,7 @@
               :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
               :clear-icon="textInput_input_clear_icon"
               :clearable="textInput_input_clearable"
+              :disable-set-color="textInput_input_disable_changed_color"
               @click:append="clickIcon('append')"
               @click:append-outer="clickIcon('append-outer')"
               @click:prepend="clickIcon('prepend')"
@@ -196,6 +204,27 @@
             </TextInput>
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
+        </v-row>
+        <v-divider class="my-6" />
+        <v-form ref="form">
+          <v-row>
+            <v-col><TextInput label="required" required /></v-col>
+            <v-col>
+              <TextInput
+                label="not required but with error message"
+                error-messages="error message"
+              />
+            </v-col>
+            <v-col><TextInput label="not required" /></v-col>
+          </v-row>
+        </v-form>
+        <v-divider class="my-6" />
+        <v-row>
+          <v-col>
+            <v-btn class="mr-2" @click="clickValidation">validation</v-btn>
+            <v-btn @click="clickResetValidation">Reset Validation</v-btn>
+          </v-col>
+          <v-col>check result：{{ textInput_input_click_check_result }}</v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -263,6 +292,8 @@ export default {
       textInput_input_clearable: false,
       textInput_input_clear_icon: 'mdi-close-circle',
       textInput_has_slot: false,
+      textInput_input_disable_changed_color: false,
+      textInput_input_click_check_result: true,
       checkMethods: []
     }
   },
@@ -282,6 +313,16 @@ export default {
 
     clickIcon(iconName) {
       console.log(`click ${iconName}`)
+    },
+
+    clickValidation() {
+      const isValid = this.$refs.form.validate()
+      this.textInput_input_click_check_result = isValid
+    },
+
+    clickResetValidation() {
+      this.$refs.form.resetValidation()
+      this.textInput_input_click_check_result = true
     }
   }
 }

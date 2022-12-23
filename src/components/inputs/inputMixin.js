@@ -31,6 +31,11 @@ export const valueChangedSetColor = {
     value: {
       type: [String, Number, null],
       default: ''
+    },
+
+    disableSetColor: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
@@ -95,17 +100,8 @@ export const formatters = {
       type: Boolean,
       default: false
     },
-    number: {
-      type: Boolean,
-      default: false
-    },
     /** uppercase on change/blur */
     uppercase: {
-      type: Boolean,
-      default: false
-    },
-    /** format on blur/change*/
-    isLazyFormatter: {
       type: Boolean,
       default: false
     },
@@ -127,15 +123,6 @@ export const formatters = {
       }
     },
 
-    toNumber() {
-      if (this.number) {
-        const el = this.$refs.inputRef.$el.querySelector('input')
-        const formatValue = Number(el.value)
-        el.value = formatValue
-        this.$emit('input', formatValue)
-      }
-    },
-
     toUpperCase() {
       if (this.uppercase) {
         const el = this.$refs.inputRef.$el.querySelector('input')
@@ -146,7 +133,6 @@ export const formatters = {
     },
 
     formatValue() {
-      this.toNumber()
       this.toTrim()
       this.toUpperCase()
     }

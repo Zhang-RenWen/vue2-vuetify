@@ -17,7 +17,7 @@
       :disabled="disabled"
       class="inputTextField"
       :class="{
-        'input-textField--colorChanged': hasChanged,
+        'input-textField--colorChanged': hasChanged && !disableSetColor,
         'input-textField--disabled': disabled
       }"
       :label="label"
@@ -172,6 +172,11 @@ export default {
 ::v-deep .input-textField--colorChanged input,
 .input-textField--colorChanged textarea {
   color: red;
+}
+
+::v-deep .input-textField--disabled input,
+.input-textField--disabled textarea {
+  color: rgb(155, 155, 155);
 }
 
 ::v-deep .input-textField--disabled {
