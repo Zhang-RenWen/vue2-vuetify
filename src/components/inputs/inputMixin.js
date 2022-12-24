@@ -151,7 +151,6 @@ import {
   checkTaiwanAndForeignerId,
   checkNumberAndSymbol,
   checkNumber,
-  checkIntegrate,
   checkDate,
   checkDateRange,
   checkStartDateRange,
@@ -292,11 +291,6 @@ export const rulesSetting = {
     checkNumberAndSymbol(value) {
       if (['', null, undefined, false].includes(value)) return true
       return checkNumberAndSymbol(value) || '必須為數字或+#-的符號'
-    },
-
-    checkIntegrate(value) {
-      if (['', null, undefined, false].includes(value)) return true
-      return checkIntegrate(value) || '須為整數'
     },
 
     // date

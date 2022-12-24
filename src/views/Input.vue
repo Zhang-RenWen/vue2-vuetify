@@ -102,6 +102,49 @@
             <v-checkbox v-model="textInput_has_slot" label="has slot" dense />
           </v-col>
         </v-row>
+        <v-divider class="my-2" />
+        <v-row>
+          <v-col>
+            <v-autocomplete
+              v-model="textInput_selectedCheckMethods"
+              :items="textInput_checkMethods"
+              filled
+              dense
+              chips
+              label="Rules"
+              item-text="name"
+              item-value="name"
+              multiple
+            >
+              <template #selection="data">
+                <v-chip
+                  v-bind="data.attrs"
+                  :input-value="data.selected"
+                  close
+                  @click="data.select"
+                  @click:close="removeValidation(data.item)"
+                >
+                  <v-avatar left>
+                    <v-img :src="data.item.avatar" />
+                  </v-avatar>
+                  {{ data.item }}
+                </v-chip>
+              </template>
+              <!-- <template #item="data">
+                <template v-if="typeof data.item !== 'object'">
+                  <v-list-item-content v-text="data.item" />
+                </template>
+                <template v-else>
+                  <v-list-item-avatar><img :src="data.item.avatar" /></v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title v-html="data.item.name" />
+                    <v-list-item-subtitle v-html="data.item.group" />
+                  </v-list-item-content>
+                </template>
+              </template> -->
+            </v-autocomplete>
+          </v-col>
+        </v-row>
 
         <v-divider class="my-2" />
 
@@ -131,6 +174,9 @@
         </v-row>
         <v-divider class="my-6" />
         <v-row>
+          <v-col>selected rules: {{ textInput_selectedCheckMethods }}</v-col>
+        </v-row>
+        <v-row>
           <v-col>
             <TextInput
               v-model="textInput"
@@ -146,7 +192,7 @@
               :prefix="textInput_prefix"
               :suffix="textInput_suffix"
               :error-messages="textInput_errorMessages"
-              :rules="checkMethods"
+              :rules="textInput_selectedCheckMethods"
               :loading="textInput_progress"
               :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
               :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
@@ -255,6 +301,7 @@
 </template>
 
 <script>
+import { rulesSetting } from '@/components/inputs/inputMixin.js'
 export default {
   components: {},
   props: {},
@@ -294,7 +341,8 @@ export default {
       textInput_has_slot: false,
       textInput_input_disable_changed_color: false,
       textInput_input_click_check_result: true,
-      checkMethods: []
+      textInput_checkMethods: Object.keys(rulesSetting.methods),
+      textInput_selectedCheckMethods: []
     }
   },
 
@@ -323,6 +371,11 @@ export default {
     clickResetValidation() {
       this.$refs.form.resetValidation()
       this.textInput_input_click_check_result = true
+    },
+
+    removeValidation(item) {
+      const index = this.textInput_selectedCheckMethods.indexOf(item)
+      if (index >= 0) this.textInput_selectedCheckMethods.splice(index, 1)
     }
   }
 }
