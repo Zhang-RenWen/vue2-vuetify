@@ -23,4 +23,27 @@ const getAge_moment = (birthDate, baseDate = new Date()) => {
   return moment(baseDate).diff(moment(birthDate), 'year')
 }
 
+/**
+ * 用身分證字號回傳性別
+ * M 男
+ * F 女
+ * U 不明
+ */
+export function getGenderFromTaiwanID(value) {
+  if ([null, '', undefined].includes(value)) return ''
+  const oneWord = value.charAt(0)
+  const checkWord = value.charAt(1)
+  let gender = ''
+  if (value.length === 10) {
+    // 第一碼為英文
+    if (/^[A-Za-z]*$/g.test(oneWord)) {
+      if (['A', 'C'].includes(checkWord)) gender = 'M'
+      if (['B', 'D'].includes(checkWord)) gender = 'F'
+      if (['1', '8'].includes(checkWord)) gender = 'M'
+      if (['2', '9'].includes(checkWord)) gender = 'F'
+    }
+  }
+  return gender
+}
+
 export { byteCount, parseROCDate, getAge_moment }

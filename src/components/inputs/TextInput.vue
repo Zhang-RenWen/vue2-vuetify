@@ -72,7 +72,7 @@ export default {
 
     type: {
       type: String,
-      default: 'text' // text password number date time
+      default: 'text' // text password number positiveInteger integer date time
     },
 
     label: {
