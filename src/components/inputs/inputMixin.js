@@ -91,6 +91,7 @@ export const inputRefEvent = {
   }
 }
 
+import { ToDec, ToCDB, numberFormat, rocDate } from '@/utils/format'
 export const formatters = {
   props: {
     /** trim on change/blur */
@@ -128,6 +129,19 @@ export const formatters = {
         el.value = formatValue
         this.$emit('input', formatValue)
       }
+    },
+
+    ToDec() {
+      console.log(ToDec)
+    },
+    ToCDB() {
+      console.log(ToCDB)
+    },
+    numberFormat() {
+      console.log(numberFormat)
+    },
+    rocDate() {
+      console.log(rocDate)
     },
 
     formatValue() {

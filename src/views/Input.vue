@@ -124,24 +124,40 @@
                   @click="data.select"
                   @click:close="removeValidation(data.item)"
                 >
-                  <v-avatar left>
+                  <!-- <v-avatar left>
                     <v-img :src="data.item.avatar" />
-                  </v-avatar>
+                  </v-avatar> -->
                   {{ data.item }}
                 </v-chip>
               </template>
-              <!-- <template #item="data">
-                <template v-if="typeof data.item !== 'object'">
-                  <v-list-item-content v-text="data.item" />
-                </template>
-                <template v-else>
-                  <v-list-item-avatar><img :src="data.item.avatar" /></v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title v-html="data.item.name" />
-                    <v-list-item-subtitle v-html="data.item.group" />
-                  </v-list-item-content>
-                </template>
-              </template> -->
+            </v-autocomplete>
+          </v-col>
+          <v-col>
+            <v-autocomplete
+              v-model="textInput_selectedFormatMethods"
+              :items="textInput_formatMethods"
+              filled
+              dense
+              chips
+              label="Format"
+              item-text="name"
+              item-value="name"
+              multiple
+            >
+              <template #selection="data">
+                <v-chip
+                  v-bind="data.attrs"
+                  :input-value="data.selected"
+                  close
+                  @click="data.select"
+                  @click:close="removeFormat(data.item)"
+                >
+                  <!-- <v-avatar left>
+                    <v-img :src="data.item.avatar" />
+                  </v-avatar> -->
+                  {{ data.item }}
+                </v-chip>
+              </template>
             </v-autocomplete>
           </v-col>
         </v-row>
@@ -175,6 +191,7 @@
         <v-divider class="my-6" />
         <v-row>
           <v-col>selected rules: {{ textInput_selectedCheckMethods }}</v-col>
+          <v-col>selected format: {{ textInput_selectedFormatMethods }}</v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -342,7 +359,9 @@ export default {
       textInput_input_disable_changed_color: false,
       textInput_input_click_check_result: true,
       textInput_checkMethods: Object.keys(rulesSetting.methods),
-      textInput_selectedCheckMethods: []
+      textInput_formatMethods: Object.keys({}),
+      textInput_selectedCheckMethods: [],
+      textInput_selectedFormatMethods: []
     }
   },
 
@@ -376,6 +395,11 @@ export default {
     removeValidation(item) {
       const index = this.textInput_selectedCheckMethods.indexOf(item)
       if (index >= 0) this.textInput_selectedCheckMethods.splice(index, 1)
+    },
+
+    removeFormat(item) {
+      const index = this.textInput_selectedFormatMethods.indexOf(item)
+      if (index >= 0) this.textInput_selectedFormatMethods.splice(index, 1)
     }
   }
 }

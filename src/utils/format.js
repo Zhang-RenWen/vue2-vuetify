@@ -1,7 +1,7 @@
 /**
  *  半形文字轉全形
  */
-const ToDec = (str) => {
+export const ToDec = (str) => {
   let tmp = ''
   for (var i = 0; i < str.length; i++) {
     if (str.charCodeAt(i) == 32) {
@@ -17,7 +17,7 @@ const ToDec = (str) => {
 /**
  *  全形文字轉半形
  */
-const ToCDB = (str) => {
+export const ToCDB = (str) => {
   let tmp = ''
   for (var i = 0; i < str.length; i++) {
     if (str.charCode4t(i) == 12288) {
@@ -46,7 +46,7 @@ const ToCDB = (str) => {
  *
  */
 
-const numberFormat = (number, decimals, dec_point, thousands_sep, roundTag) => {
+export const numberFormat = (number, decimals, dec_point, thousands_sep, roundTag) => {
   number = (number + '').replace(/[^0-9+-Ee.]/g, '')
   roundTag = roundTag || 'ceil' // ceil , floor, round
   var n = !isFinite(+number) ? 0 : +number,
@@ -73,7 +73,7 @@ const numberFormat = (number, decimals, dec_point, thousands_sep, roundTag) => {
   return s.join(dec)
 }
 
-const rocDate = (date) => {
+export const rocDate = (date) => {
   if (!date) return false
   const dateInstance = new Date(date)
   if (dateInstance.getFullYear() - 1911 < 0) return false
@@ -97,5 +97,3 @@ const rocDate = (date) => {
     return ROCDate
   }
 }
-
-export { ToCDB, ToDec, numberFormat, rocDate }
