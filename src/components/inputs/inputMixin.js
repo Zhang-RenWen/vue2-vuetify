@@ -115,7 +115,9 @@ export const formatters = {
   methods: {
     toTrim() {
       if (this.trim) {
-        const el = this.$refs.inputRef.$el.querySelector('input')
+        const el =
+          this.$refs.inputRef.$el.querySelector('input') ||
+          this.$refs.inputRef.$el.querySelector('textarea')
         const formatValue = el.value.replaceAll(' ', '')
         el.value = formatValue
         this.$emit('input', formatValue)
@@ -124,7 +126,9 @@ export const formatters = {
 
     toUpperCase() {
       if (this.uppercase) {
-        const el = this.$refs.inputRef.$el.querySelector('input')
+        const el =
+          this.$refs.inputRef.$el.querySelector('input') ||
+          this.$refs.inputRef.$el.querySelector('textarea')
         const formatValue = el.value.toUpperCase()
         el.value = formatValue
         this.$emit('input', formatValue)

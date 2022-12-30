@@ -36,7 +36,7 @@
     <v-card class="mb-10">
       <v-card-title>
         <h2>
-          TextInput
+          TextInput / TextArea
           <span id="" />
         </h2>
       </v-card-title>
@@ -105,6 +105,33 @@
         <v-divider class="my-2" />
         <v-row>
           <v-col>
+            <v-row>
+              <v-col>
+                <TextInput v-model="textInput_maxlength" label="maxlength" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_minlength" label="minlength" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_errorMessages" label="error messages" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_input_type" label="input type" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_prefix" label="prefix" />
+              </v-col>
+              <v-col>
+                <TextInput v-model="textInput_suffix" label="suffix" />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <v-divider class="my-2" />
+
+        <v-row>
+          <v-col>
             <v-autocomplete
               v-model="textInput_selectedCheckMethods"
               :items="textInput_checkMethods"
@@ -162,40 +189,23 @@
           </v-col>
         </v-row>
 
-        <v-divider class="my-2" />
+        <v-divider class="my-6" />
 
         <v-row>
           <v-col>
-            <v-row>
-              <v-col>
-                <TextInput v-model="textInput_maxlength" label="maxlength" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_minlength" label="minlength" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_errorMessages" label="error messages" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_input_type" label="input type" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_prefix" label="prefix" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_suffix" label="suffix" />
-              </v-col>
-            </v-row>
+            <v-switch v-model="textOrTextArea" label="(Y) textInput / (N) textArea" />
           </v-col>
+          <v-col>{{ textOrTextArea ? 'textInput ' : 'textArea' }}</v-col>
         </v-row>
-        <v-divider class="my-6" />
         <v-row>
           <v-col>selected rules: {{ textInput_selectedCheckMethods }}</v-col>
           <v-col>selected format: {{ textInput_selectedFormatMethods }}</v-col>
         </v-row>
+        <v-divider class="my-2" />
         <v-row>
           <v-col>
             <TextInput
+              v-if="textOrTextArea"
               v-model="textInput"
               :type="textInput_input_type"
               label="result"
@@ -265,9 +275,101 @@
                 </v-tooltip>
               </template>
             </TextInput>
+            <TextAreaInput
+              v-else
+              v-model="textInput"
+              :type="textInput_input_type"
+              label="result"
+              :disabled="textInput_disabled"
+              :readonly="textInput_readonly"
+              :uppercase="textInput_uppercase"
+              :trim="textInput_trim"
+              :required="textInput_required"
+              :max-length="textInput_maxlength"
+              :min-length="textInput_minlength"
+              :prefix="textInput_prefix"
+              :suffix="textInput_suffix"
+              :error-messages="textInput_errorMessages"
+              :rules="textInput_selectedCheckMethods"
+              :loading="textInput_progress"
+              :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
+              :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
+              :append-icon="textInput_append_icon ? textInput_input_icon : ''"
+              :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
+              :clear-icon="textInput_input_clear_icon"
+              :clearable="textInput_input_clearable"
+              :disable-set-color="textInput_input_disable_changed_color"
+              @click:append="clickIcon('append')"
+              @click:append-outer="clickIcon('append-outer')"
+              @click:prepend="clickIcon('prepend')"
+              @click:prepend-inner="clickIcon('prepend-inner')"
+              @click:clear="clickIcon('clear')"
+            >
+              <template #progress>
+                <v-progress-linear
+                  v-if="textInput_progress"
+                  :value="textInput_progress"
+                  absolute
+                  height="7"
+                />
+              </template>
+              <template v-if="textInput_has_slot" #prepend>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #prepend-inner>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #append>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+              <template v-if="textInput_has_slot" #append-outer>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                  </template>
+                  I'm a tooltip
+                </v-tooltip>
+              </template>
+            </TextAreaInput>
           </v-col>
           <v-col>value:{{ textInput }}</v-col>
         </v-row>
+      </v-card-text>
+    </v-card>
+
+    <v-card class="mb-10">
+      <v-card-title>
+        <h2>
+          TextInput: Date
+          <span id="" />
+        </h2>
+      </v-card-title>
+    </v-card>
+
+    <v-card class="mb-10">
+      <v-card-title>
+        <h2>
+          v-form
+          <span id="" />
+        </h2>
+      </v-card-title>
+      <v-divider />
+      <v-card-text>
         <v-divider class="my-6" />
         <v-form ref="form">
           <v-row>
@@ -287,11 +389,10 @@
             <v-btn class="mr-2" @click="clickValidation">validation</v-btn>
             <v-btn @click="clickResetValidation">Reset Validation</v-btn>
           </v-col>
-          <v-col>check result：{{ textInput_input_click_check_result }}</v-col>
+          <v-col>check result:{{ textInput_input_click_check_result }}</v-col>
         </v-row>
       </v-card-text>
     </v-card>
-
     <v-card>
       <v-card-title>v-slider</v-card-title>
       <v-divider />
@@ -318,7 +419,7 @@
 </template>
 
 <script>
-import { rulesSetting } from '@/components/inputs/inputMixin.js'
+import { formatters, rulesSetting } from '@/components/inputs/inputMixin.js'
 export default {
   components: {},
   props: {},
@@ -332,6 +433,7 @@ export default {
         { label: 'option1-labe2', text: 'option2-text', value: 'B' }
       ],
 
+      textOrTextArea: true,
       itemTextKey: 'label',
       required: true,
       hasDefault: false,
@@ -359,7 +461,7 @@ export default {
       textInput_input_disable_changed_color: false,
       textInput_input_click_check_result: true,
       textInput_checkMethods: Object.keys(rulesSetting.methods),
-      textInput_formatMethods: Object.keys({}),
+      textInput_formatMethods: Object.keys(formatters.methods),
       textInput_selectedCheckMethods: [],
       textInput_selectedFormatMethods: []
     }

@@ -72,7 +72,7 @@ export default {
 
     type: {
       type: String,
-      default: 'text' // text password number positiveInteger integer date time
+      default: 'textarea'
     },
 
     label: {
@@ -122,22 +122,6 @@ export default {
         newRules.unshift(this.checkMinLength)
       }
 
-      if (this.type === 'number') {
-        console.log('add rule')
-      }
-
-      if (this.type === 'password') {
-        console.log('add rule')
-      }
-
-      if (this.type === 'date') {
-        console.log('add rule')
-      }
-
-      if (this.type === 'time') {
-        console.log('add rule')
-      }
-
       rules.forEach((rule) => {
         if (allCheckMethods.includes(rule)) {
           // name
@@ -170,12 +154,12 @@ export default {
 /* stylelint-disable */
 
 ::v-deep .input-textField--colorChanged input,
-.input-textField--colorChanged textarea {
+::v-deep .input-textField--colorChanged textarea {
   color: red;
 }
 
 ::v-deep .input-textField--disabled input,
-.input-textField--disabled textarea {
+::v-deep .input-textField--disabled textarea {
   color: rgb(155, 155, 155);
 }
 
@@ -185,19 +169,5 @@ export default {
 
   input {
   }
-}
-</style>
-
-<style lang="scss">
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
 }
 </style>

@@ -170,12 +170,12 @@ export default {
 /* stylelint-disable */
 
 ::v-deep .input-textField--colorChanged input,
-.input-textField--colorChanged textarea {
+::v-deep .input-textField--colorChanged textarea {
   color: red;
 }
 
 ::v-deep .input-textField--disabled input,
-.input-textField--disabled textarea {
+::v-deep .input-textField--disabled textarea {
   color: rgb(155, 155, 155);
 }
 
