@@ -35,9 +35,13 @@
       v-bind="$attrs"
       v-on="listeners"
       @focus="onFocus"
-      @blur="validate"
+      @blur="
+        () => {
+          validate()
+          formatValue()
+        }
+      "
       @reset="reset"
-      @keyup.prevent="formatValue"
     >
       <template #prepend>
         <slot name="prepend" />

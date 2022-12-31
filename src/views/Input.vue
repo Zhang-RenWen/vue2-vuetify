@@ -14,7 +14,6 @@
             <InputAutoComplete
               v-model="costType"
               refs="costType"
-              name="類別"
               label="類別"
               placeholder="placeholder"
               :items="options"
@@ -23,7 +22,6 @@
               :disabled="disabledCondition.includes('costType')"
               :readonly="false"
               :has-default="hasDefault"
-              :rules="[]"
               old-value="A"
               @change="change"
             />
@@ -44,99 +42,9 @@
       <v-card-text>
         <v-row>
           <v-col>
-            <v-row>
-              <v-col>
-                <v-checkbox v-model="textInput_disabled" label="disabled" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_readonly" label="readonly" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_trim" label="trim" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_uppercase" label="uppercase" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_required" label="required" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_progress" label="progress" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox
-                  v-model="textInput_input_disable_changed_color"
-                  label="disable changed color"
-                  dense
-                />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-checkbox v-model="textInput_input_clearable" label="clearable" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_prepend_icon" label="prepend icon" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox
-                  v-model="textInput_prepend_inner_icon"
-                  label="prepend inner_icon"
-                  dense
-                />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_append_icon" label="append icon" dense />
-              </v-col>
-              <v-col>
-                <v-checkbox v-model="textInput_append_outer_icon" label="append outer_icon" dense />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-
-        <v-divider class="my-2" />
-
-        <v-row>
-          <v-col>
-            <v-checkbox v-model="textInput_has_slot" label="has slot" dense />
-          </v-col>
-        </v-row>
-        <v-divider class="my-2" />
-        <v-row>
-          <v-col>
-            <v-row>
-              <v-col>
-                <TextInput v-model="textInput_maxlength" label="maxlength" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_minlength" label="minlength" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_errorMessages" label="error messages" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_input_type" label="input type" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_prefix" label="prefix" />
-              </v-col>
-              <v-col>
-                <TextInput v-model="textInput_suffix" label="suffix" />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-
-        <v-divider class="my-2" />
-
-        <v-row>
-          <v-col>
-            <v-autocomplete
+            <InputAutoComplete
               v-model="textInput_selectedCheckMethods"
               :items="textInput_checkMethods"
-              filled
-              dense
               chips
               label="Rules"
               item-text="name"
@@ -145,9 +53,11 @@
             >
               <template #selection="data">
                 <v-chip
+                  class="mt-2"
                   v-bind="data.attrs"
                   :input-value="data.selected"
                   close
+                  small
                   @click="data.select"
                   @click:close="removeValidation(data.item)"
                 >
@@ -157,14 +67,12 @@
                   {{ data.item }}
                 </v-chip>
               </template>
-            </v-autocomplete>
+            </InputAutoComplete>
           </v-col>
           <v-col>
-            <v-autocomplete
+            <InputAutoComplete
               v-model="textInput_selectedFormatMethods"
               :items="textInput_formatMethods"
-              filled
-              dense
               chips
               label="Format"
               item-text="name"
@@ -173,9 +81,11 @@
             >
               <template #selection="data">
                 <v-chip
+                  class="mt-2"
                   v-bind="data.attrs"
                   :input-value="data.selected"
                   close
+                  small
                   @click="data.select"
                   @click:close="removeFormat(data.item)"
                 >
@@ -185,169 +95,236 @@
                   {{ data.item }}
                 </v-chip>
               </template>
-            </v-autocomplete>
+            </InputAutoComplete>
           </v-col>
         </v-row>
-
-        <v-divider class="my-6" />
-
         <v-row>
           <v-col>
-            <v-switch v-model="textOrTextArea" label="(Y) textInput / (N) textArea" />
+            <v-row>
+              <v-col cols="12" sm="3">
+                <v-row>
+                  <v-checkbox v-model="textInput_disabled" label="disabled" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_readonly" label="readonly" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_required" label="required" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_progress" label="progress" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox
+                    v-model="textInput_input_disable_changed_color"
+                    label="disable changed color"
+                    dense
+                  />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_input_clearable" label="clearable" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_prepend_icon" label="prepend icon" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox
+                    v-model="textInput_prepend_inner_icon"
+                    label="prepend inner_icon"
+                    dense
+                  />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_append_icon" label="append icon" dense />
+                </v-row>
+                <v-row>
+                  <v-checkbox
+                    v-model="textInput_append_outer_icon"
+                    label="append outer_icon"
+                    dense
+                  />
+                </v-row>
+                <v-row>
+                  <v-checkbox v-model="textInput_has_slot" label="has slot" dense />
+                </v-row>
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-row>
+                  <TextInput v-model="textInput_placeholder" label="placeholder" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_maxlength" label="maxlength" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_minlength" label="minlength" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_errorMessages" label="error messages" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_input_type" label="input type" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_prefix" label="prefix" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_suffix" label="suffix" />
+                </v-row>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <div class="text-settings-result">
+                  <h1>Settings Result</h1>
+                  <v-switch
+                    v-model="textOrTextArea"
+                    class="mb-2"
+                    label="(Y) textInput / (N) textArea"
+                  />
+                  <TextInput
+                    v-if="textOrTextArea"
+                    v-model="textInput"
+                    :type="textInput_input_type"
+                    name="TextInput Result:"
+                    :placeholder="textInput_placeholder"
+                    :disabled="textInput_disabled"
+                    :readonly="textInput_readonly"
+                    :required="textInput_required"
+                    :max-length="textInput_maxlength"
+                    :min-length="textInput_minlength"
+                    :prefix="textInput_prefix"
+                    :suffix="textInput_suffix"
+                    :error-messages="textInput_errorMessages"
+                    :rules="textInput_selectedCheckMethods"
+                    :format="textInput_selectedFormatMethods"
+                    :loading="textInput_progress"
+                    :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
+                    :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
+                    :append-icon="textInput_append_icon ? textInput_input_icon : ''"
+                    :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
+                    :clear-icon="textInput_input_clear_icon"
+                    :clearable="textInput_input_clearable"
+                    :disable-set-color="textInput_input_disable_changed_color"
+                    @click:append="clickIcon('append')"
+                    @click:append-outer="clickIcon('append-outer')"
+                    @click:prepend="clickIcon('prepend')"
+                    @click:prepend-inner="clickIcon('prepend-inner')"
+                    @click:clear="clickIcon('clear')"
+                  >
+                    <template #progress>
+                      <v-progress-linear
+                        v-if="textInput_progress"
+                        :value="textInput_progress"
+                        absolute
+                        height="7"
+                      />
+                    </template>
+                    <template v-if="textInput_has_slot" #prepend>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #prepend-inner>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #append>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #append-outer>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                  </TextInput>
+                  <TextAreaInput
+                    v-else
+                    v-model="textInput"
+                    :type="textInput_input_type"
+                    name="TextAreaInput Result:"
+                    :placeholder="textInput_placeholder"
+                    :disabled="textInput_disabled"
+                    :readonly="textInput_readonly"
+                    :required="textInput_required"
+                    :max-length="textInput_maxlength"
+                    :min-length="textInput_minlength"
+                    :prefix="textInput_prefix"
+                    :suffix="textInput_suffix"
+                    :error-messages="textInput_errorMessages"
+                    :rules="textInput_selectedCheckMethods"
+                    :format="textInput_selectedFormatMethods"
+                    :loading="textInput_progress"
+                    :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
+                    :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
+                    :append-icon="textInput_append_icon ? textInput_input_icon : ''"
+                    :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
+                    :clear-icon="textInput_input_clear_icon"
+                    :clearable="textInput_input_clearable"
+                    :disable-set-color="textInput_input_disable_changed_color"
+                    @click:append="clickIcon('append')"
+                    @click:append-outer="clickIcon('append-outer')"
+                    @click:prepend="clickIcon('prepend')"
+                    @click:prepend-inner="clickIcon('prepend-inner')"
+                    @click:clear="clickIcon('clear')"
+                  >
+                    <template #progress>
+                      <v-progress-linear
+                        v-if="textInput_progress"
+                        :value="textInput_progress"
+                        absolute
+                        height="7"
+                      />
+                    </template>
+                    <template v-if="textInput_has_slot" #prepend>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #prepend-inner>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #append>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                    <template v-if="textInput_has_slot" #append-outer>
+                      <v-tooltip bottom>
+                        <template #activator="{ on }">
+                          <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                        </template>
+                        I'm a tooltip
+                      </v-tooltip>
+                    </template>
+                  </TextAreaInput>
+                </div>
+              </v-col>
+            </v-row>
           </v-col>
-          <v-col>{{ textOrTextArea ? 'textInput ' : 'textArea' }}</v-col>
-        </v-row>
-        <v-row>
-          <v-col>selected rules: {{ textInput_selectedCheckMethods }}</v-col>
-          <v-col>selected format: {{ textInput_selectedFormatMethods }}</v-col>
-        </v-row>
-        <v-divider class="my-2" />
-        <v-row>
-          <v-col>
-            <TextInput
-              v-if="textOrTextArea"
-              v-model="textInput"
-              :type="textInput_input_type"
-              label="result"
-              :disabled="textInput_disabled"
-              :readonly="textInput_readonly"
-              :uppercase="textInput_uppercase"
-              :trim="textInput_trim"
-              :required="textInput_required"
-              :max-length="textInput_maxlength"
-              :min-length="textInput_minlength"
-              :prefix="textInput_prefix"
-              :suffix="textInput_suffix"
-              :error-messages="textInput_errorMessages"
-              :rules="textInput_selectedCheckMethods"
-              :loading="textInput_progress"
-              :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
-              :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
-              :append-icon="textInput_append_icon ? textInput_input_icon : ''"
-              :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
-              :clear-icon="textInput_input_clear_icon"
-              :clearable="textInput_input_clearable"
-              :disable-set-color="textInput_input_disable_changed_color"
-              @click:append="clickIcon('append')"
-              @click:append-outer="clickIcon('append-outer')"
-              @click:prepend="clickIcon('prepend')"
-              @click:prepend-inner="clickIcon('prepend-inner')"
-              @click:clear="clickIcon('clear')"
-            >
-              <template #progress>
-                <v-progress-linear
-                  v-if="textInput_progress"
-                  :value="textInput_progress"
-                  absolute
-                  height="7"
-                />
-              </template>
-              <template v-if="textInput_has_slot" #prepend>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #prepend-inner>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #append>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #append-outer>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-            </TextInput>
-            <TextAreaInput
-              v-else
-              v-model="textInput"
-              :type="textInput_input_type"
-              label="result"
-              :disabled="textInput_disabled"
-              :readonly="textInput_readonly"
-              :uppercase="textInput_uppercase"
-              :trim="textInput_trim"
-              :required="textInput_required"
-              :max-length="textInput_maxlength"
-              :min-length="textInput_minlength"
-              :prefix="textInput_prefix"
-              :suffix="textInput_suffix"
-              :error-messages="textInput_errorMessages"
-              :rules="textInput_selectedCheckMethods"
-              :loading="textInput_progress"
-              :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
-              :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
-              :append-icon="textInput_append_icon ? textInput_input_icon : ''"
-              :append-outer-icon="textInput_append_outer_icon ? textInput_input_icon : ''"
-              :clear-icon="textInput_input_clear_icon"
-              :clearable="textInput_input_clearable"
-              :disable-set-color="textInput_input_disable_changed_color"
-              @click:append="clickIcon('append')"
-              @click:append-outer="clickIcon('append-outer')"
-              @click:prepend="clickIcon('prepend')"
-              @click:prepend-inner="clickIcon('prepend-inner')"
-              @click:clear="clickIcon('clear')"
-            >
-              <template #progress>
-                <v-progress-linear
-                  v-if="textInput_progress"
-                  :value="textInput_progress"
-                  absolute
-                  height="7"
-                />
-              </template>
-              <template v-if="textInput_has_slot" #prepend>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #prepend-inner>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #append>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-if="textInput_has_slot" #append-outer>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-            </TextAreaInput>
-          </v-col>
-          <v-col>value:{{ textInput }}</v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -438,10 +415,9 @@ export default {
       required: true,
       hasDefault: false,
       textInput: '',
+      textInput_placeholder: 'placeholder',
       textInput_disabled: false,
       textInput_readonly: false,
-      textInput_uppercase: false,
-      textInput_trim: false,
       textInput_maxlength: null,
       textInput_minlength: null,
       textInput_errorMessages: '',
@@ -507,4 +483,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.text-settings-result {
+  overflow: hidden;
+  padding: 6px;
+  height: 450px;
+  border: 2px solid black;
+  border-radius: 6px;
+}
+</style>

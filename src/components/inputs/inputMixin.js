@@ -24,12 +24,12 @@ export const valueChangedSetColor = {
   beforeDestroy() {},
   props: {
     oldValue: {
-      type: [String, Number, null],
-      default: 'A'
+      type: [String, Number, Array],
+      default: ''
     },
 
     value: {
-      type: [String, Number, null],
+      type: [String, Number, Array],
       default: ''
     },
 
@@ -94,18 +94,13 @@ export const inputRefEvent = {
 import { ToDec, ToCDB, numberFormat, rocDate } from '@/utils/format'
 export const formatters = {
   props: {
-    /** trim on change/blur */
-    trim: {
-      type: Boolean,
-      default: false
-    },
-    /** uppercase on change/blur */
-    uppercase: {
-      type: Boolean,
-      default: false
-    },
     /** customize Formatter */
-    formatter: {}
+    format: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
 
   async mounted() {},
@@ -114,32 +109,38 @@ export const formatters = {
 
   methods: {
     toTrim() {
-      if (this.trim) {
-        const el =
-          this.$refs.inputRef.$el.querySelector('input') ||
-          this.$refs.inputRef.$el.querySelector('textarea')
-        const formatValue = el.value.replaceAll(' ', '')
-        el.value = formatValue
-        this.$emit('input', formatValue)
-      }
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = el.value.replaceAll(' ', '')
+      el.value = formatValue
+      this.$emit('input', formatValue)
     },
 
     toUpperCase() {
-      if (this.uppercase) {
-        const el =
-          this.$refs.inputRef.$el.querySelector('input') ||
-          this.$refs.inputRef.$el.querySelector('textarea')
-        const formatValue = el.value.toUpperCase()
-        el.value = formatValue
-        this.$emit('input', formatValue)
-      }
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = el.value.toUpperCase()
+      el.value = formatValue
+      this.$emit('input', formatValue)
     },
 
     ToDec() {
-      console.log(ToDec)
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = ToDec(el.value)
+      el.value = formatValue
+      this.$emit('input', formatValue)
     },
     ToCDB() {
-      console.log(ToCDB)
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = ToCDB(el.value)
+      el.value = formatValue
+      this.$emit('input', formatValue)
     },
     numberFormat() {
       console.log(numberFormat)
@@ -149,8 +150,21 @@ export const formatters = {
     },
 
     formatValue() {
-      this.toTrim()
-      this.toUpperCase()
+      if (this.format.includes('toTrim')) {
+        this.toTrim()
+      }
+      if (this.format.includes('toUpperCase')) {
+        this.toUpperCase()
+      }
+      if (this.format.includes('ToDec')) {
+        this.ToDec()
+      }
+      if (this.format.includes('ToCDB')) {
+        this.ToCDB()
+      }
+      if (this.format.includes('numberFormat')) {
+        this.numberFormat()
+      }
     }
   }
 }

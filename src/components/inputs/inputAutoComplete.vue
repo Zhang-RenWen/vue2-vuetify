@@ -1,50 +1,57 @@
 <template>
-  <v-row class="align-baseline no-gutters">
-    <v-col v-if="name" :cols="colsName" :class="{ 'pr-1 text-right': row }">
-      <slot :name="name">{{ name }}</slot>
-    </v-col>
-    <v-col :cols="row ? colsInput : cols" class="d-flex" :class="{ 'pl-2': row }">
-      <v-autocomplete
-        v-bind="$attrs"
-        ref="inputRef"
-        v-model="localValue"
-        class="input-autocomplete"
-        :class="{
-          'input-autocomplete--color-changed': hasChanged,
-          'input-autocomplete--disabled': disabled
-        }"
-        :placeholder="placeholder"
-        :rules="localRules"
-        :label="label"
-        :items="localItems"
-        :item-text="itemTextKey"
-        :item-value="itemValueKey"
-        :disabled="disabled"
-        :readonly="readonly"
-        hide-details="auto"
-        dense
-        outlined
-        validate-on-blur
-        v-on="$listeners"
-        @click="$emit('click', $event)"
-        @focus="onFocus"
-        @blur="validate()"
-        @reset="reset"
-        @update:error="$emit('update:error', $event)"
-        @keyup.delete="onPressedDelete"
-      >
-        <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
-          <slot :name="slot" v-bind="scope" />
-        </template>
-        <slot v-for="slot of Object.keys($slots)" :slot="slot" name="slot" />
-      </v-autocomplete>
-    </v-col>
-  </v-row>
+  <div>
+    <tooltipLabel
+      v-if="label"
+      :label="label"
+      :label-class="labelClass"
+      :inline-style="labelStyle"
+    />
+    <b v-if="name" class="pl-0">{{ name }}</b>
+    <v-autocomplete
+      v-bind="$attrs"
+      ref="inputRef"
+      v-model="localValue"
+      class="input-autocomplete"
+      :class="{
+        'input-autocomplete--color-changed': hasChanged,
+        'input-autocomplete--disabled': disabled
+      }"
+      :placeholder="placeholder"
+      :rules="localRules"
+      :label="label"
+      :items="localItems"
+      :item-text="itemTextKey"
+      :item-value="itemValueKey"
+      :disabled="disabled"
+      :readonly="readonly"
+      hide-details="auto"
+      dense
+      solo
+      flat
+      outlined
+      validate-on-blur
+      v-on="$listeners"
+      @click="$emit('click', $event)"
+      @focus="onFocus"
+      @blur="validate()"
+      @reset="reset"
+      @update:error="$emit('update:error', $event)"
+      @keyup.delete="onPressedDelete"
+    >
+      <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
+        <slot :name="slot" v-bind="scope" />
+      </template>
+      <slot v-for="slot of Object.keys($slots)" :slot="slot" name="slot" />
+    </v-autocomplete>
+  </div>
 </template>
 
 <script>
 import { valueChangedSetColor, inputRefEvent } from './inputMixin.js'
+import tooltipLabel from '@/components/tooltip/tooltipLabel'
 export default {
+  components: { tooltipLabel },
+
   mixins: [valueChangedSetColor, inputRefEvent],
   inheritAttrs: false,
   props: {
@@ -58,29 +65,13 @@ export default {
       default: ''
     },
 
+    labelClass: { type: String, default: '' },
+
+    labelStyle: { type: String, default: '' },
+
     placeholder: {
       type: String,
       default: ''
-    },
-
-    cols: {
-      type: Number,
-      default: 12
-    },
-
-    row: {
-      type: Boolean,
-      default: true
-    },
-
-    colsName: {
-      type: Number,
-      default: 4
-    },
-
-    colsInput: {
-      type: Number,
-      default: 8
     },
 
     items: {
