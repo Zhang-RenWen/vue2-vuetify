@@ -217,6 +217,16 @@ export const rulesSetting = {
       default: null // null closed
     },
 
+    min: {
+      type: [Number, String, null],
+      default: null // null closed
+    },
+
+    max: {
+      type: [Number, String, null],
+      default: null // null closed
+    },
+
     rules: {
       type: Array,
       default: () => []
@@ -275,9 +285,9 @@ export const rulesSetting = {
       return checkEnglishIntegrate(value) || '限輸入英文數字'
     },
 
-    checkNumberRange(value, min, max) {
+    checkNumberRange(value) {
       if (['', null, undefined, false].includes(value)) return true
-      return checkNumberRange(value, min, max) || '數值超出限制'
+      return checkNumberRange(value, this.min, this.max) || '數值超出限制'
     },
 
     // ID

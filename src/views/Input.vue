@@ -159,6 +159,12 @@
                   <TextInput v-model="textInput_minlength" label="minlength" />
                 </v-row>
                 <v-row>
+                  <TextInput v-model="textInput_max" label="max" />
+                </v-row>
+                <v-row>
+                  <TextInput v-model="textInput_min" label="min" />
+                </v-row>
+                <v-row>
                   <TextInput v-model="textInput_errorMessages" label="error messages" />
                 </v-row>
                 <v-row>
@@ -190,6 +196,8 @@
                     :required="textInput_required"
                     :max-length="textInput_maxlength"
                     :min-length="textInput_minlength"
+                    :max="textInput_max"
+                    :min="textInput_min"
                     :prefix="textInput_prefix"
                     :suffix="textInput_suffix"
                     :error-messages="textInput_errorMessages"
@@ -336,6 +344,62 @@
           <span id="" />
         </h2>
       </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <InputDate v-model="date" />
+          </v-col>
+          <v-col>
+            <TextInput placeholder="hh" />
+          </v-col>
+          <div class="d-flex align-center">:</div>
+          <v-col>
+            <TextInput placeholder="mm" />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+
+    <v-card class="mb-10">
+      <v-card-title>
+        <h2>
+          TextInput: DateRange
+          <span id="" />
+        </h2>
+      </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-row>
+              <v-col>
+                <InputDate v-model="date" />
+              </v-col>
+              <v-col>
+                <TextInput placeholder="hh" />
+              </v-col>
+              <div class="d-flex align-center">:</div>
+              <v-col>
+                <TextInput placeholder="mm" />
+              </v-col>
+            </v-row>
+          </v-col>
+          <div class="d-flex align-center">-</div>
+          <v-col>
+            <v-row>
+              <v-col>
+                <InputDate v-model="date" />
+              </v-col>
+              <v-col>
+                <TextInput placeholder="hh" />
+              </v-col>
+              <div class="d-flex align-center">:</div>
+              <v-col>
+                <TextInput placeholder="mm" />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
 
     <v-card class="mb-10">
@@ -420,6 +484,8 @@ export default {
       textInput_readonly: false,
       textInput_maxlength: null,
       textInput_minlength: null,
+      textInput_max: null,
+      textInput_min: null,
       textInput_errorMessages: '',
       textInput_required: false,
       textInput_input_type: 'text', // text(default) /password /number /date /time
@@ -439,7 +505,8 @@ export default {
       textInput_checkMethods: Object.keys(rulesSetting.methods),
       textInput_formatMethods: Object.keys(formatters.methods),
       textInput_selectedCheckMethods: [],
-      textInput_selectedFormatMethods: []
+      textInput_selectedFormatMethods: [],
+      date: ''
     }
   },
 
