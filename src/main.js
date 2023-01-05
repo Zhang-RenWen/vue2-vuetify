@@ -5,7 +5,9 @@ import App from '@/App.vue'
 import vuetify from '@/plugins/vuetify'
 import '@/components/globalRegister'
 import '@/directives/index'
+import VueHotKey from 'v-hotkey'
 
+Vue.use(VueHotKey)
 new Vue({
   router,
   store,
