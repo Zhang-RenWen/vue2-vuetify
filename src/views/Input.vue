@@ -478,17 +478,17 @@ export default {
       itemTextKey: 'label',
       required: true,
       hasDefault: false,
-      textInput: '',
+      textInput: 1000000,
       textInput_placeholder: 'placeholder',
       textInput_disabled: false,
       textInput_readonly: false,
-      textInput_maxlength: null,
+      textInput_maxlength: 5,
       textInput_minlength: null,
       textInput_max: null,
       textInput_min: null,
       textInput_errorMessages: '',
       textInput_required: false,
-      textInput_input_type: 'text', // text(default) /password /number /date /time
+      textInput_input_type: 'number', // text(default) /password /number /date /time
       textInput_prefix: '',
       textInput_suffix: '',
       textInput_progress: false,
@@ -505,7 +505,7 @@ export default {
       textInput_checkMethods: Object.keys(rulesSetting.methods),
       textInput_formatMethods: Object.keys(formatters.methods),
       textInput_selectedCheckMethods: [],
-      textInput_selectedFormatMethods: [],
+      textInput_selectedFormatMethods: ['toCurrency'],
       date: ''
     }
   },

@@ -34,7 +34,6 @@
         validate-on-blur
         v-bind="$attrs"
         v-on="on"
-        @focus="onFocus"
         @blur="
           () => {
             validate()

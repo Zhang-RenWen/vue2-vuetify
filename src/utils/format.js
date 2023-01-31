@@ -97,3 +97,57 @@ export const rocDate = (date) => {
     return ROCDate
   }
 }
+
+/**
+ * 四捨五入
+ * @param { Number } value
+ * @param { Number } precision 位數
+ * @returns
+ */
+export const toRound = (value, precision) => {
+  if (precision && precision > 0) {
+    const Pow10Precision = Math.pow(10, precision)
+    value = Math.round(Pow10Precision * value) / Pow10Precision
+  } else {
+    value = Math.round(value)
+  }
+  return value
+}
+
+/**
+ * 小數位數補 0
+ * @param { String } value
+ * @param { Number } precision 位數
+ * @returns
+ */
+export const toPad0AfterPoint = (value, precision) => {
+  if (precision && precision > 0) {
+    let parts = value.split('.')
+    parts[0] = parts[0] ? parts[0].replace(/^(0+(?!(\.$)))/g, '') : '0'
+    parts[1] = !parts[1] ? ''.padEnd(precision, '0') : parts[1].padEnd(precision, '0')
+    return value.join('.')
+  }
+  return value
+}
+
+/**
+ * 去除前導 0
+ * @param { String } value
+ * @returns
+ */
+export const toClearPrefix0 = (value) => {
+  return value.replace(/^(0+(?!(\.|$)))/g, '')
+}
+
+/**
+ * 貨幣格式
+ * @param { String } value
+ * @param { Number } precision 位數
+ * @returns
+ */
+export const toCurrency = (value, precision) => {
+  return Number(value).toLocaleString(undefined, {
+    maximumFractionDigits: precision,
+    minimumFractionDigits: precision
+  })
+}

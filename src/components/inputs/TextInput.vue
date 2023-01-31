@@ -8,6 +8,7 @@
     />
     <b v-if="name" class="pl-0">{{ name }}</b>
     <v-text-field
+      v-show="format.includes('toCurrency') ? isFocused : true"
       ref="inputRef"
       v-model.trim="localValue"
       :type="type"
@@ -34,14 +35,64 @@
       validate-on-blur
       v-bind="$attrs"
       v-on="listeners"
-      @focus="onFocus"
+      @focus="
+        ($event) => {
+          $emit('focus', $event)
+          isFocused = true
+        }
+      "
       @blur="
-        () => {
-          validate()
+        ($event) => {
+          $emit('blur', $event, value)
           formatValue()
+          validate()
+          isFocused = false
+        }
+      "
+      @input="
+        ($event) => {
+          $emit('input', $event, value)
+          limitNumberLength($event, maxLength)
         }
       "
       @reset="reset"
+    >
+      <template #prepend>
+        <slot name="prepend" />
+      </template>
+      <template #prepend-inner>
+        <slot name="prepend-inner" />
+      </template>
+      <template #append>
+        <slot name="append" />
+      </template>
+      <template #append-outer>
+        <slot name="append-outer" />
+      </template>
+    </v-text-field>
+
+    <!-- format 呈現用 -->
+    <v-text-field
+      v-show="format.includes('toCurrency') ? !isFocused : false"
+      v-model.trim="formatLocalValue"
+      :placeholder="placeholder"
+      :rules="localRules"
+      :readonly="!disabled ? readonly : readonly"
+      :disabled="disabled"
+      class="inputTextField"
+      :class="{
+        'input-textField--colorChanged': hasChanged && !disableSetColor,
+        'input-textField--disabled': disabled
+      }"
+      :label="label"
+      :error-messages="errorMessages"
+      v-bind="$attrs"
+      @reset="reset"
+      @focus="
+        ($event) => {
+          onFocusFormatField($event)
+        }
+      "
     >
       <template #prepend>
         <slot name="prepend" />
@@ -105,7 +156,10 @@ export default {
   },
 
   data() {
-    return {}
+    return {
+      isFocused: false,
+      formatLocalValue: ''
+    }
   },
 
   computed: {

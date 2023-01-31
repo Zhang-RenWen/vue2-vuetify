@@ -64,9 +64,6 @@ export const valueChangedSetColor = {
 
 export const inputRefEvent = {
   methods: {
-    onFocus(e) {
-      this.$emit('focus', e)
-    },
     /**
      *    reset fields value/validation
      */
@@ -87,11 +84,31 @@ export const inputRefEvent = {
 
     validate(force = false) {
       if (this.$refs.inputRef) return this.$refs.inputRef.validate(force)
+    },
+
+    onFocusFormatField() {
+      this.isFocused = true
+      setTimeout(() => {
+        const el =
+          this.$refs.inputRef.$el.querySelector('input') ||
+          this.$refs.inputRef.$el.querySelector('textarea')
+        if (el) {
+          el.focus()
+        }
+      }, 0)
     }
   }
 }
 
-import { ToDec, ToCDB, numberFormat, rocDate } from '@/utils/format'
+import {
+  ToDec,
+  ToCDB,
+  rocDate,
+  toRound,
+  toPad0AfterPoint,
+  toClearPrefix0,
+  toCurrency
+} from '@/utils/format'
 export const formatters = {
   props: {
     /** customize Formatter */
@@ -103,7 +120,10 @@ export const formatters = {
     }
   },
 
-  async mounted() {},
+  async mounted() {
+    this.formatLocalValue = structuredClone(this.localValue)
+    this.formatValue()
+  },
 
   beforeDestroy() {},
 
@@ -142,11 +162,73 @@ export const formatters = {
       el.value = formatValue
       this.$emit('input', formatValue)
     },
-    numberFormat() {
-      console.log(numberFormat)
-    },
     rocDate() {
       console.log(rocDate)
+    },
+
+    toRound() {
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = toRound(el.value)
+      el.value = formatValue
+      console.log(formatValue)
+      this.$emit('input', formatValue)
+    },
+
+    toPad0AfterPoint() {
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = toPad0AfterPoint(el.value)
+      el.value = formatValue
+      this.$emit('input', formatValue)
+    },
+
+    toClearPrefix0() {
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = toClearPrefix0(el.value)
+      el.value = formatValue
+      this.$emit('input', formatValue)
+    },
+
+    toCurrency() {
+      const el =
+        this.$refs.inputRef.$el.querySelector('input') ||
+        this.$refs.inputRef.$el.querySelector('textarea')
+      const formatValue = toCurrency(el.value, this.precision)
+      this.formatLocalValue = formatValue
+    },
+
+    /**
+     * 限制數字類型 input 位數
+     * 注意： format 在輸入時
+     * @param { $event } e
+     * @param { Number } maxLength
+     * @returns
+     */
+    // 輸入時 format
+    limitNumberLength(text, maxLength) {
+      if (!text) {
+        return
+      }
+      if (!maxLength) {
+        return text
+      }
+      maxLength = Number(maxLength)
+      const splitText = [...text]
+      const hasDot = splitText.includes('.')
+      const diff = hasDot ? 1 : 0
+      setTimeout(() => {
+        if (text.length > maxLength + diff) {
+          splitText.length = maxLength + diff
+          this.$emit('input', Number(splitText.join('')))
+        } else {
+          this.$emit('input', text)
+        }
+      }, 0)
     },
 
     formatValue() {
@@ -162,8 +244,18 @@ export const formatters = {
       if (this.format.includes('ToCDB')) {
         this.ToCDB()
       }
-      if (this.format.includes('numberFormat')) {
-        this.numberFormat()
+      if (this.format.includes('toRound')) {
+        this.toRound()
+      }
+      if (this.format.includes('toPad0AfterPoint') || this.precision > 0) {
+        this.toPad0AfterPoint()
+      }
+      if (this.format.includes('toClearPrefix0') || !this.precision) {
+        this.toClearPrefix0()
+      }
+
+      if (this.format.includes('toCurrency')) {
+        this.toCurrency()
       }
     }
   }
@@ -227,6 +319,11 @@ export const rulesSetting = {
       default: null // null closed
     },
 
+    precision: {
+      type: [Number],
+      default: 0
+    },
+
     rules: {
       type: Array,
       default: () => []
@@ -252,6 +349,7 @@ export const rulesSetting = {
     checkMaxLength(value) {
       if (['', 0, '0', null, undefined, false].includes(value)) return true
       if (['', 0, '0', null, undefined, false].includes(this.maxLength)) return true
+      console.log(String(value).length, this.maxLength)
       return String(value).length <= this.maxLength || '此欄位值超過可輸入之長度'
     },
 

@@ -32,7 +32,6 @@
       validate-on-blur
       v-on="$listeners"
       @click="$emit('click', $event)"
-      @focus="onFocus"
       @blur="validate()"
       @reset="reset"
       @update:error="$emit('update:error', $event)"
@@ -127,7 +126,9 @@ export default {
   },
 
   data() {
-    return {}
+    return {
+      // isFocused: false
+    }
   },
 
   computed: {
@@ -175,10 +176,6 @@ export default {
           this.$emit('change', option.value)
         }
       }
-    },
-
-    onFocus(e) {
-      this.$emit('focus', e)
     }
   }
 }
