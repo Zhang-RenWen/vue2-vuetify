@@ -42,7 +42,7 @@ export default {
   },
 
   mounted() {
-    console.log('vdialog')
+    console.log('dialog')
   },
 
   methods: {

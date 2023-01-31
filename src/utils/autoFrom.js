@@ -13,7 +13,6 @@ export function submitObjectData(pushData) {
     }
     newObjData[key] = dataValue
   })
-  // console.log("new0bjData", new0bjData);
   return newObjData
 }
 

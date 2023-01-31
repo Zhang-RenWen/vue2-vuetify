@@ -172,7 +172,6 @@ export const formatters = {
         this.$refs.inputRef.$el.querySelector('textarea')
       const formatValue = toRound(el.value)
       el.value = formatValue
-      console.log(formatValue)
       this.$emit('input', formatValue)
     },
 
@@ -349,7 +348,17 @@ export const rulesSetting = {
     checkMaxLength(value) {
       if (['', 0, '0', null, undefined, false].includes(value)) return true
       if (['', 0, '0', null, undefined, false].includes(this.maxLength)) return true
-      console.log(String(value).length, this.maxLength)
+      if (
+        this.format.includes('toCurrency') &&
+        this.type === 'number' &&
+        this.isFocused === false
+      ) {
+        const diff = [...String(value)].filter((text) => text === ',').length
+        return (
+          String(value).length <= Number(this.maxLength) + Number(diff) ||
+          '此欄位值超過可輸入之長度'
+        )
+      }
       return String(value).length <= this.maxLength || '此欄位值超過可輸入之長度'
     },
 
