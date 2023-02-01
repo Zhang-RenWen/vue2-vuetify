@@ -6,11 +6,18 @@
         <strong>{{ totalCount }}</strong>
         筆
       </span>
-      <v-pagination v-model="page" :length="totalPageCount" :total-visible="value.totalVisible" />
+      <v-pagination v-model="page" :length="totalPageCount" :total-visible="totalVisible" />
       <v-spacer />
       <div class="v-data-footer__select">
         每頁列數：
-        <v-select v-model="selectedItem" :items="itemsPerPageSelect" dense outlined hide-details />
+        <v-select
+          v-model="selectedItem"
+          :items="itemsPerPageSelect"
+          dense
+          outlined
+          hide-details
+          @change="onChanged"
+        />
         <span>筆</span>
       </div>
     </div>
@@ -27,14 +34,17 @@ export default {
       default: 30
     },
 
+    totalVisible: {
+      type: Number,
+      default: 10
+    },
+
     // 給外部 V-model 的 Options
     value: {
       type: Object,
       default() {
         return {
-          page: 1,
-          itemPerPage: 10,
-          totalVisible: 10
+          page: 1
         }
       }
     },
@@ -67,7 +77,6 @@ export default {
       },
 
       set(value) {
-        console.log({ ...this.value, page: value })
         this.$emit('input', { ...this.value, page: value })
       }
     },
@@ -82,6 +91,14 @@ export default {
   },
 
   mounted() {},
-  methods: {}
+  methods: {
+    // reset() {
+    //   this.selectedItem = 10
+    // },
+
+    onChanged(value) {
+      this.$emit('input', { ...this.value, itemsPerPage: value })
+    }
+  }
 }
 </script>

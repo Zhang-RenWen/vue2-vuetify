@@ -95,15 +95,52 @@
           </tr>
         </template>
       </v-data-table>
+
+      <!-- client-sort -->
+      <v-data-table
+        class="data-table"
+        dense
+        :headers="data_empty.headers"
+        :items="data_empty.empty"
+        :expanded="items"
+        disable-pagination
+        :sort-desc.sync="options.sortDesc"
+        :sort-by.sync="options.sortBy"
+        hide-default-footer
+      />
+
+      <!-- server-sort -->
+      <TablePagination v-model="options" :total-count="totalCount" />
+      <v-data-table
+        v-sticky="65"
+        v-fixed-table-column="3"
+        class="data-table"
+        dense
+        :headers="data_empty.headers"
+        :items="data_empty.empty"
+        hide-default-footer
+        :items-per-page="options.itemPerPage"
+        :server-items-length="totalCount"
+        :sort-desc.sync="options.sortDesc"
+        :sort-by.sync="options.sortBy"
+        :footer-props="{
+          'items-per-page-option': [options.itemPerPage]
+        }"
+        @page-count="pageCount = $event"
+      />
     </v-sheet>
   </v-card>
 </template>
 
 <script>
 import { data_empty, data_normal, data_expanded, data_select, data_RER } from './table/tableData'
-
+import { FixedTableColumn } from '@/directives/fixedTableColumn'
 export default {
   components: {},
+  directives: {
+    FixedTableColumn
+  },
+
   props: {},
 
   data() {
@@ -114,7 +151,11 @@ export default {
       data_normal,
       data_expanded,
       data_select,
-      data_RER
+      data_RER,
+      items: [],
+      options: {},
+      totalCount: 0, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
+      pageCount: null
     }
   },
 

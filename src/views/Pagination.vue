@@ -1,10 +1,10 @@
 <template>
-  <VCustomPaginationCustom v-model="options" :total-count="20" />
+  <TablePagination v-model="options" :total-count="20" />
 </template>
 
 <script>
 export default {
-  name: 'TablePagination',
+  name: 'Pagination',
   components: {},
   props: {},
 

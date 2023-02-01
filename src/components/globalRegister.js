@@ -13,9 +13,10 @@ import anchorPointButton from '@/components/button/AnchorPointButton.vue'
 // import DynamicForm from '@/components/vuetify/DynamicForm.vue'
 // import Dialog from '@/components/vuetify/Dialog.vue'
 // import FormGroup from '@/components/vuetify/FormGroup.vue'
-// import VCustomPaginationCustom from '@/components/vuetify/Pagination.vue'
+import TablePagination from '@/components/pagination/TablePagination.vue'
 
 // Vue.use(vueHotkey)
+Vue.component('TablePagination', TablePagination)
 Vue.component('Icon', icon)
 Vue.component('GoTopButton', goTop)
 Vue.component('GoTopByWindow', goTopByWindow)
@@ -28,4 +29,3 @@ Vue.component('InputDate', inputDate)
 // Vue.component('DynamicForm', DynamicForm)
 // Vue.component('FormGroup', FormGroup)
 // Vue.component('VueResizable', vueResizable)
-// Vue.component('VCustomPaginationCustom', VCustomPaginationCustom)
