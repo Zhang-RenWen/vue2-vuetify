@@ -107,12 +107,20 @@ import {
   toRound,
   toPad0AfterPoint,
   toClearPrefix0,
-  toCurrency
+  toCurrency,
+  toHalfWidth,
+  toFullWidth
 } from '@/utils/format'
 export const formatters = {
   props: {
     /** customize Formatter */
     format: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    displayFormat: {
       type: Array,
       default() {
         return []
@@ -128,77 +136,73 @@ export const formatters = {
   beforeDestroy() {},
 
   methods: {
-    toTrim() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = el.value.replaceAll(' ', '')
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    // 定義在 methods 可以讓所有 input 訪問 format.js 增加彈性
+    toString(v) {
+      return typeof v === 'string' ? v : ''
+    },
+    toTrim(v) {
+      return String(v).replaceAll(' ', '')
     },
 
-    toUpperCase() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = el.value.toUpperCase()
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    toUpperCase(v) {
+      return String(v).toUpperCase()
     },
 
-    ToDec() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = ToDec(el.value)
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    toHalfWidth(v) {
+      return toHalfWidth(v)
     },
-    ToCDB() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = ToCDB(el.value)
-      el.value = formatValue
-      this.$emit('input', formatValue)
+
+    toFullWidth(v) {
+      return toFullWidth(v)
+    },
+
+    ToDec(v) {
+      return ToDec(v)
+    },
+    ToCDB(v) {
+      return ToCDB(v)
     },
     rocDate() {
       console.log(rocDate)
     },
 
-    toRound() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = toRound(el.value)
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    toRound(v) {
+      return toRound(v)
     },
 
-    toPad0AfterPoint() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = toPad0AfterPoint(el.value)
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    toPad0AfterPoint(v) {
+      return toPad0AfterPoint(v)
     },
 
-    toClearPrefix0() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = toClearPrefix0(el.value)
-      el.value = formatValue
-      this.$emit('input', formatValue)
+    toClearPrefix0(v) {
+      return toClearPrefix0(v)
     },
 
-    toCurrency() {
-      const el =
-        this.$refs.inputRef.$el.querySelector('input') ||
-        this.$refs.inputRef.$el.querySelector('textarea')
-      const formatValue = toCurrency(el.value, this.precision)
-      this.formatLocalValue = formatValue
+    toCurrency(v) {
+      return toCurrency(v, this.precision)
+    },
+
+    formatValue() {
+      let formatValue = ''
+      let allFormatMethods = this.format
+      let allDisplayFormatMethods = this.displayFormat
+      if (!allFormatMethods.includes('toPad0AfterPoint') && this.precision > 0) {
+        allFormatMethods.unshift('toPad0AfterPoint')
+      }
+      if (!allFormatMethods.includes('toClearPrefix0') && !this.precision) {
+        allFormatMethods.unshift('toClearPrefix0')
+      }
+      allFormatMethods.forEach((methodName) => {
+        if (this[methodName] && !['formatValue', 'toCurrency'].includes(methodName)) {
+          formatValue = this[methodName](this.localValue)
+        }
+      })
+      allDisplayFormatMethods.forEach((methodName) => {
+        if (!['formatValue'].includes(methodName)) {
+          this.formatLocalValue = this[methodName](formatValue)
+        }
+      })
+      this.localValue = formatValue
     },
 
     /**
@@ -228,34 +232,6 @@ export const formatters = {
           this.$emit('input', text)
         }
       }, 0)
-    },
-
-    formatValue() {
-      if (this.format.includes('toTrim')) {
-        this.toTrim()
-      }
-      if (this.format.includes('toUpperCase')) {
-        this.toUpperCase()
-      }
-      if (this.format.includes('ToDec')) {
-        this.ToDec()
-      }
-      if (this.format.includes('ToCDB')) {
-        this.ToCDB()
-      }
-      if (this.format.includes('toRound')) {
-        this.toRound()
-      }
-      if (this.format.includes('toPad0AfterPoint') || this.precision > 0) {
-        this.toPad0AfterPoint()
-      }
-      if (this.format.includes('toClearPrefix0') || !this.precision) {
-        this.toClearPrefix0()
-      }
-
-      if (this.format.includes('toCurrency')) {
-        this.toCurrency()
-      }
     }
   }
 }
@@ -339,15 +315,15 @@ export const rulesSetting = {
       return !this.required || !!value || `${name}為必填不可空白`
     },
     checkMinLength(value) {
-      if (['', 0, '0', null, undefined, false].includes(value)) return true
-      if (['', 0, '0', null, undefined, false].includes(this.minLength)) return true
+      if (['', 0, '0', null, 'null', undefined, false].includes(value)) return true
+      if (['', 0, '0', null, 'null', undefined, false].includes(this.minLength)) return true
 
       return String(value).length >= this.minLength || `此欄位請輸入至少${this.minLength}個字`
     },
 
     checkMaxLength(value) {
-      if (['', 0, '0', null, undefined, false].includes(value)) return true
-      if (['', 0, '0', null, undefined, false].includes(this.maxLength)) return true
+      if (['', 0, '0', null, 'null', undefined, false].includes(value)) return true
+      if (['', 0, '0', null, 'null', undefined, false].includes(this.maxLength)) return true
       if (
         this.format.includes('toCurrency') &&
         this.type === 'number' &&
@@ -368,54 +344,54 @@ export const rulesSetting = {
     },
 
     checkChineseWords(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkChineseWords(value) || '請輸入中文字'
     },
 
     checkTaiwanPhoneNumber(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkTaiwanPhoneNumber(value) || '開頭必須為 09 且欄位長度限定10碼'
     },
 
     checkTaiwanTelephoneNumber(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkTaiwanTelephoneNumber(value) || '輸入區碼並檢視長度是否正確'
     },
 
     checkTaxNumber(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkTaxNumber(value) || '統編錯誤（ 8 個數字）'
     },
 
     checkEnglishIntegrate(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkEnglishIntegrate(value) || '限輸入英文數字'
     },
 
     checkNumberRange(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkNumberRange(value, this.min, this.max) || '數值超出限制'
     },
 
     // ID
 
     checkTaiwanId(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkTaiwanId(value) || '身份證驗證錯誤'
     },
 
     checkForeignerId(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkForeignerId(value) || '居留證號碼驗證錯誤'
     },
 
     checkNewForeignerId(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkNewForeignerId(value) || '居留證號碼驗證錯誤'
     },
 
     checkForeignerOtherId(otherId, id = '') {
-      if (![null, '', undefined].includes(id)) {
+      if (![null, 'null', '', undefined].includes(id)) {
         // 身分證 為舊式統一證號 其他ID不可輸入
         if (checkForeignerId(id) && ![null, ''].includes(otherId)) {
           return '身分證ID非新式外來人口統一證號,其他ID不可輸入'
@@ -423,7 +399,7 @@ export const rulesSetting = {
         // 身分證 為新式統一證號 其他ID不可輸入 新式統一證號
         if (
           checkNewForeignerId(id) &&
-          ![null, ''].includes(otherId) &&
+          ![null, 'null', ''].includes(otherId) &&
           checkNewForeignerId(otherId)
         ) {
           return '(角色)ID欄位應輸入為新式統一證號、其他ID欄位英數入為舊式統一證號'
@@ -433,12 +409,12 @@ export const rulesSetting = {
     },
 
     checkTaiwanAndForeignerId(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkTaiwanAndForeignerId(value) || '身分證字號與統一證號格式驗證錯誤'
     },
 
     checkNumberAndSymbol(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkNumberAndSymbol(value) || '必須為數字或+#-的符號'
     },
 
@@ -466,12 +442,12 @@ export const rulesSetting = {
     // number
 
     checkIntAndDecimal(value, int, decimal) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkIntAndDecimal(value, int, decimal) || `限制整數位${int}位及小數點${decimal}位`
     },
 
     checkNumber(value) {
-      if (['', null, undefined, false].includes(value)) return true
+      if (['', null, 'null', undefined, false].includes(value)) return true
       return checkNumber(value) || '必須為數字'
     },
 

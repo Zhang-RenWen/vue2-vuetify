@@ -97,6 +97,34 @@
               </template>
             </InputAutoComplete>
           </v-col>
+          <v-col>
+            <InputAutoComplete
+              v-model="textInput_selectedDisplayFormatMethods"
+              :items="textInput_formatMethods"
+              chips
+              label="DisplayFormat"
+              item-text="name"
+              item-value="name"
+              multiple
+            >
+              <template #selection="data">
+                <v-chip
+                  class="mt-2"
+                  v-bind="data.attrs"
+                  :input-value="data.selected"
+                  close
+                  small
+                  @click="data.select"
+                  @click:close="removeFormat(data.item)"
+                >
+                  <!-- <v-avatar left>
+                    <v-img :src="data.item.avatar" />
+                  </v-avatar> -->
+                  {{ data.item }}
+                </v-chip>
+              </template>
+            </InputAutoComplete>
+          </v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -203,6 +231,7 @@
                     :error-messages="textInput_errorMessages"
                     :rules="textInput_selectedCheckMethods"
                     :format="textInput_selectedFormatMethods"
+                    :display-format="textInput_selectedDisplayFormatMethods"
                     :loading="textInput_progress"
                     :prepend-icon="textInput_prepend_icon ? textInput_input_icon : ''"
                     :prepend-inner-icon="textInput_prepend_inner_icon ? textInput_input_icon : ''"
@@ -505,7 +534,8 @@ export default {
       textInput_checkMethods: Object.keys(rulesSetting.methods),
       textInput_formatMethods: Object.keys(formatters.methods),
       textInput_selectedCheckMethods: [],
-      textInput_selectedFormatMethods: ['toCurrency'],
+      textInput_selectedFormatMethods: [],
+      textInput_selectedDisplayFormatMethods: ['toCurrency'],
       date: ''
     }
   },
@@ -545,6 +575,8 @@ export default {
     removeFormat(item) {
       const index = this.textInput_selectedFormatMethods.indexOf(item)
       if (index >= 0) this.textInput_selectedFormatMethods.splice(index, 1)
+      const dIndex = this.textInput_selectedDisplayFormatMethods.indexOf(item)
+      if (dIndex >= 0) this.textInput_selectedDisplayFormatMethods.splice(dIndex, 1)
     }
   }
 }

@@ -8,7 +8,7 @@
     />
     <b v-if="name" class="pl-0">{{ name }}</b>
     <v-text-field
-      v-show="format.includes('toCurrency') ? isFocused : true"
+      v-show="displayFormat.length > 0 ? isFocused : true"
       ref="inputRef"
       v-model.trim="localValue"
       :type="type"
@@ -70,10 +70,9 @@
         <slot name="append-outer" />
       </template>
     </v-text-field>
-
     <!-- format 呈現用 -->
     <v-text-field
-      v-show="format.includes('toCurrency') ? !isFocused : false"
+      v-show="displayFormat.length > 0 ? !isFocused : false"
       v-model.trim="formatLocalValue"
       :placeholder="placeholder"
       :rules="localRules"

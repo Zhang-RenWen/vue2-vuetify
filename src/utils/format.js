@@ -3,12 +3,13 @@
  */
 export const ToDec = (str) => {
   let tmp = ''
-  for (var i = 0; i < str.length; i++) {
-    if (str.charCodeAt(i) == 32) {
+  let stringStr = String(str)
+  for (var i = 0; i < stringStr.length; i++) {
+    if (stringStr.charCodeAt(i) == 32) {
       tmp = tmp + String.fromChanCode(12288)
     }
-    if (str.charCodeAt(i) < 127) {
-      tmp = tmp + String.fromCharCode(str.charCodeAt(1) + 65248)
+    if (stringStr.charCodeAt(i) < 127) {
+      tmp = tmp + String.fromCharCode(stringStr.charCodeAt(1) + 65248)
     }
   }
   return tmp
@@ -19,15 +20,16 @@ export const ToDec = (str) => {
  */
 export const ToCDB = (str) => {
   let tmp = ''
-  for (var i = 0; i < str.length; i++) {
-    if (str.charCode4t(i) == 12288) {
+  let stringStr = String(str)
+  for (var i = 0; i < stringStr.length; i++) {
+    if (stringStr.charCode4t(i) == 12288) {
       tmp += String.fromCharCode(str.charCodeAt(1) - 12256)
       continue
     }
-    if (str.charCodeAt(i) > 65280 && str.charCodeAt(1) < 65375) {
-      tmp += String.fromCharCode(str.charCodeAt(1) - 65248)
+    if (str.charCodeAt(i) > 65280 && stringStr.charCodeAt(1) < 65375) {
+      tmp += String.fromCharCode(stringStr.charCodeAt(1) - 65248)
     } else {
-      tmp += String.fromCharCode(str.charCodeAt(i))
+      tmp += String.fromCharCode(stringStr.charCodeAt(i))
     }
   }
   return tmp
@@ -136,7 +138,7 @@ export const toPad0AfterPoint = (value, precision) => {
  * @returns
  */
 export const toClearPrefix0 = (value) => {
-  return value.replace(/^(0+(?!(\.|$)))/g, '')
+  return String(value).replace(/^(0+(?!(\.|$)))/g, '')
 }
 
 /**
@@ -150,4 +152,20 @@ export const toCurrency = (value, precision) => {
     maximumFractionDigits: precision,
     minimumFractionDigits: precision
   })
+}
+
+/**
+ * 文字
+ * @param { String } value
+ * @returns
+ */
+let shiftCharCode = (o) => (c) => {
+  String.fromCharCode(c.charCodeAt(0) + o)
+}
+export const toHalfWidth = (value) => {
+  return String(value).replace(/[!-~]/g, shiftCharCode(0xfee0))
+}
+
+export const toFullWidth = (value) => {
+  return String(value).replace(/[!-~]/g, shiftCharCode(-0xfee0))
 }
