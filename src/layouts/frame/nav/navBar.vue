@@ -52,7 +52,7 @@ $aside-width: 290px;
 
 #nav-bar {
   position: fixed;
-  z-index: 3;
+  z-index: 11;
   display: flex;
   justify-content: space-between;
   flex-direction: row-reverse;

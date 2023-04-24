@@ -1,17 +1,3 @@
-export const data_empty = {
-  headers: [],
-  items: []
-}
-
-export const data_normal = {
-  headers: [
-    { text: 'col1', value: 'h1ValueKey' },
-    { text: 'col2', value: 'h2ValueKey' },
-    { text: 'col3', value: 'h3ValueKey' }
-  ],
-  items: []
-}
-
 export const data_expanded = {
   headers: [
     { text: 'col1', value: 'h1ValueKey' },
