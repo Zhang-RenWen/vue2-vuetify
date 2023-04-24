@@ -1,20 +1,7 @@
 <template>
   <v-card>
     <h3>Table</h3>
-    {{ selected }}
     <v-sheet outlined class="pa-4">
-      <v-data-table
-        class="custom-table light-table mb-3"
-        dense
-        :headers="data_empty.headers"
-        :items="data_empty.empty"
-      />
-      <v-data-table
-        dense
-        class="custom-table light-table mb-3"
-        :headers="data_normal.headers"
-        :items="data_normal.items"
-      />
       <v-data-table
         dense
         class="custom-table light-table mb-3"
@@ -155,7 +142,7 @@
 </template>
 
 <script>
-import { data_empty, data_normal, data_expanded, data_select, data_RER } from './table/tableData'
+import { data_expanded, data_select, data_RER } from './table/tableData'
 import { FixedTableColumn } from '@/directives/fixedTableColumn'
 export default {
   components: {},
@@ -169,15 +156,13 @@ export default {
     return {
       singleSelect: null,
       selected: [],
-      data_empty,
-      data_normal,
       data_expanded,
       data_select,
       data_RER,
       options: {
         sortBy: 'amount',
         sortDesc: [false],
-        itemPerPage: '10'
+        itemPerPage: 10
       },
 
       totalCount: 10, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
