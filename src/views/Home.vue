@@ -58,7 +58,7 @@ $transition-speed: 300ms;
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 3;
+    z-index: 11;
     overflow-x: auto;
     padding-top: 60px;
     width: $aside-width;
