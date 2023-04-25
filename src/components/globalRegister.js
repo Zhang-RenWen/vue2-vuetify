@@ -10,7 +10,6 @@ import goTopByWindow from '@/components/button/GoTopByWindow.vue'
 import anchorPointButton from '@/components/button/AnchorPointButton.vue'
 // import vueResizable from 'vue-resizable'
 // import vueHotkey from 'v-hotkey'
-// import DynamicForm from '@/components/vuetify/DynamicForm.vue'
 // import Dialog from '@/components/vuetify/Dialog.vue'
 // import FormGroup from '@/components/vuetify/FormGroup.vue'
 import TablePagination from '@/components/pagination/TablePagination.vue'
@@ -26,6 +25,5 @@ Vue.component('TextAreaInput', textAreaInput)
 Vue.component('InputAutoComplete', inputAutoComplete)
 Vue.component('InputDate', inputDate)
 // Vue.component('Dialog', Dialog)
-// Vue.component('DynamicForm', DynamicForm)
 // Vue.component('FormGroup', FormGroup)
 // Vue.component('VueResizable', vueResizable)
