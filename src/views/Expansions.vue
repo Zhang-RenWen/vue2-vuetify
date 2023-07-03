@@ -1,14 +1,15 @@
 /* cspell:disable */
 <template>
   <div v-hotkey="keyMap">
-    <v-card>
-      <h3>Expansions</h3>
+    <v-card class="pa-2">
+      <h3 class="mb-2">Expansions</h3>
+      <p>Click Keyboard (A)/(B)</p>
       <v-sheet outlined class="pa-4">
-        <v-btn @click="toggleAll">
+        <v-btn class="mb-2" @click="toggleAll">
           <v-icon>mdi-chevron-double-down</v-icon>
         </v-btn>
         <v-expansion-panels v-model="panel" hover multiple>
-          <v-expansion-panel v-for="(o, i) of tabs" :key="i">
+          <v-expansion-panel v-for="(o, i) of tabs" :key="i" class="mb-2">
             <v-expansion-panel-header>header {{ o }}</v-expansion-panel-header>
             <v-expansion-panel-content>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor

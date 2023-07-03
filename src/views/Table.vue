@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pa-2">
     <h3>Table</h3>
     <v-sheet outlined class="pa-4">
       <v-data-table

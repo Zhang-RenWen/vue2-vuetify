@@ -51,16 +51,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$aside-width: 290px;
+$aside-width: 250px;
 $background-color-trademark: #001529;
 $background-color-search-box: #373d41;
 $elements-color: #fff;
+$height: 50px;
 
 aside {
   .trademark {
     width: $aside-width;
-    height: 60px;
-    line-height: 60px;
+    height: $height;
+    line-height: $height;
     font-size: 36px;
     font-weight: 600;
     text-align: center;
@@ -70,13 +71,13 @@ aside {
 
   .menu {
     overflow-y: auto;
-    height: calc(100vh - 120px);
-    min-height: calc(100vh - 120px);
+    height: calc(100vh - $height * 2);
+    min-height: calc(100vh - $height * 2);
   }
 
   .search-box {
     width: $aside-width;
-    height: 60px;
+    height: $height;
     background-color: $background-color-search-box;
   }
 }
