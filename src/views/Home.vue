@@ -42,10 +42,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$aside-width: 290px;
+$aside-width: 250px;
 $content-width-mobile: calc(100%);
 $content-width-pad: calc(100%);
-$content-width: calc(100% - 290px);
+$content-width: calc(100% - $aside-width);
 $background-color-aside: #24282c;
 $transition-speed: 300ms;
 
@@ -58,10 +58,11 @@ $transition-speed: 300ms;
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 3;
+    z-index: 11;
     overflow-x: auto;
-    padding-top: 60px;
+    padding-top: 50px;
     width: $aside-width;
+    height: 100vh;
     border-radius: 0;
     color: #000;
     background-color: $background-color-aside;

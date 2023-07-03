@@ -1,23 +1,10 @@
 <template>
-  <v-card>
+  <v-card class="pa-2">
     <h3>Table</h3>
-    {{ selected }}
     <v-sheet outlined class="pa-4">
       <v-data-table
-        class="data-table"
         dense
-        :headers="data_empty.headers"
-        :items="data_empty.empty"
-      />
-      <v-data-table
-        dense
-        class="data-table"
-        :headers="data_normal.headers"
-        :items="data_normal.items"
-      />
-      <v-data-table
-        dense
-        class="data-table"
+        class="custom-table light-table mb-3"
         :headers="data_expanded.headers"
         :items="data_expanded.items"
         item-key="h1ValueKey"
@@ -31,7 +18,7 @@
       </v-data-table>
       <v-data-table
         v-model="selected"
-        class="data-table"
+        class="custom-table light-table mb-3"
         dense
         :headers="data_select.headers"
         :items="data_select.items"
@@ -48,7 +35,7 @@
       </v-data-table>
 
       <v-data-table
-        class="data-table"
+        class="custom-table light-table mb-3"
         :headers="getHeaders(data_RER.headers)"
         :items="data_RER.items"
         hide-default-header
@@ -96,28 +83,16 @@
         </template>
       </v-data-table>
 
-      <!-- client-sort -->
-      <v-data-table
-        class="data-table"
-        dense
-        :headers="data_empty.headers"
-        :items="data_empty.empty"
-        :expanded="items"
-        disable-pagination
-        :sort-desc.sync="options.sortDesc"
-        :sort-by.sync="options.sortBy"
-        hide-default-footer
-      />
-
       <!-- server-sort -->
-      <TablePagination v-model="options" :total-count="totalCount" />
       <v-data-table
-        v-sticky="65"
+        v-sticky="32"
         v-fixed-table-column="3"
-        class="data-table"
+        fixed-header
+        :height="180"
+        class="custom-table light-table mb-3"
         dense
-        :headers="data_empty.headers"
-        :items="data_empty.empty"
+        :headers="actionHeader"
+        :items="actionItems"
         hide-default-footer
         :items-per-page="options.itemPerPage"
         :server-items-length="totalCount"
@@ -126,14 +101,48 @@
         :footer-props="{
           'items-per-page-option': [options.itemPerPage]
         }"
+        :custom-filter="customSearch"
+        :search="condition"
         @page-count="pageCount = $event"
-      />
+      >
+        <template #[`header.action`]>
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-plus" />
+          </v-btn>
+        </template>
+        <template #[`item.index`]="{ index }">
+          {{ index + 1 }}
+        </template>
+        <template #[`item.action`]="{ item }">
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+            @click="
+              (e) => {
+                addItem(item, e)
+              }
+            "
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-trash-alt" />
+          </v-btn>
+        </template>
+      </v-data-table>
+      <TablePagination v-model="options" :total-count="totalCount" />
     </v-sheet>
   </v-card>
 </template>
 
 <script>
-import { data_empty, data_normal, data_expanded, data_select, data_RER } from './table/tableData'
+import { data_expanded, data_select, data_RER } from './table/tableData'
 import { FixedTableColumn } from '@/directives/fixedTableColumn'
 export default {
   components: {},
@@ -147,25 +156,74 @@ export default {
     return {
       singleSelect: null,
       selected: [],
-      data_empty,
-      data_normal,
       data_expanded,
       data_select,
       data_RER,
-      items: [],
-      options: {},
-      totalCount: 0, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
-      pageCount: null
+      options: {
+        sortBy: 'amount',
+        sortDesc: [false],
+        itemPerPage: 10
+      },
+
+      totalCount: 10, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
+      pageCount: null,
+      actionHeader: [
+        { text: '序號', align: 'center', width: '80px', sortable: false, value: 'index' },
+        { text: '操作', align: 'center', width: '80px', sortable: false, value: 'action' },
+        { text: '代碼', align: 'center', width: '200px', sortable: false, value: 'code' },
+        { text: '描述', align: 'center', width: '200px', sortable: false, value: 'text' },
+        { text: '數值', align: 'center', width: '200px', sortable: true, value: 'amount' },
+        { text: '名字', align: 'center', width: '200px', sortable: false, value: 'name' },
+        { text: '備註', align: 'center', width: '200px', sortable: false, value: 'notes' }
+      ],
+
+      actionItems: [
+        {
+          action: '',
+          code: 'C',
+          text: '項目C',
+          amount: 10000,
+          name: '',
+          notes: ''
+        },
+        {
+          action: '',
+          code: 'A',
+          text: '項目A',
+          amount: 10000,
+          name: '',
+          notes: ''
+        },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 11, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 50, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
+        { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' }
+      ]
     }
   },
 
-  computed: {},
+  computed: {
+    condition() {
+      return 'A'
+    }
+  },
 
   async mounted() {},
 
   destroyed() {},
 
   methods: {
+    customSearch(value, query, item) {
+      return ['C'].includes(item.code) && query === this.condition
+    },
+
     getHeaders(headers) {
       const newHeaders = headers.reduce((r, header) => {
         const newHeader = header
@@ -194,18 +252,13 @@ export default {
         return r.concat(values)
       }, [])
       return newArr
+    },
+
+    addItem(item) {
+      console.log(item)
     }
   }
 }
 </script>
 
-<style lang="scss">
-/* stylelint-disable */
-.data-table {
-  margin-bottom: 30px;
-  .v-data-table__wrapper > table th,
-  .v-data-table__wrapper > table td {
-    border: 1px solid black;
-  }
-}
-</style>
+<style lang="scss"></style>

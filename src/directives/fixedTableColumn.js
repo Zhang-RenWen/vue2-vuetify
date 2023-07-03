@@ -5,18 +5,16 @@ function setStickyLeft(el, { value }) {
     const td = el.querySelectorAll(`td:nth-child(${i + 1})`)
     th.forEach((item) => {
       item.style.position = 'sticky'
-      item.style.zIndex = 3
+      item.style.zIndex = 2
       item.style.left = leftTotal + 'px'
     })
     td.forEach((item) => {
-      if (!item.parentNode.classList.value.includes('ignoreFixedCol')) {
-        item.style.position = 'sticky'
-        item.style.zIndex = 3
-        item.style.left = leftTotal + 'px'
-        item.classList.add('fixed-table-col')
-      }
-      leftTotal += th[0].getBoundingClientRect().width
+      item.style.position = 'sticky'
+      item.style.zIndex = 1
+      item.style.left = leftTotal + 'px'
+      item.classList.add('fixed-table-col')
     })
+    leftTotal += th[0].getBoundingClientRect().width
   }
 }
 
