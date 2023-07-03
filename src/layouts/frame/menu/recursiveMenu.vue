@@ -113,7 +113,7 @@ $aside-width: 100%;
 $background-color: #24282c;
 $elements-color: #ddd;
 $transition-speed: 300ms;
-$aside-cell-height: 60px;
+$aside-cell-height: 50px;
 $icon-height: 16px;
 
 .label {
