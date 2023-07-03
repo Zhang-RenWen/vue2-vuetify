@@ -39,13 +39,15 @@ export default {
 $background-color: #001529;
 $elements-color: #fff;
 $transition-speed: 300ms;
-$aside-width: 290px;
+$aside-width: 250px;
+$nav-height: 50px;
+$toggle-button-stroke: 3px;
+$toggle-button-width: 2.6rem;
 
 #nav-bar .active div {
   position: absolute;
-  margin-bottom: 0.3rem;
-  width: 3rem;
-  height: 5px;
+  width: $toggle-button-width;
+  height: $toggle-button-stroke;
   background-color: $elements-color;
   transition: all $transition-speed ease;
 }
@@ -57,14 +59,14 @@ $aside-width: 290px;
   justify-content: space-between;
   flex-direction: row-reverse;
   width: 100%;
-  height: 60px;
+  height: $nav-height;
   background-color: $background-color;
 
   nav {
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 60px;
+    height: $nav-height;
     color: $elements-color;
     background-color: $background-color;
   }
@@ -77,9 +79,8 @@ $aside-width: 290px;
 
     div {
       position: absolute;
-      margin-bottom: 0.4rem;
-      width: 3rem;
-      height: 5px;
+      width: $toggle-button-width;
+      height: $toggle-button-stroke;
       background-color: $elements-color;
       transition: all $transition-speed ease;
     }
@@ -90,7 +91,7 @@ $aside-width: 290px;
     }
 
     div:nth-child(2) {
-      top: 1.8rem;
+      top: 1.6rem;
       left: 1rem;
     }
 
@@ -99,15 +100,15 @@ $aside-width: 290px;
       position: absolute;
       top: 0;
       left: 0;
-      width: 3rem;
-      height: 5px;
+      width: $toggle-button-width;
+      height: $toggle-button-stroke;
       background-color: $elements-color;
       transition: all $transition-speed ease;
     }
 
     div:nth-child(3) {
-      top: 2.6rem;
-      right: 1rem;
+      top: 2.2rem;
+      right: 1.4rem;
     }
   }
 
@@ -130,8 +131,8 @@ $aside-width: 290px;
   .trademark {
     padding-left: 20px;
     width: $aside-width;
-    height: 60px;
-    line-height: 60px;
+    height: $nav-height;
+    line-height: $nav-height;
     font-size: 26px;
     font-weight: 600;
     color: $elements-color;
