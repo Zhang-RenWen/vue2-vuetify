@@ -6,7 +6,7 @@
       <v-card-text>
         <v-form ref="form1">
           <v-tabs v-model="activeTab">
-            <draggable v-model="tabs" @update="tabUpdate">
+            <draggable v-model="tabs" class="d-flex" @update="tabUpdate">
               <v-tab v-for="(tab, index) of tabs" :key="index">
                 {{ tab.title }}
               </v-tab>
@@ -75,8 +75,9 @@ export default {
   data() {
     return {
       tabs: [
-        { title: 'Tab1', component: 'aaa' },
-        { title: 'Tab2', component: 'bbb' }
+        { title: 'Tab1(A)', component: 'aaa' },
+        { title: 'Tab2(2)', component: 'bbb' },
+        { title: 'Tab3(3)', component: 'ccc' }
       ],
 
       tabForms: {},
@@ -86,7 +87,17 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    keymap() {
+      return this.tabs.reduce((r, o) => {
+        const matched = o.title.match(/\((\w)\)$/)
+        if (!matched) return r
+        const [, shortKey] = matched
+        return { ...r, [shortKey]: () => this.focusComponent(o) }
+      }, {})
+    }
+  },
+
   mounted() {},
   methods: {
     isTabPreload(key) {
@@ -149,17 +160,8 @@ export default {
       })
     },
 
-    keymap() {
-      return this.tabs.reduce((r, o) => {
-        const matched = o.title.match(/\((\w)\)$/)
-        if (!matched) return r
-        const [, shortKey] = matched
-        return { ...r, [shortKey]: () => this.focusComponent(o) }
-      }, {})
-    },
-
     tabUpdate(event) {
-      const tabNumber = this.getTabNumber()
+      const tabNumber = Number(this.activeTab)
       const oldIndex = event.oldIndex
       const newIndex = event.newIndex
       const hasChanged =
@@ -193,10 +195,11 @@ export default {
         return
       }
       this.activeTab = index
-      return this.asyncInterval(
-        () => (this.$refs[component] ? this.$refs[component][0] : false),
-        50
-      )
+      // 會噴錯
+      // return this.asyncInterval(
+      //   () => (this.$refs[component] ? this.$refs[component][0] : false),
+      //   50
+      // )
     },
 
     async validate() {
