@@ -5,7 +5,7 @@ function setStickyLeft(el, { value }) {
     const td = el.querySelectorAll(`td:nth-child(${i + 1})`)
     th.forEach((item) => {
       item.style.position = 'sticky'
-      item.style.zIndex = 2
+      item.style.zIndex = 3
       item.style.left = leftTotal + 'px'
     })
     td.forEach((item) => {
