@@ -84,6 +84,8 @@
       </v-data-table>
 
       <!-- server-sort -->
+      <!-- v-colum-resizable={onEnd:endResize} -->
+      <!-- v-sortable-table={onEnd:sortTheHeadersAndUpdateTheKey} -->
       <v-data-table
         v-sticky="32"
         v-fixed-table-column="3"
