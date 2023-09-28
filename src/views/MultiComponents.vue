@@ -33,16 +33,11 @@
           </v-tabs-items>
         </v-form>
         <v-row class="justify-end">
-          <v-btn color="accent" class="mr-1" @click="check('form1', 'aaa')">檢核 aaa</v-btn>
-          <v-btn color="accent" class="mr-1" @click="check('form1', 'bbb')">檢核 bbb</v-btn>
-          <v-btn color="accent" @click="check('form1')">檢核 all</v-btn>
+          <v-btn color="accent" class="mr-1" @click="check('aaa')">檢核 aaa</v-btn>
+          <v-btn color="accent" class="mr-1" @click="check('bbb')">檢核 bbb</v-btn>
+          <v-btn color="accent" @click="check">檢核 all</v-btn>
         </v-row>
       </v-card-text>
-    </v-card>
-    <v-card>
-      <v-card-title>MultiComponents</v-card-title>
-      <v-divider />
-      <v-card-text />
     </v-card>
   </div>
 </template>
@@ -126,10 +121,10 @@ export default {
       )
     },
 
-    async check(form, component) {
+    async check(component) {
       await this.resetValidate()
       await new Promise((resolve) => setTimeout(resolve, 0))
-      if (this.$refs[component]) {
+      if (component && this.$refs[component]) {
         this.$refs[component][0].validate()
       } else {
         // check all
