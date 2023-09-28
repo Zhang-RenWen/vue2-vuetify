@@ -8,7 +8,6 @@ import '@/directives/index'
 import VueHotKey from 'v-hotkey'
 
 import '@/assets/scss/style.scss'
-
 Vue.use(VueHotKey)
 new Vue({
   router,
