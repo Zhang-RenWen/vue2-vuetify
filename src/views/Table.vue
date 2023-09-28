@@ -2,6 +2,64 @@
   <v-card class="pa-2">
     <h3>Table</h3>
     <v-sheet outlined class="pa-4">
+      <!-- server-sort -->
+      <v-data-table
+        ref="tableForm"
+        :key="anIncreasingNumber"
+        v-fixed-table-column="3"
+        v-columns-resizable="{ onEnd: endResize }"
+        v-sortable-table="{ onEnd: sortTheHeadersAndUpdateTheKey }"
+        fixed-header
+        :height="300"
+        class="custom-table light-table mb-3"
+        dense
+        :headers="tempHeaders"
+        :items="actionItems"
+        hide-default-footer
+        :items-per-page="options.itemPerPage"
+        :server-items-length="totalCount"
+        :sort-desc.sync="options.sortDesc"
+        :sort-by.sync="options.sortBy"
+        :footer-props="{
+          'items-per-page-option': [options.itemPerPage]
+        }"
+        :custom-filter="customSearch"
+        :search="condition"
+        @page-count="pageCount = $event"
+      >
+        <template #[`header.action`]>
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-plus" />
+          </v-btn>
+        </template>
+        <template #[`item.index`]="{ index }">
+          {{ index + 1 }}
+        </template>
+        <template #[`item.action`]="{ item }">
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+            @click="
+              (e) => {
+                addItem(item, e)
+              }
+            "
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-trash-alt" />
+          </v-btn>
+        </template>
+      </v-data-table>
+      <TablePagination v-model="options" :total-count="totalCount" />
+
       <v-data-table
         dense
         class="custom-table light-table mb-3"
@@ -82,63 +140,6 @@
           </tr>
         </template>
       </v-data-table>
-
-      <!-- server-sort -->
-      <!-- v-colum-resizable={onEnd:endResize} -->
-      <!-- v-sortable-table={onEnd:sortTheHeadersAndUpdateTheKey} -->
-      <v-data-table
-        v-sticky="32"
-        v-fixed-table-column="3"
-        fixed-header
-        :height="180"
-        class="custom-table light-table mb-3"
-        dense
-        :headers="actionHeader"
-        :items="actionItems"
-        hide-default-footer
-        :items-per-page="options.itemPerPage"
-        :server-items-length="totalCount"
-        :sort-desc.sync="options.sortDesc"
-        :sort-by.sync="options.sortBy"
-        :footer-props="{
-          'items-per-page-option': [options.itemPerPage]
-        }"
-        :custom-filter="customSearch"
-        :search="condition"
-        @page-count="pageCount = $event"
-      >
-        <template #[`header.action`]>
-          <v-btn
-            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
-            icon
-            x-small
-            color="success"
-          >
-            <!-- <i class="fas fa-university" /> -->
-            <i class="fas fa-plus" />
-          </v-btn>
-        </template>
-        <template #[`item.index`]="{ index }">
-          {{ index + 1 }}
-        </template>
-        <template #[`item.action`]="{ item }">
-          <v-btn
-            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
-            icon
-            x-small
-            color="success"
-            @click="
-              (e) => {
-                addItem(item, e)
-              }
-            "
-          >
-            <!-- <i class="fas fa-university" /> -->
-            <i class="fas fa-trash-alt" />
-          </v-btn>
-        </template>
-      </v-data-table>
-      <TablePagination v-model="options" :total-count="totalCount" />
     </v-sheet>
   </v-card>
 </template>
@@ -146,10 +147,26 @@
 <script>
 import { data_expanded, data_select, data_RER } from './table/tableData'
 import { FixedTableColumn } from '@/directives/fixedTableColumn'
+import Sortable from 'sortablejs'
 export default {
   components: {},
+
   directives: {
-    FixedTableColumn
+    FixedTableColumn,
+    'sortable-table': {
+      inserted(el, binding) {
+        el.querySelectorAll('th').forEach((draggableEl) => {
+          const span = draggableEl.querySelector('span')
+          if (span) {
+            span.classList.add('sortHandle')
+          }
+        })
+        Sortable.create(
+          el.querySelector('tr'),
+          binding.value ? { ...binding.value, handle: '.sortable' } : {}
+        )
+      }
+    }
   },
 
   props: {},
@@ -169,14 +186,14 @@ export default {
 
       totalCount: 10, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
       pageCount: null,
-      actionHeader: [
+      tempHeaders: [
         { text: '序號', align: 'center', width: '80px', sortable: false, value: 'index' },
         { text: '操作', align: 'center', width: '80px', sortable: false, value: 'action' },
-        { text: '代碼', align: 'center', width: '200px', sortable: false, value: 'code' },
-        { text: '描述', align: 'center', width: '200px', sortable: false, value: 'text' },
-        { text: '數值', align: 'center', width: '200px', sortable: true, value: 'amount' },
-        { text: '名字', align: 'center', width: '200px', sortable: false, value: 'name' },
-        { text: '備註', align: 'center', width: '200px', sortable: false, value: 'notes' }
+        { text: '代碼', align: 'center', width: '100px', sortable: true, value: 'code' },
+        { text: '描述', align: 'center', width: '100px', sortable: true, value: 'text' },
+        { text: '數值', align: 'center', width: '100px', sortable: true, value: 'amount' },
+        { text: '名字', align: 'center', width: '100px', sortable: true, value: 'name' },
+        { text: '備註', align: 'center', width: '500px', sortable: true, value: 'notes' }
       ],
 
       actionItems: [
@@ -207,7 +224,9 @@ export default {
         { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
         { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' },
         { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' }
-      ]
+      ],
+
+      anIncreasingNumber: 1
     }
   },
 
@@ -258,6 +277,30 @@ export default {
 
     addItem(item) {
       console.log(item)
+    },
+
+    endResize() {
+      this.$refs['tableForm'].$el.querySelectorAll('th').forEach((draggableEl, index) => {
+        const width = draggableEl.getBoundingClientRect().width
+        if (width) {
+          this.tempHeaders[index].width = width
+        }
+      })
+    },
+
+    sortTheHeadersAndUpdateTheKey(evt) {
+      const tempHeaders = this.tempHeaders
+      const oldIndex = evt.oldIndex
+      const newIndex = evt.newIndex
+      if (newIndex >= tempHeaders.length) {
+        let k = newIndex - tempHeaders.length + 1
+        while (k == k - 1) {
+          tempHeaders.push(undefined)
+        }
+      }
+      tempHeaders.splice(newIndex, 0, tempHeaders.splice(oldIndex, 1)[0])
+      this.tempHeaders = tempHeaders
+      this.anIncreasingNumber = this.anIncreasingNumber + 1
     }
   }
 }
