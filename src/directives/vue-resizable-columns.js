@@ -10,7 +10,6 @@ export default {
           let row = table.getElementsByTagName('tr')[0],
             cols = row ? row.children : undefined
           if (!cols) return
-          table.style.overflow = 'hidden'
           let tableHeight = table.offsetHeight
           for (let i = 0; i < cols.length; i++) {
             const element = cols[i]
@@ -46,7 +45,7 @@ export default {
             div.addEventListener('mouseover', function (e) {
               e.stopPropagation()
               e.preventDefault()
-              e.target.style.borderRight = '10px solid #0000ff'
+              e.target.style.borderRight = '3px solid rgba(0, 0, 255,0.1)'
             })
 
             div.addEventListener('mouseout', function (e) {

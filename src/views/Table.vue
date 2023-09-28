@@ -2,6 +2,64 @@
   <v-card class="pa-2">
     <h3>Table</h3>
     <v-sheet outlined class="pa-4">
+      <!-- server-sort -->
+      <v-data-table
+        ref="tableForm"
+        :key="anIncreasingNumber"
+        v-fixed-table-column="3"
+        v-columns-resizable="{ onEnd: endResize }"
+        v-sortable-table="{ onEnd: sortTheHeadersAndUpdateTheKey }"
+        fixed-header
+        :height="300"
+        class="custom-table light-table mb-3"
+        dense
+        :headers="tempHeaders"
+        :items="actionItems"
+        hide-default-footer
+        :items-per-page="options.itemPerPage"
+        :server-items-length="totalCount"
+        :sort-desc.sync="options.sortDesc"
+        :sort-by.sync="options.sortBy"
+        :footer-props="{
+          'items-per-page-option': [options.itemPerPage]
+        }"
+        :custom-filter="customSearch"
+        :search="condition"
+        @page-count="pageCount = $event"
+      >
+        <template #[`header.action`]>
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-plus" />
+          </v-btn>
+        </template>
+        <template #[`item.index`]="{ index }">
+          {{ index + 1 }}
+        </template>
+        <template #[`item.action`]="{ item }">
+          <v-btn
+            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
+            icon
+            x-small
+            color="success"
+            @click="
+              (e) => {
+                addItem(item, e)
+              }
+            "
+          >
+            <!-- <i class="fas fa-university" /> -->
+            <i class="fas fa-trash-alt" />
+          </v-btn>
+        </template>
+      </v-data-table>
+      <TablePagination v-model="options" :total-count="totalCount" />
+
       <v-data-table
         dense
         class="custom-table light-table mb-3"
@@ -82,66 +140,6 @@
           </tr>
         </template>
       </v-data-table>
-
-      <!-- server-sort -->
-
-      <v-data-table
-        ref="tableForm"
-        :key="anIncreasingNumber"
-        v-sticky="32"
-        v-fixed-table-column="3"
-        v-columns-resizable="{ onEnd: endResize }"
-        v-sortable-table="{ onEnd: sortTheHeadersAndUpdateTheKey }"
-        fixed-header
-        :height="180"
-        class="custom-table light-table mb-3"
-        dense
-        :headers="tempHeaders"
-        :items="actionItems"
-        hide-default-footer
-        :items-per-page="options.itemPerPage"
-        :server-items-length="totalCount"
-        :sort-desc.sync="options.sortDesc"
-        :sort-by.sync="options.sortBy"
-        :footer-props="{
-          'items-per-page-option': [options.itemPerPage]
-        }"
-        :custom-filter="customSearch"
-        :search="condition"
-        @page-count="pageCount = $event"
-      >
-        <template #[`header.action`]>
-          <v-btn
-            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
-            icon
-            x-small
-            color="success"
-          >
-            <!-- <i class="fas fa-university" /> -->
-            <i class="fas fa-plus" />
-          </v-btn>
-        </template>
-        <template #[`item.index`]="{ index }">
-          {{ index + 1 }}
-        </template>
-        <template #[`item.action`]="{ item }">
-          <v-btn
-            class="pa-0 v-btn--is-elevated v-btn--has-bg v-btn--round theme--light"
-            icon
-            x-small
-            color="success"
-            @click="
-              (e) => {
-                addItem(item, e)
-              }
-            "
-          >
-            <!-- <i class="fas fa-university" /> -->
-            <i class="fas fa-trash-alt" />
-          </v-btn>
-        </template>
-      </v-data-table>
-      <TablePagination v-model="options" :total-count="totalCount" />
     </v-sheet>
   </v-card>
 </template>
