@@ -1,8 +1,8 @@
 <template>
   <v-card class="pa-2">
-    <h3>Table</h3>
+    <h2>Table</h2>
     <v-sheet outlined class="pa-4">
-      <!-- server-sort -->
+      <h2>Fixed-Header Resizable-Header Sortable-Header Fixed-Column Server-sort</h2>
       <v-data-table
         ref="tableForm"
         :key="anIncreasingNumber"
@@ -59,7 +59,7 @@
         </template>
       </v-data-table>
       <TablePagination v-model="options" :total-count="totalCount" />
-
+      <h2>Expanded-Item Front-End-Sort</h2>
       <v-data-table
         dense
         class="custom-table light-table mb-3"
@@ -74,6 +74,7 @@
           </td>
         </template>
       </v-data-table>
+      <h2>Selected-Item</h2>
       <v-data-table
         v-model="selected"
         class="custom-table light-table mb-3"
@@ -91,7 +92,7 @@
           {{ '1234566' + item.h1ValueKey }}
         </template>
       </v-data-table>
-
+      <h2>Custom-Header</h2>
       <v-data-table
         class="custom-table light-table mb-3"
         :headers="getHeaders(data_RER.headers)"
@@ -99,7 +100,7 @@
         hide-default-header
         hide-default-footer
       >
-        <!-- 客製化 header 無法使用 Vuetify 提供的選項功能 -->
+        <!-- 客製化 header 無法使用 Vuetify 提供的部分選項功能 -->
         <template #header>
           <thead>
             <tr v-for="(header, index) of data_RER.headers" :key="index">
