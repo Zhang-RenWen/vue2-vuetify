@@ -266,7 +266,12 @@ import {
   checkSymbol,
   checkEnglishInteger,
   checkEnglishNumberLength8To16,
-  checkEmail
+  checkEmail,
+  checkValidEmail,
+  checkURL,
+  checkHttpUrl,
+  checkRegURL,
+  checkRegHttpUrl
 } from '@/utils/validation'
 export const rulesSetting = {
   props: {
@@ -510,10 +515,31 @@ export const rulesSetting = {
       return checkEnglishNumberLength8To16(value) || '請輸入8-16位英文數字'
     },
 
-    // email
+    // Email
     checkEmail(value) {
       if (['', null, undefined, false].includes(value)) return true
       return checkEmail(value) || '電子郵件格式有誤'
+    },
+    checkValidEmail(value) {
+      if (['', null, undefined, false].includes(value)) return true
+      return checkValidEmail(value) || '電子郵件格式有誤'
+    },
+    // 網址
+    checkURL(value) {
+      if (['', null, undefined, false].includes(value)) return true
+      return checkURL(value) || '網址格式有誤'
+    },
+    checkHttpUrl(value) {
+      if (['', null, undefined, false].includes(value)) return true
+      return checkHttpUrl(value) || '網址格式有誤'
+    },
+    checkRegURL(value) {
+      if (['', null, undefined, false].includes(value)) return true
+      return checkRegURL(value) || '網址格式有誤'
+    },
+    checkRegHttpUrl(value) {
+      if (['', null, undefined, false].includes(value)) return true
+      return checkRegHttpUrl(value) || '網址格式有誤'
     }
   }
 }

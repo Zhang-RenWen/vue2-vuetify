@@ -445,15 +445,6 @@ export const checkEnglishInteger = (value) => {
   return regex
 }
 
-export const checkEmail = (value) => {
-  const regex = /^[^\s]+@[^\s]+\.[^\s]{2,3}$/
-  if (!value) {
-    return true
-  } else {
-    return regex.test(value)
-  }
-}
-
 /**
  *  驗證是否有全型文字
  */
@@ -530,4 +521,63 @@ export const checkOver6Decimals = (value) => {
  */
 export const isPasswordRule = (str) => {
   return /^[\w!@#$%^&*.]{6,12}/.test(str)
+}
+
+/**
+ *  是否為符合信箱規則
+ */
+
+export const checkEmail = (str) => {
+  return /^[^\s]+@[^\s]+\.[^\s]{2,3}$/.test(str)
+}
+export const checkValidEmail = (str) => {
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(str)
+}
+
+/**
+ *  驗證網址
+ */
+
+export const checkURL = (str) => {
+  try {
+    new URL(str)
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
+export const checkHttpUrl = (str) => {
+  try {
+    const newUrl = new URL(str)
+    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:'
+  } catch (err) {
+    return false
+  }
+}
+
+export const checkRegURL = (str) => {
+  const pattern = new RegExp(
+    '^([a-zA-Z]+:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', // fragment locator
+    'i'
+  )
+  return pattern.test(str)
+}
+
+export const checkRegHttpUrl = (str) => {
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', // fragment locator
+    'i'
+  )
+  return pattern.test(str)
 }
