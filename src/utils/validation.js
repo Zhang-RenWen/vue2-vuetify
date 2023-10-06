@@ -581,3 +581,34 @@ export const checkRegHttpUrl = (str) => {
   )
   return pattern.test(str)
 }
+
+/**
+ *  驗證信用卡
+ */
+
+// 主流信用卡
+export const checkInternationalCreditCard = (str) => {
+  const pattern =
+    /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|622((12[6-9]|1[3-9][0-9])|([2-8][0-9][0-9])|(9(([0-1][0-9])|(2[0-5]))))[0-9]{10}|64[4-9][0-9]{13}|65[0-9]{14}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})*$/
+  return pattern.test(str)
+}
+
+// 美國運通信用卡
+export const checkAmericanExpressCard = (str) => {
+  return /^(3[47][0-9]{13})*$/.test(str)
+}
+
+// MasterCard
+export const checkMasterCard = (str) => {
+  return /^(5[1-5][0-9]{14})*$/.test(str)
+}
+
+// Visa Card
+export const checkVISACard = (str) => {
+  return /^(4[0-9]{12}(?:[0-9]{3})?)*$/.test(str)
+}
+
+// JCB Card
+export const checkJCBCard = (str) => {
+  return /^(?:2131|1800|35\d{3})\d{11}$/.test(str)
+}
