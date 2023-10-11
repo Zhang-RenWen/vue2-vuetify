@@ -6,7 +6,7 @@ const resolve = (dir) => {
 }
 
 module.exports = {
-  publicPath: process.env.VUE_APP_PUBLIC_PATH,
+  publicPath: '/vue2-vuetify/',
   transpileDependencies: ['vuetify'], // vuetify setting
   runtimeCompiler: true,
   parallel: true,
