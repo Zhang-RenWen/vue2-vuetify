@@ -7,6 +7,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '*',
+    name: 'catchall',
+    component: Home,
+    children: createRouterTree()
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home,
