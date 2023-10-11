@@ -8,7 +8,10 @@ export const data_expanded = {
   items: [
     { h1ValueKey: '1', h2ValueKey: 'col1-2', h3ValueKey: 'col1-3', h4ValueKey: 'col1-4' },
     { h1ValueKey: '2', h2ValueKey: 'col2-2', h3ValueKey: 'col2-3', h4ValueKey: 'col2-4' },
-    { h1ValueKey: '3', h2ValueKey: 'col3-2', h3ValueKey: 'col3-3', h4ValueKey: 'col3-4' }
+    { h1ValueKey: '3', h2ValueKey: 'col3-2', h3ValueKey: 'col3-3', h4ValueKey: 'col3-4' },
+    { h1ValueKey: '4', h2ValueKey: 'col4-2', h3ValueKey: 'col4-3', h4ValueKey: 'col4-4' },
+    { h1ValueKey: '5', h2ValueKey: 'col5-2', h3ValueKey: 'col5-3', h4ValueKey: 'col5-4' },
+    { h1ValueKey: '6', h2ValueKey: 'col6-2', h3ValueKey: 'col6-3', h4ValueKey: 'col6-4' }
   ]
 }
 export const data_select = {

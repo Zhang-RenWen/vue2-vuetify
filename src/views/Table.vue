@@ -2,7 +2,10 @@
   <v-card class="pa-2">
     <h2>Table</h2>
     <v-sheet outlined class="pa-4">
-      <h2>Fixed-Header Resizable-Header Sortable-Header Fixed-Column Server-sort</h2>
+      <h2>
+        Fixed-Header Resizable-Header Sortable-Header Fixed-Column Server-sort
+        Custom-Pagination-Settings
+      </h2>
       <v-data-table
         ref="tableForm"
         :key="anIncreasingNumber"
@@ -14,18 +17,15 @@
         class="custom-table light-table mb-3"
         dense
         :headers="tempHeaders"
-        :items="actionItems"
+        :items="itemsTemp"
         hide-default-footer
         :items-per-page="options.itemPerPage"
-        :server-items-length="totalCount"
+        :server-items-length="itemsOrigin.length"
         :sort-desc.sync="options.sortDesc"
         :sort-by.sync="options.sortBy"
         :footer-props="{
           'items-per-page-option': [options.itemPerPage]
         }"
-        :custom-filter="customSearch"
-        :search="condition"
-        @page-count="pageCount = $event"
       >
         <template #[`header.action`]>
           <v-btn
@@ -58,8 +58,12 @@
           </v-btn>
         </template>
       </v-data-table>
-      <TablePagination v-model="options" :total-count="totalCount" />
-      <h2>Expanded-Item Front-End-Sort</h2>
+      <TablePagination
+        v-model="options"
+        :total-count="itemsOrigin.length"
+        @input="onPaginationSelect"
+      />
+      <h2>Expanded-Item Front-End-Sort customSearch</h2>
       <v-data-table
         dense
         class="custom-table light-table mb-3"
@@ -67,6 +71,8 @@
         :items="data_expanded.items"
         item-key="h1ValueKey"
         show-expand
+        :custom-filter="customSearch"
+        :search="condition"
       >
         <template #expanded-item="{ headers, item }">
           <td class="pa-4 py-6" :colspan="headers.length">
@@ -180,24 +186,23 @@ export default {
       data_select,
       data_RER,
       options: {
+        page: 1,
         sortBy: 'amount',
         sortDesc: [false],
-        itemPerPage: 10
+        itemsPerPage: 10
       },
 
-      totalCount: 10, // 值從 server 回傳做 server-sort, 且避免 client-sort 被觸發
-      pageCount: null,
       tempHeaders: [
         { text: '序號', align: 'center', width: '80px', sortable: false, value: 'index' },
         { text: '操作', align: 'center', width: '80px', sortable: false, value: 'action' },
-        { text: '代碼', align: 'center', width: '100px', sortable: true, value: 'code' },
-        { text: '描述', align: 'center', width: '100px', sortable: true, value: 'text' },
+        { text: '代碼', align: 'center', width: '100px', sortable: false, value: 'code' },
+        { text: '描述', align: 'center', width: '100px', sortable: false, value: 'text' },
         { text: '數值', align: 'center', width: '100px', sortable: true, value: 'amount' },
-        { text: '名字', align: 'center', width: '100px', sortable: true, value: 'name' },
-        { text: '備註', align: 'center', width: '500px', sortable: true, value: 'notes' }
+        { text: '名字', align: 'center', width: '100px', sortable: false, value: 'name' },
+        { text: '備註', align: 'center', width: '500px', sortable: false, value: 'notes' }
       ],
 
-      actionItems: [
+      itemsOrigin: [
         {
           action: '',
           code: 'C',
@@ -227,6 +232,8 @@ export default {
         { action: '', code: 'C', text: '項目C2', amount: 10000, name: '', notes: '' }
       ],
 
+      itemsTemp: [],
+
       anIncreasingNumber: 1
     }
   },
@@ -237,13 +244,16 @@ export default {
     }
   },
 
-  async mounted() {},
+  async mounted() {
+    this.itemsTemp = JSON.parse(JSON.stringify(this.itemsOrigin))
+    this.onPaginationSelect(this.options)
+  },
 
   destroyed() {},
 
   methods: {
     customSearch(value, query, item) {
-      return ['C'].includes(item.code) && query === this.condition
+      return !['6'].includes(item.h1ValueKey) && query === this.condition
     },
 
     getHeaders(headers) {
@@ -302,6 +312,22 @@ export default {
       tempHeaders.splice(newIndex, 0, tempHeaders.splice(oldIndex, 1)[0])
       this.tempHeaders = tempHeaders
       this.anIncreasingNumber = this.anIncreasingNumber + 1
+    },
+
+    onPaginationSelect(e) {
+      // fake Server-sort
+      const { sortBy, sortDesc, itemsPerPage, page } = e
+      let startIndex = itemsPerPage * (page - 1)
+      let endIndex = itemsPerPage * page
+      this.itemsTemp = JSON.parse(JSON.stringify(this.itemsOrigin))
+        .sort(function (a, b) {
+          if (!sortDesc[0]) {
+            return a[sortBy] - b[sortBy]
+          } else {
+            return b[sortBy] - a[sortBy]
+          }
+        })
+        .slice(startIndex, endIndex)
     }
   }
 }
