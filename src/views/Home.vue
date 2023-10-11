@@ -3,7 +3,6 @@
     <div id="wrap">
       <SideBar class="side-bar" :class="[sideMenuOpen ? '' : 'side-bar-closed']" />
       <NavBar />
-
       <section
         id="application-scroll"
         sticky-container
@@ -13,11 +12,11 @@
         <router-view />
       </section>
     </div>
+    <OverlayLoading id="overlayLoading" />
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import NavBar from '@/layouts/frame/nav/navBar.vue'
 import SideBar from '@/layouts/frame/menu/sideBar.vue'
 
@@ -32,9 +31,7 @@ export default {
     return {}
   },
 
-  computed: {
-    ...mapGetters('ui', ['sideMenuOpen'])
-  },
+  computed: {},
 
   mounted() {},
   methods: {}

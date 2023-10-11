@@ -26,6 +26,7 @@
         :footer-props="{
           'items-per-page-option': [options.itemPerPage]
         }"
+        @update:sort-desc="onPaginationSelect"
       >
         <template #[`header.action`]>
           <v-btn
@@ -314,9 +315,13 @@ export default {
       this.anIncreasingNumber = this.anIncreasingNumber + 1
     },
 
-    onPaginationSelect(e) {
+    async onPaginationSelect() {
+      this.toggleLoading(true)
+      await new Promise((resolve) => {
+        setTimeout(resolve, 300)
+      })
       // fake Server-sort
-      const { sortBy, sortDesc, itemsPerPage, page } = e
+      const { sortBy, sortDesc, itemsPerPage, page } = this.options
       let startIndex = itemsPerPage * (page - 1)
       let endIndex = itemsPerPage * page
       this.itemsTemp = JSON.parse(JSON.stringify(this.itemsOrigin))
@@ -328,6 +333,8 @@ export default {
           }
         })
         .slice(startIndex, endIndex)
+
+      this.toggleLoading(false)
     }
   }
 }
