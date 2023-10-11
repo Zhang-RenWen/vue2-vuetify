@@ -4,17 +4,11 @@ import Home from '@/views/Home.vue'
 import createRouterTree from '@/router/getRouterTree'
 
 Vue.use(VueRouter)
-
+const rootName = 'Home'
 const routes = [
   {
-    path: '*',
-    name: 'catchall',
-    component: Home,
-    children: createRouterTree()
-  },
-  {
     path: '/',
-    name: 'Home',
+    name: rootName,
     component: Home,
     children: createRouterTree()
   }
@@ -26,6 +20,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (!to.matched.length) {
+    next({ name: rootName })
+  }
   // 設定每頁的 title (by meta title attribute)
   if (to.meta.title) {
     document.title = to.meta.title
