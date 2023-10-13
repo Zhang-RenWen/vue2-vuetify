@@ -9,12 +9,12 @@ import goTop from '@/components/button/GoTop.vue'
 import goTopByWindow from '@/components/button/GoTopByWindow.vue'
 import anchorPointButton from '@/components/button/AnchorPointButton.vue'
 // import vueResizable from 'vue-resizable'
-// import vueHotkey from 'v-hotkey'
 // import Dialog from '@/components/vuetify/Dialog.vue'
-// import FormGroup from '@/components/vuetify/FormGroup.vue'
 import TablePagination from '@/components/pagination/TablePagination.vue'
+import LinearLoading from '@/components/loading/LinearLoading'
+import CircularLoading from '@/components/loading/CircularLoading'
+import OverlayLoading from '@/components/loading/OverlayLoading'
 
-// Vue.use(vueHotkey)
 Vue.component('TablePagination', TablePagination)
 Vue.component('Icon', icon)
 Vue.component('GoTopButton', goTop)
@@ -24,6 +24,8 @@ Vue.component('TextInput', textInput)
 Vue.component('TextAreaInput', textAreaInput)
 Vue.component('InputAutoComplete', inputAutoComplete)
 Vue.component('InputDate', inputDate)
+Vue.component('LinearLoading', LinearLoading)
+Vue.component('CircularLoading', CircularLoading)
+Vue.component('OverlayLoading', OverlayLoading)
 // Vue.component('Dialog', Dialog)
-// Vue.component('FormGroup', FormGroup)
 // Vue.component('VueResizable', vueResizable)

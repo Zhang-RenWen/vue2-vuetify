@@ -139,21 +139,21 @@ export default {
       }
     },
 
-    async asyncInterval(callback, ms, triesLeft = 5) {
-      return new Promise((resolve, reject) => {
-        const interval = setInterval(async () => {
-          const result = await callback()
-          if (result) {
-            resolve(result)
-            clearInterval(interval)
-          } else if (triesLeft <= 1) {
-            reject()
-            clearInterval(interval)
-          }
-          triesLeft = triesLeft - 1
-        }, ms)
-      })
-    },
+    // async asyncInterval(callback, ms, triesLeft = 5) {
+    //   return new Promise((resolve, reject) => {
+    //     const interval = setInterval(async () => {
+    //       const result = await callback()
+    //       if (result) {
+    //         resolve(result)
+    //         clearInterval(interval)
+    //       } else if (triesLeft <= 1) {
+    //         reject()
+    //         clearInterval(interval)
+    //       }
+    //       triesLeft = triesLeft - 1
+    //     }, ms)
+    //   })
+    // },
 
     tabUpdate(event) {
       const tabNumber = Number(this.activeTab)

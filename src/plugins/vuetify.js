@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import { zhHant } from 'vuetify/es5/locale/zh-Hant'
+import zhHant from 'vuetify/es5/locale/zh-Hant'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import '@fortawesome/fontawesome-free/css/all.css'

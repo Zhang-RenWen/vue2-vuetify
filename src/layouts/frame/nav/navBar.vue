@@ -12,25 +12,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-
 export default {
   components: {},
   data() {
     return {}
   },
 
-  computed: {
-    ...mapGetters('ui', ['sideMenuOpen'])
-  },
+  computed: {},
 
   mounted() {},
   methods: {
     toggleSlider() {
       this.toggleSideMenuOpen(!this.sideMenuOpen)
-    },
-
-    ...mapActions('ui', ['toggleSideMenuOpen'])
+    }
   }
 }
 </script>

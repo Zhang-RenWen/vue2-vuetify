@@ -14,6 +14,7 @@ function setStickyLeft(el, { value }) {
       item.style.left = leftTotal + 'px'
       item.classList.add('fixed-table-col')
     })
+    if (!th.length) return
     leftTotal += th[0].getBoundingClientRect().width
   }
 }
