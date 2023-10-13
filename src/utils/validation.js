@@ -487,7 +487,7 @@ export const checkChinesePingIn = (value) => {
  *  驗證是否有中文字
  */
 export const checkChineseWords = (value) => {
-  let testReg = /[\u4e00-\u9fa5]/g
+  let testReg = /^[\p{Script=Han}]+$/u
   if (!testReg.test(value)) {
     return true
   } else {
